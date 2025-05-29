@@ -7,7 +7,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Card, CardContent } from "@/components/ui/card"
 import { useState, useEffect } from "react"
-import { ExternalLink, ArrowRight, ChevronUp } from "lucide-react"
+import { ExternalLink, ArrowRight, ChevronUp, Mail, Calendar } from "lucide-react"
 
 export default function Page() {
   const [scrollY, setScrollY] = useState(0)
@@ -470,63 +470,96 @@ export default function Page() {
             </p>
           </div>
 
-          <Card className="unified-card mobile-card backdrop-blur-sm rounded-lg">
-            <CardContent className="p-8 md:p-12">
+          {/* Contact Options */}
+          <div className="flex justify-center space-x-8 mb-12">
+            <a 
+              href="mailto:kodexstudio@gmail.com"
+              className="flex items-center space-x-2 text-gray-400 hover:text-white transition-colors group"
+            >
+              <Mail className="w-5 h-5 group-hover:text-mint-400 transition-colors" />
+              <span>Email Us</span>
+            </a>
+            <a 
+              href="https://calendly.com/nessakodo/kodex-studio-information-call?month=2025-05"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center space-x-2 text-gray-400 hover:text-white transition-colors group"
+            >
+              <Calendar className="w-5 h-5 group-hover:text-mint-400 transition-colors" />
+              <span>Schedule a Call</span>
+            </a>
+          </div>
+
+          <div className="backdrop-blur-md bg-black/30 rounded-lg border border-white/10">
+            <div className="p-8 md:p-12">
               <form className="space-y-6">
                 <div className="space-y-4">
                   <Input
                     type="text"
                     placeholder="Name"
-                    className="form-field-hover bg-black/50 border-white/10 text-white"
+                    className="form-field-hover bg-black/50 border-white/10 text-white placeholder:text-gray-500 focus:border-mint-400/50 focus:ring-mint-400/20 transition-all duration-300"
                   />
                   <Input
                     type="email"
                     placeholder="Email"
-                    className="form-field-hover bg-black/50 border-white/10 text-white"
+                    className="form-field-hover bg-black/50 border-white/10 text-white placeholder:text-gray-500 focus:border-mint-400/50 focus:ring-mint-400/20 transition-all duration-300"
                   />
                   <Select>
-                    <SelectTrigger className="form-field-hover bg-black/50 border-white/10 text-white">
+                    <SelectTrigger className="form-field-hover bg-black/50 border-white/10 text-white placeholder:text-gray-500 focus:border-mint-400/50 focus:ring-mint-400/20 transition-all duration-300">
                       <SelectValue placeholder="Select a service" />
                     </SelectTrigger>
-                    <SelectContent className="select-content">
-                      <SelectItem value="web" className="select-item">Web Development</SelectItem>
-                      <SelectItem value="mobile" className="select-item">Mobile Development</SelectItem>
-                      <SelectItem value="design" className="select-item">UI/UX Design</SelectItem>
+                    <SelectContent className="bg-black/90 backdrop-blur-md border-white/10">
+                      <SelectItem value="web" className="text-white hover:bg-white/10 focus:bg-white/10 focus:text-white">Web Development</SelectItem>
+                      <SelectItem value="mobile" className="text-white hover:bg-white/10 focus:bg-white/10 focus:text-white">Mobile Development</SelectItem>
+                      <SelectItem value="design" className="text-white hover:bg-white/10 focus:bg-white/10 focus:text-white">UI/UX Design</SelectItem>
                     </SelectContent>
                   </Select>
                   <Textarea
                     placeholder="Message"
-                    className="form-field-hover bg-black/50 border-white/10 text-white min-h-[150px]"
+                    className="form-field-hover bg-black/50 border-white/10 text-white placeholder:text-gray-500 focus:border-mint-400/50 focus:ring-mint-400/20 transition-all duration-300 min-h-[150px]"
                   />
                 </div>
-                <Button className="unified-button w-full submit-button text-base">
-                  SEND MESSAGE
+                <Button 
+                  className="relative w-full submit-button text-base overflow-hidden group"
+                  type="submit"
+                  aria-label="Send message"
+                >
+                  <div className="button-content">
+                    <span>SEND MESSAGE</span>
+                    <svg 
+                      className="w-4 h-4" 
+                      fill="none" 
+                      viewBox="0 0 24 24" 
+                      stroke="currentColor"
+                      aria-hidden="true"
+                    >
+                      <path 
+                        strokeLinecap="round" 
+                        strokeLinejoin="round" 
+                        strokeWidth={2} 
+                        d="M14 5l7 7m0 0l-7 7m7-7H3" 
+                      />
+                    </svg>
+                  </div>
+                  <div className="absolute inset-0 bg-gradient-to-r from-mint-400/20 via-mist-400/20 to-sage-400/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                 </Button>
               </form>
-            </CardContent>
-          </Card>
+            </div>
+          </div>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="py-12 px-6 md:px-24 border-t border-white/10">
-        <div className="max-w-6xl mx-auto">
-          <div className="flex flex-col md:flex-row justify-between items-center">
-            <div className="mb-8 md:mb-0">
-              <div className="flex space-x-2 mb-4">
-                <div className="h-2 w-2 rounded-full bg-white"></div>
-                <div className="h-2 w-2 rounded-full bg-white"></div>
-              </div>
-              <p className="text-sm text-gray-400">© 2024 Kodex Studio. All rights reserved.</p>
+      <footer className="py-12 content-padding border-t border-white/10 mt-auto">
+        <div className="flex flex-col md:flex-row justify-between items-center">
+          <div className="flex items-center mb-8 md:mb-0">
+            <div className="flex space-x-2 mr-4">
+              <div className="h-2 w-2 rounded-full bg-white"></div>
+              <div className="h-2 w-2 rounded-full bg-white"></div>
             </div>
-            <div className="flex space-x-8">
-              <Link href="#" className="text-sm text-gray-400 hover:text-white transition-colors">
-                Privacy Policy
-              </Link>
-              <Link href="#" className="text-sm text-gray-400 hover:text-white transition-colors">
-                Terms of Service
-              </Link>
-            </div>
+          </div>
+          <div>
+            <p className="text-sm text-gray-400">© 2024 Kodex Studio. All rights reserved.</p>
           </div>
         </div>
       </footer>
