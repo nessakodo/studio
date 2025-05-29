@@ -8,11 +8,30 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Card, CardContent } from "@/components/ui/card"
 import { useState, useEffect } from "react"
 import { ExternalLink, ArrowRight, ChevronUp, Mail, Calendar } from "lucide-react"
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
+import emailjs from '@emailjs/browser';
+import { EMAILJS_CONFIG } from './config/emailjs';
+
+// Form validation schema
+const formSchema = z.object({
+  name: z.string().min(2, "Name must be at least 2 characters"),
+  email: z.string().email("Invalid email address"),
+  service: z.string().min(1, "Please select a service"),
+  message: z.string().min(10, "Message must be at least 10 characters"),
+});
+
+type FormData = z.infer<typeof formSchema>;
+
+// Add this constant at the top of the file, after imports
+const WEB3FORMS_ACCESS_KEY = process.env.NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY || process.env.WEB3FORMS_ACCESS_KEY;
 
 export default function Page() {
   const [scrollY, setScrollY] = useState(0)
   const [showScrollTop, setShowScrollTop] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -31,6 +50,11 @@ export default function Page() {
     window.addEventListener("scroll", handleScroll)
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
+
+  useEffect(() => {
+    // Initialize EmailJS with your public key
+    emailjs.init(EMAILJS_CONFIG.PUBLIC_KEY);
+  }, []);
 
   const scrollToSection = (id: string) => {
     const element = document.getElementById(id)
@@ -123,6 +147,55 @@ export default function Page() {
     { id: 'showcase', label: 'SHOWCASE' },
     { id: 'connect', label: 'CONNECT' }
   ];
+
+  const { register, handleSubmit, setValue, formState: { errors, isSubmitting }, reset } = useForm<FormData>({
+    resolver: zodResolver(formSchema)
+  });
+  const [isSuccess, setIsSuccess] = useState(false);
+
+  const onSubmit = async (data: FormData) => {
+    try {
+      setError(null);
+      
+      if (!WEB3FORMS_ACCESS_KEY) {
+        console.error('Access key:', WEB3FORMS_ACCESS_KEY); // Debug log
+        throw new Error('Email service is not configured');
+      }
+
+      const response = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify({
+          access_key: WEB3FORMS_ACCESS_KEY,
+          name: data.name,
+          email: data.email,
+          service: data.service,
+          message: data.message,
+          subject: 'New Contact Form Submission',
+          redirect: false
+        })
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        setIsSuccess(true);
+        // Reset form after 3 seconds
+        setTimeout(() => {
+          setIsSuccess(false);
+          reset();
+        }, 3000);
+      } else {
+        throw new Error(result.message || 'Failed to send message');
+      }
+    } catch (error) {
+      console.error("Error sending email:", error);
+      setError(error instanceof Error ? error.message : 'Failed to send message. Please try again later.');
+    }
+  };
 
   return (
     <div className="min-h-screen bg-black text-white overflow-x-hidden">
@@ -492,19 +565,35 @@ export default function Page() {
 
           <div className="backdrop-blur-md bg-black/30 rounded-lg border border-white/10">
             <div className="p-8 md:p-12">
-              <form className="space-y-6">
+              <form 
+                className="space-y-6"
+                onSubmit={handleSubmit(onSubmit)}
+              >
                 <div className="space-y-4">
                   <Input
                     type="text"
                     placeholder="Name"
                     className="form-field-hover bg-black/50 border-white/10 text-white placeholder:text-gray-500 focus:border-mint-400/50 focus:ring-mint-400/20 transition-all duration-300"
+                    {...register("name")}
                   />
+                  {errors.name && (
+                    <p className="text-red-400 text-sm">{errors.name.message}</p>
+                  )}
+                  
                   <Input
                     type="email"
                     placeholder="Email"
                     className="form-field-hover bg-black/50 border-white/10 text-white placeholder:text-gray-500 focus:border-mint-400/50 focus:ring-mint-400/20 transition-all duration-300"
+                    {...register("email")}
                   />
-                  <Select>
+                  {errors.email && (
+                    <p className="text-red-400 text-sm">{errors.email.message}</p>
+                  )}
+                  
+                  <Select
+                    onValueChange={(value) => setValue("service", value)}
+                    {...register("service")}
+                  >
                     <SelectTrigger className="form-field-hover bg-black/50 border-white/10 text-white placeholder:text-gray-500 focus:border-mint-400/50 focus:ring-mint-400/20 transition-all duration-300">
                       <SelectValue placeholder="Select a service" />
                     </SelectTrigger>
@@ -514,32 +603,54 @@ export default function Page() {
                       <SelectItem value="design" className="text-white hover:bg-white/10 focus:bg-white/10 focus:text-white">UI/UX Design</SelectItem>
                     </SelectContent>
                   </Select>
+                  {errors.service && (
+                    <p className="text-red-400 text-sm">{errors.service.message}</p>
+                  )}
+                  
                   <Textarea
                     placeholder="Message"
                     className="form-field-hover bg-black/50 border-white/10 text-white placeholder:text-gray-500 focus:border-mint-400/50 focus:ring-mint-400/20 transition-all duration-300 min-h-[150px]"
+                    {...register("message")}
                   />
+                  {errors.message && (
+                    <p className="text-red-400 text-sm">{errors.message.message}</p>
+                  )}
                 </div>
+                {error && (
+                  <div className="mt-4 p-4 bg-red-500/10 border border-red-500/20 rounded-lg">
+                    <p className="text-red-400 text-sm">{error}</p>
+                  </div>
+                )}
                 <Button 
                   className="relative w-full submit-button text-base overflow-hidden group"
                   type="submit"
-                  aria-label="Send message"
+                  disabled={isSubmitting}
+                  aria-label={isSubmitting ? "Sending message..." : "Send message"}
                 >
                   <div className="button-content">
-                    <span>SEND MESSAGE</span>
-                    <svg 
-                      className="w-4 h-4" 
-                      fill="none" 
-                      viewBox="0 0 24 24" 
-                      stroke="currentColor"
-                      aria-hidden="true"
-                    >
-                      <path 
-                        strokeLinecap="round" 
-                        strokeLinejoin="round" 
-                        strokeWidth={2} 
-                        d="M14 5l7 7m0 0l-7 7m7-7H3" 
-                      />
-                    </svg>
+                    {isSubmitting ? (
+                      <>
+                        <span>SENDING...</span>
+                        <svg className="animate-spin h-4 w-4" viewBox="0 0 24 24">
+                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
+                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                        </svg>
+                      </>
+                    ) : isSuccess ? (
+                      <>
+                        <span>MESSAGE SENT!</span>
+                        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                        </svg>
+                      </>
+                    ) : (
+                      <>
+                        <span>SEND MESSAGE</span>
+                        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                        </svg>
+                      </>
+                    )}
                   </div>
                   <div className="absolute inset-0 bg-gradient-to-r from-mint-400/20 via-mist-400/20 to-sage-400/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                 </Button>
