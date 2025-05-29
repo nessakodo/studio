@@ -122,12 +122,12 @@ export default function Page() {
     { id: 'thinking', label: 'THINKING' },
     { id: 'showcase', label: 'SHOWCASE' },
     { id: 'connect', label: 'CONNECT' }
-  ]
+  ];
 
   return (
     <div className="min-h-screen bg-black text-white overflow-x-hidden">
       {/* Header */}
-      <header className="fixed top-0 z-50 w-full navbar bg-transparent">
+      <header className={`fixed top-0 z-50 w-full navbar ${scrollY > 50 ? 'scrolled' : ''}`}>
         <div className="flex items-center justify-between content-padding py-6">
           <Link href="/" className="text-xl font-light">
             LOGO
