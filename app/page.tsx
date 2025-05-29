@@ -26,9 +26,13 @@ export default function Page() {
   const scrollToSection = (id: string) => {
     const element = document.getElementById(id)
     if (element) {
+      const headerOffset = 80
+      const elementPosition = element.getBoundingClientRect().top
+      const offsetPosition = elementPosition + window.pageYOffset - headerOffset
+
       window.scrollTo({
-        behavior: 'smooth',
-        top: element.offsetTop - 80, // Adjust for fixed header height
+        top: offsetPosition,
+        behavior: 'smooth'
       })
     }
     setIsMobileMenuOpen(false)
@@ -103,85 +107,57 @@ export default function Page() {
     },
   ]
 
+  const navLinks = [
+    { id: 'who-we-are', label: 'WHO WE ARE' },
+    { id: 'offerings', label: 'OFFERINGS' },
+    { id: 'thinking', label: 'THINKING' },
+    { id: 'showcase', label: 'SHOWCASE' },
+    { id: 'connect', label: 'CONNECT' }
+  ]
+
   return (
     <div className="min-h-screen bg-black text-white overflow-x-hidden">
       {/* Header */}
-      <header className="fixed top-0 z-50 w-full bg-black/80 backdrop-blur-sm">
-        <div className="flex items-center justify-between p-6">
-          <div className="flex space-x-2">
-            <div className="h-2 w-2 rounded-full bg-white"></div>
-            <div className="h-2 w-2 rounded-full bg-white"></div>
-          </div>
-          <nav className="hidden md:flex items-center space-x-8 text-sm ml-auto">
-            <Link href="#who-we-are" onClick={() => scrollToSection('who-we-are')} className="hover:text-gray-300 transition-colors">
-              WHO WE ARE
-            </Link>
-            <Link href="#offerings" onClick={() => scrollToSection('offerings')} className="hover:text-gray-300 transition-colors">
-              OFFERINGS
-            </Link>
-            <Link href="#thinking" onClick={() => scrollToSection('thinking')} className="hover:text-gray-300 transition-colors">
-              THINKING
-            </Link>
-            <Link href="#showcase" onClick={() => scrollToSection('showcase')} className="hover:text-gray-300 transition-colors">
-              SHOWCASE
-            </Link>
-            <Link href="#connect" onClick={() => scrollToSection('connect')} className="hover:text-gray-300 transition-colors">
-              CONNECT
-            </Link>
+      <header className="fixed top-0 z-50 w-full bg-transparent">
+        <div className="flex items-center justify-between content-padding py-6">
+          <Link href="/" className="text-xl font-light">
+            LOGO
+          </Link>
+          <nav className="hidden md:flex space-x-4">
+            {navLinks.map((link) => (
+              <button
+                key={link.id}
+                onClick={() => scrollToSection(link.id)}
+                className="nav-link"
+              >
+                {link.label}
+              </button>
+            ))}
           </nav>
-          <button 
-            className="md:hidden flex flex-col space-y-1"
+          <button
+            className="md:hidden hamburger-menu"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            aria-expanded={isMobileMenuOpen}
           >
-            <span className="h-0.5 w-6 bg-white"></span>
-            <span className="h-0.5 w-6 bg-white"></span>
+            <span className="hamburger-line"></span>
+            <span className="hamburger-line my-1.5"></span>
+            <span className="hamburger-line"></span>
           </button>
         </div>
       </header>
 
       {/* Mobile Menu */}
       <div className={`mobile-menu ${isMobileMenuOpen ? '' : 'hidden'}`}>
-        <div className="p-6 flex justify-end">
-          <button onClick={() => setIsMobileMenuOpen(false)} className="text-white text-2xl">&times;</button>
-        </div>
-        <div className="p-6">
-          <nav className="flex flex-col space-y-6 text-lg text-center">
-            <Link 
-              href="#who-we-are" 
-              className="hover:text-gray-300 transition-colors"
-              onClick={() => scrollToSection('who-we-are')}
+        <div className="mobile-menu-content">
+          {navLinks.map((link) => (
+            <button
+              key={link.id}
+              onClick={() => scrollToSection(link.id)}
+              className="mobile-nav-link"
             >
-              WHO WE ARE
-            </Link>
-            <Link 
-              href="#offerings" 
-              className="hover:text-gray-300 transition-colors"
-              onClick={() => scrollToSection('offerings')}
-            >
-              OFFERINGS
-            </Link>
-            <Link 
-              href="#thinking" 
-              className="hover:text-gray-300 transition-colors"
-              onClick={() => scrollToSection('thinking')}
-            >
-              THINKING
-            </Link>
-            <Link 
-              href="#showcase" 
-              className="hover:text-gray-300 transition-colors"
-              onClick={() => scrollToSection('showcase')}
-            >
-              SHOWCASE
-            </Link>
-            <Link 
-              href="#connect" 
-              className="hover:text-gray-300 transition-colors"
-              onClick={() => scrollToSection('connect')}
-            >
-              CONNECT
-            </Link>
-          </nav>
+              {link.label}
+            </button>
+          ))}
         </div>
       </div>
 
@@ -227,7 +203,7 @@ export default function Page() {
             <div className="max-w-md">
               <Button
                 variant="outline"
-                className="rounded-lg border border-white/30 bg-black/50 text-white hover-glow px-6 md:px-8 py-3 font-medium tracking-wide transition-all duration-300 text-sm md:text-base backdrop-blur-sm"
+                className="unified-button rounded-lg px-8 py-3 font-medium tracking-wide text-sm md:text-base"
               >
                 <span className="relative z-10">DISCUSS YOUR PROJECT</span>
               </Button>
@@ -238,11 +214,9 @@ export default function Page() {
               </p>
             </div>
 
-            <div className="flex items-center md:items-end w-full md:w-auto">
-              <div className="flex items-center space-x-2 flex-grow md:flex-grow-0">
-                <span className="text-xs md:text-sm">SCROLL TO EXPLORE</span>
-                <span className="h-px bg-white flex-grow md:flex-grow-0 md:w-12"></span>
-              </div>
+            <div className="scroll-indicator">
+              <span className="text-xs md:text-sm">SCROLL TO EXPLORE</span>
+              <span className="h-px bg-white w-12"></span>
             </div>
           </div>
 
@@ -304,18 +278,18 @@ export default function Page() {
       </div>
 
       {/* Who We Are Section */}
-      <section id="who-we-are" className="relative py-32 px-6 md:px-24">
+      <section id="who-we-are" className="relative py-32 section-padding">
         <div className="relative max-w-6xl mx-auto">
           <div className="grid md:grid-cols-2 gap-16 items-center">
             <div>
-              <h2 className="text-4xl md:text-5xl font-light mb-8 text-white">WHO WE ARE</h2>
+              <h2 className="mobile-heading font-light mb-8 text-white">WHO WE ARE</h2>
               <div className="h-px w-24 bg-gradient-to-r from-mist-400 to-mint-400 mb-8"></div>
-              <p className="text-lg leading-relaxed text-gray-300 mb-6">
+              <p className="mobile-text leading-relaxed text-gray-300 mb-6">
                 Kodex Studio is where security meets innovation. We're a collective of visionary engineers, security
                 architects, and creative technologists who believe that the most powerful solutions are born from the
                 intersection of protection and possibility.
               </p>
-              <p className="text-gray-400 leading-relaxed">
+              <p className="mobile-text text-gray-400 leading-relaxed">
                 Our mission is simple yet profound: to build digital ecosystems that are not only secure and scalable
                 but also beautifully crafted and future-ready. Every line of code we write, every system we design, is a
                 step toward a more secure digital tomorrow.
@@ -337,14 +311,14 @@ export default function Page() {
       </section>
 
       {/* Offerings Section */}
-      <section id="offerings" className="py-32 px-6 md:px-24">
+      <section id="offerings" className="py-32 section-padding">
         <div className="max-w-6xl mx-auto">
-          <h2 className="text-4xl md:text-5xl font-light mb-16 text-center text-white">OUR EXPERTISE</h2>
+          <h2 className="mobile-heading font-light mb-16 text-center text-white">OUR EXPERTISE</h2>
           <div className="grid md:grid-cols-3 gap-8">
-            <Card className="bg-transparent border border-white/10 hover:border-mist-400/30 transition-all duration-300 rounded-lg">
+            <Card className="mobile-card bg-transparent border border-white/10 hover:border-mist-400/30 transition-all duration-300 rounded-lg">
               <CardContent className="p-8">
                 <h3 className="text-xl font-light mb-4 text-white">FUTURE-PROOF SOFTWARE</h3>
-                <p className="text-gray-400 mb-6">
+                <p className="mobile-text text-gray-400 mb-6">
                   We craft intelligent, secure applications that evolve with your business. Our development philosophy
                   combines cutting-edge technology with battle-tested security principles.
                 </p>
@@ -357,10 +331,10 @@ export default function Page() {
               </CardContent>
             </Card>
 
-            <Card className="bg-transparent border border-white/10 hover:border-mist-400/30 transition-all duration-300 rounded-lg">
+            <Card className="mobile-card bg-transparent border border-white/10 hover:border-mist-400/30 transition-all duration-300 rounded-lg">
               <CardContent className="p-8">
                 <h3 className="text-xl font-light mb-4 text-white">SECURITY INTELLIGENCE</h3>
-                <p className="text-gray-400 mb-6">
+                <p className="mobile-text text-gray-400 mb-6">
                   Our security experts don't just find vulnerabilities—we architect comprehensive defense strategies
                   that anticipate and neutralize emerging threats.
                 </p>
@@ -373,10 +347,10 @@ export default function Page() {
               </CardContent>
             </Card>
 
-            <Card className="bg-transparent border border-white/10 hover:border-mist-400/30 transition-all duration-300 rounded-lg">
+            <Card className="mobile-card bg-transparent border border-white/10 hover:border-mist-400/30 transition-all duration-300 rounded-lg">
               <CardContent className="p-8">
                 <h3 className="text-xl font-light mb-4 text-white">DIGITAL TRANSFORMATION</h3>
-                <p className="text-gray-400 mb-6">
+                <p className="mobile-text text-gray-400 mb-6">
                   Complete ecosystem transformation that doesn't just digitize—it revolutionizes. We reimagine business
                   processes through the lens of security and innovation.
                 </p>
@@ -393,17 +367,17 @@ export default function Page() {
       </section>
 
       {/* Thinking Section */}
-      <section id="thinking" className="py-32 px-6 md:px-24">
+      <section id="thinking" className="py-32 section-padding">
         <div className="max-w-6xl mx-auto">
-          <h2 className="text-4xl md:text-5xl font-light mb-16 text-white">THINKING</h2>
+          <h2 className="mobile-heading font-light mb-16 text-white">THINKING</h2>
           <div className="grid md:grid-cols-3 gap-8">
             {blogPosts.map((post, index) => (
-              <Card key={index} className="bg-transparent border border-white/10 hover:border-mist-400/30 transition-all duration-300 h-[400px] rounded-lg">
+              <Card key={index} className="mobile-card bg-transparent border border-white/10 hover:border-mist-400/30 transition-all duration-300 h-[400px] rounded-lg">
                 <CardContent className="p-8 flex flex-col h-full">
                   <div className="flex-1">
                     <span className="text-sm text-gray-400 mb-2 block">{post.category}</span>
                     <h3 className="text-xl font-light mb-4 text-white">{post.title}</h3>
-                    <p className="text-gray-400 mb-4">{post.excerpt}</p>
+                    <p className="mobile-text text-gray-400 mb-4">{post.excerpt}</p>
                   </div>
                   <div className="mt-auto">
                     <div className="flex justify-between text-sm text-gray-400 mb-4">
@@ -412,7 +386,7 @@ export default function Page() {
                     </div>
                     <Button
                       variant="outline"
-                      className="w-full rounded-lg border border-white/30 bg-black/50 text-white hover-glow"
+                      className="unified-button w-full rounded-lg"
                     >
                       READ MORE
                     </Button>
@@ -425,14 +399,14 @@ export default function Page() {
       </section>
 
       {/* Showcase Section */}
-      <section id="showcase" className="py-32 px-6 md:px-24">
+      <section id="showcase" className="py-32 section-padding">
         <div className="max-w-6xl mx-auto">
-          <h2 className="text-5xl font-light mb-16 text-center text-white">PROJECT SHOWCASE</h2>
+          <h2 className="mobile-heading font-light mb-16 text-center text-white">PROJECT SHOWCASE</h2>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {projects.map((project, index) => (
               <Card
                 key={index}
-                className="bg-transparent border border-white/10 hover:border-mint-400/30 transition-all duration-300 h-[400px] group rounded-lg"
+                className="mobile-card project-card-hover bg-transparent border border-white/10 hover:border-mint-400/30 transition-all duration-300 h-[400px] group rounded-lg"
               >
                 <CardContent className="p-8 flex flex-col h-full">
                   <div className="aspect-video bg-gray-800 overflow-hidden rounded-lg mb-6">
@@ -446,19 +420,19 @@ export default function Page() {
                     <h3 className="text-xl font-light mb-3 text-white group-hover:text-mint-300 transition-colors">
                       {project.title}
                     </h3>
-                    <p className="text-gray-400 text-sm mb-6 leading-relaxed">{project.description}</p>
+                    <p className="mobile-text text-gray-400 text-sm mb-6 leading-relaxed">{project.description}</p>
                   </div>
                   <div className="mt-auto flex space-x-4 justify-center">
                     <Button
                       variant="outline"
-                      className="rounded-lg border border-white/30 bg-black/50 text-white hover-glow flex items-center text-sm"
+                      className="unified-button rounded-lg flex items-center text-sm"
                     >
                       <ExternalLink className="mr-2 h-3 w-3" />
                       LIVE DEMO
                     </Button>
                     <Button
                       variant="outline"
-                      className="rounded-lg border border-white/30 bg-black/50 text-white hover-glow flex items-center text-sm"
+                      className="unified-button rounded-lg flex items-center text-sm"
                     >
                       <ArrowRight className="mr-2 h-3 w-3" />
                       CASE STUDY
@@ -472,61 +446,46 @@ export default function Page() {
       </section>
 
       {/* Connect Section */}
-      <section id="connect" className="py-32 px-6 md:px-24">
+      <section id="connect" className="py-32 section-padding">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-5xl font-light mb-8 text-white">LET'S CONNECT</h2>
+            <h2 className="mobile-heading font-light mb-8 text-white">LET'S CONNECT</h2>
             <div className="h-px w-24 bg-gradient-to-r from-mist-400 to-mint-400 mx-auto mb-8"></div>
-            <p className="text-gray-400 text-lg">
+            <p className="mobile-text text-gray-400 text-lg">
               Ready to build something secure and extraordinary? Tell us about your project.
             </p>
           </div>
 
-          <Card className="bg-transparent border border-white/10 backdrop-blur-sm rounded-lg">
+          <Card className="mobile-card bg-transparent border border-white/10 backdrop-blur-sm rounded-lg">
             <CardContent className="p-8 md:p-12">
-              <form className="space-y-8">
-                <div className="grid md:grid-cols-2 gap-8">
-                  <div>
-                    <label className="block text-sm text-gray-400 mb-2 font-light tracking-wide">NAME</label>
-                    <Input
-                      className="bg-black/30 border border-white/20 text-white placeholder:text-gray-600 focus:border-mint-400/50 focus:ring-1 focus:ring-mint-400/20 rounded-lg backdrop-blur-sm"
-                      placeholder="Your name"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm text-gray-400 mb-2 font-light tracking-wide">EMAIL</label>
-                    <Input
-                      className="bg-black/30 border border-white/20 text-white placeholder:text-gray-600 focus:border-mint-400/50 focus:ring-1 focus:ring-mint-400/20 rounded-lg backdrop-blur-sm"
-                      placeholder="your@email.com"
-                    />
-                  </div>
-                </div>
-
-                <div>
-                  <label className="block text-sm text-gray-400 mb-2 font-light tracking-wide">PROJECT SCOPE</label>
+              <form className="space-y-6">
+                <div className="space-y-4">
+                  <Input
+                    type="text"
+                    placeholder="Name"
+                    className="form-field-hover bg-black/50 border-white/10 text-white"
+                  />
+                  <Input
+                    type="email"
+                    placeholder="Email"
+                    className="form-field-hover bg-black/50 border-white/10 text-white"
+                  />
                   <Select>
-                    <SelectTrigger className="bg-black/30 border border-white/20 text-white focus:border-mint-400/50 focus:ring-1 focus:ring-mint-400/20 rounded-lg backdrop-blur-sm">
-                      <SelectValue placeholder="Select project type" className="text-gray-600" />
+                    <SelectTrigger className="form-field-hover bg-black/50 border-white/10 text-white">
+                      <SelectValue placeholder="Select a service" />
                     </SelectTrigger>
-                    <SelectContent className="bg-black/90 border border-white/20 backdrop-blur-sm">
-                      <SelectItem value="software">Custom Software Development</SelectItem>
-                      <SelectItem value="security">Security Audit & Consulting</SelectItem>
-                      <SelectItem value="end-to-end">End-to-End Solution</SelectItem>
-                      <SelectItem value="consultation">Strategic Consultation</SelectItem>
-                      <SelectItem value="other">Other</SelectItem>
+                    <SelectContent className="select-content">
+                      <SelectItem value="web" className="select-item">Web Development</SelectItem>
+                      <SelectItem value="mobile" className="select-item">Mobile Development</SelectItem>
+                      <SelectItem value="design" className="select-item">UI/UX Design</SelectItem>
                     </SelectContent>
                   </Select>
-                </div>
-
-                <div>
-                  <label className="block text-sm text-gray-400 mb-2 font-light tracking-wide">PROJECT DETAILS</label>
                   <Textarea
-                    className="bg-black/30 border border-white/20 text-white placeholder:text-gray-600 focus:border-mint-400/50 focus:ring-1 focus:ring-mint-400/20 min-h-32 rounded-lg backdrop-blur-sm resize-none"
-                    placeholder="Tell us about your project, timeline, and specific requirements..."
+                    placeholder="Message"
+                    className="form-field-hover bg-black/50 border-white/10 text-white min-h-[150px]"
                   />
                 </div>
-
-                <Button className="w-full rounded-lg bg-black/50 border border-white/30 text-white hover-glow py-3 font-medium tracking-wide transition-all duration-300 backdrop-blur-sm">
+                <Button className="unified-button w-full submit-button">
                   SEND MESSAGE
                 </Button>
               </form>
