@@ -10,6 +10,14 @@ body {
   .text-balance {
     text-wrap: balance;
   }
+
+  .hover-glow {
+    @apply transition-all duration-300;
+  }
+
+  .hover-glow:hover {
+    @apply bg-black text-white border-white shadow-[0_0_15px_rgba(255,255,255,0.3)];
+  }
 }
 
 @layer base {
@@ -91,4 +99,56 @@ body {
   body {
     @apply bg-background text-foreground;
   }
+}
+
+/* Custom scrollbar styles */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-black;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-gray-800 rounded-full;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-gray-700;
+}
+
+/* Mobile scroll to top button */
+.scroll-to-top {
+  @apply fixed bottom-6 right-6 bg-black text-white p-3 rounded-full shadow-lg opacity-0 transition-opacity duration-300 z-50;
+}
+
+.scroll-to-top.visible {
+  @apply opacity-100;
+}
+
+/* Enhanced mobile menu */
+.mobile-menu {
+  @apply fixed inset-0 bg-black/95 backdrop-blur-lg z-50 transform transition-transform duration-300;
+}
+
+.mobile-menu.hidden {
+  @apply translate-x-full;
+}
+
+/* Form select enhancements */
+.select-content {
+  @apply bg-black text-white border border-white/20;
+}
+
+.select-item {
+  @apply text-white hover:bg-white/10;
+}
+
+.select-item[data-state=checked] {
+    @apply text-white bg-white/10;
+}
+
+.select-item[data-highlighted] {
+    @apply text-white bg-white/10;
 }
