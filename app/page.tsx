@@ -18,6 +18,15 @@ export default function Page() {
     const handleScroll = () => {
       setScrollY(window.scrollY)
       setShowScrollTop(window.scrollY > 300)
+      // Add or remove 'scrolled' class based on scroll position
+      const header = document.querySelector('header');
+      if (header) {
+        if (window.scrollY > 50) { // Adjust scroll threshold as needed
+          header.classList.add('scrolled');
+        } else {
+          header.classList.remove('scrolled');
+        }
+      }
     }
     window.addEventListener("scroll", handleScroll)
     return () => window.removeEventListener("scroll", handleScroll)
@@ -118,11 +127,12 @@ export default function Page() {
   return (
     <div className="min-h-screen bg-black text-white overflow-x-hidden">
       {/* Header */}
-      <header className="fixed top-0 z-50 w-full bg-transparent">
+      <header className="fixed top-0 z-50 w-full navbar bg-transparent">
         <div className="flex items-center justify-between content-padding py-6">
           <Link href="/" className="text-xl font-light">
             LOGO
           </Link>
+          {/* Desktop Navigation */}
           <nav className="hidden md:flex space-x-4">
             {navLinks.map((link) => (
               <button
@@ -134,10 +144,12 @@ export default function Page() {
               </button>
             ))}
           </nav>
+          {/* Mobile Hamburger Menu */}
           <button
             className="md:hidden hamburger-menu"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             aria-expanded={isMobileMenuOpen}
+            aria-label="Toggle Mobile Menu"
           >
             <span className="hamburger-line"></span>
             <span className="hamburger-line my-1.5"></span>
@@ -146,9 +158,11 @@ export default function Page() {
         </div>
       </header>
 
-      {/* Mobile Menu */}
+      {/* Mobile Menu Modal */}
       <div className={`mobile-menu ${isMobileMenuOpen ? '' : 'hidden'}`}>
         <div className="mobile-menu-content">
+          {/* Close button */}
+          <button onClick={() => setIsMobileMenuOpen(false)} className="absolute top-4 right-4 text-white text-3xl">&times;</button>
           {navLinks.map((link) => (
             <button
               key={link.id}
@@ -170,7 +184,7 @@ export default function Page() {
       </button>
 
       {/* Hero Section */}
-      <main className="relative px-6 md:px-24 pt-24">
+      <main className="relative pt-24 section-padding">
         {/* Gradient blobs */}
         <div
           className="absolute right-0 top-0 h-[400px] w-[400px] rounded-full bg-gradient-to-br from-sage-600 via-mist-500 to-mint-400 opacity-20 blur-3xl animate-[pulse_6s_ease-in-out_infinite]"
@@ -189,7 +203,7 @@ export default function Page() {
         />
 
         <div className="relative min-h-screen flex flex-col justify-center">
-          <h1 className="max-w-3xl text-6xl md:text-7xl font-light leading-tight tracking-tight">
+          <h1 className="max-w-3xl text-4xl md:text-7xl font-light leading-tight tracking-tight">
             KODEX STUDIO
             <br />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-sage-400 via-mist-400 to-mint-400">
@@ -203,11 +217,11 @@ export default function Page() {
             <div className="max-w-md">
               <Button
                 variant="outline"
-                className="unified-button rounded-lg px-8 py-3 font-medium tracking-wide text-sm md:text-base"
+                className="unified-button rounded-lg px-8 py-3 font-medium tracking-wide text-base"
               >
                 <span className="relative z-10">DISCUSS YOUR PROJECT</span>
               </Button>
-              <p className="mt-6 md:mt-8 text-sm leading-relaxed text-gray-400">
+              <p className="mt-6 md:mt-8 text-base leading-relaxed text-gray-400">
                 PIONEERING SECURE SOLUTIONS FOR
                 <br />
                 THE DIGITAL FUTURE.
@@ -215,12 +229,12 @@ export default function Page() {
             </div>
 
             <div className="scroll-indicator">
-              <span className="text-xs md:text-sm">SCROLL TO EXPLORE</span>
+              <span className="text-sm md:text-base">SCROLL TO EXPLORE</span>
               <span className="h-px bg-white w-12"></span>
             </div>
           </div>
 
-          <p className="mt-24 max-w-xl text-sm leading-relaxed text-gray-400">
+          <p className="mt-24 max-w-xl text-base leading-relaxed text-gray-400">
             At Kodex Studio, we architect the future of digital security. Our innovative solutions blend cutting-edge
             technology with uncompromising protection, creating systems that don't just meet today's needs—they
             anticipate tomorrow's challenges.
@@ -313,16 +327,16 @@ export default function Page() {
       {/* Offerings Section */}
       <section id="offerings" className="py-32 section-padding">
         <div className="max-w-6xl mx-auto">
-          <h2 className="mobile-heading font-light mb-16 text-center text-white">OUR EXPERTISE</h2>
+          <h2 className="mobile-heading md:text-5xl font-light mb-16 text-center text-white">OUR EXPERTISE</h2>
           <div className="grid md:grid-cols-3 gap-8">
-            <Card className="mobile-card bg-transparent border border-white/10 hover:border-mist-400/30 transition-all duration-300 rounded-lg">
+            <Card className="unified-card mobile-card rounded-lg">
               <CardContent className="p-8">
                 <h3 className="text-xl font-light mb-4 text-white">FUTURE-PROOF SOFTWARE</h3>
-                <p className="mobile-text text-gray-400 mb-6">
+                <p className="mobile-text text-base text-gray-400 mb-6">
                   We craft intelligent, secure applications that evolve with your business. Our development philosophy
                   combines cutting-edge technology with battle-tested security principles.
                 </p>
-                <ul className="text-sm text-gray-400 space-y-2">
+                <ul className="text-base text-gray-400 space-y-2">
                   <li>• Next-Gen Web & Mobile Apps</li>
                   <li>• Secure API Ecosystems</li>
                   <li>• Cloud-Native Architecture</li>
@@ -331,14 +345,14 @@ export default function Page() {
               </CardContent>
             </Card>
 
-            <Card className="mobile-card bg-transparent border border-white/10 hover:border-mist-400/30 transition-all duration-300 rounded-lg">
+            <Card className="unified-card mobile-card rounded-lg">
               <CardContent className="p-8">
                 <h3 className="text-xl font-light mb-4 text-white">SECURITY INTELLIGENCE</h3>
-                <p className="mobile-text text-gray-400 mb-6">
+                <p className="mobile-text text-base text-gray-400 mb-6">
                   Our security experts don't just find vulnerabilities—we architect comprehensive defense strategies
                   that anticipate and neutralize emerging threats.
                 </p>
-                <ul className="text-sm text-gray-400 space-y-2">
+                <ul className="text-base text-gray-400 space-y-2">
                   <li>• Advanced Threat Assessment</li>
                   <li>• Zero-Trust Implementation</li>
                   <li>• Compliance & Governance</li>
@@ -347,14 +361,14 @@ export default function Page() {
               </CardContent>
             </Card>
 
-            <Card className="mobile-card bg-transparent border border-white/10 hover:border-mist-400/30 transition-all duration-300 rounded-lg">
+            <Card className="unified-card mobile-card rounded-lg">
               <CardContent className="p-8">
                 <h3 className="text-xl font-light mb-4 text-white">DIGITAL TRANSFORMATION</h3>
-                <p className="mobile-text text-gray-400 mb-6">
+                <p className="mobile-text text-base text-gray-400 mb-6">
                   Complete ecosystem transformation that doesn't just digitize—it revolutionizes. We reimagine business
                   processes through the lens of security and innovation.
                 </p>
-                <ul className="text-sm text-gray-400 space-y-2">
+                <ul className="text-base text-gray-400 space-y-2">
                   <li>• Strategic Digital Planning</li>
                   <li>• Infrastructure Modernization</li>
                   <li>• Automated Security Operations</li>
@@ -369,18 +383,18 @@ export default function Page() {
       {/* Thinking Section */}
       <section id="thinking" className="py-32 section-padding">
         <div className="max-w-6xl mx-auto">
-          <h2 className="mobile-heading font-light mb-16 text-white">THINKING</h2>
+          <h2 className="mobile-heading md:text-5xl font-light mb-16 text-white">THINKING</h2>
           <div className="grid md:grid-cols-3 gap-8">
             {blogPosts.map((post, index) => (
-              <Card key={index} className="mobile-card bg-transparent border border-white/10 hover:border-mist-400/30 transition-all duration-300 h-[400px] rounded-lg">
+              <Card key={index} className="mobile-card unified-card h-full rounded-lg">
                 <CardContent className="p-8 flex flex-col h-full">
                   <div className="flex-1">
-                    <span className="text-sm text-gray-400 mb-2 block">{post.category}</span>
+                    <span className="text-base text-gray-400 mb-2 block">{post.category}</span>
                     <h3 className="text-xl font-light mb-4 text-white">{post.title}</h3>
-                    <p className="mobile-text text-gray-400 mb-4">{post.excerpt}</p>
+                    <p className="mobile-text text-base text-gray-400 mb-4">{post.excerpt}</p>
                   </div>
                   <div className="mt-auto">
-                    <div className="flex justify-between text-sm text-gray-400 mb-4">
+                    <div className="flex justify-between text-base text-gray-400 mb-4">
                       <span>{post.date}</span>
                       <span>{post.readTime}</span>
                     </div>
@@ -401,12 +415,12 @@ export default function Page() {
       {/* Showcase Section */}
       <section id="showcase" className="py-32 section-padding">
         <div className="max-w-6xl mx-auto">
-          <h2 className="mobile-heading font-light mb-16 text-center text-white">PROJECT SHOWCASE</h2>
+          <h2 className="mobile-heading md:text-5xl font-light mb-16 text-center text-white">PROJECT SHOWCASE</h2>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {projects.map((project, index) => (
               <Card
                 key={index}
-                className="mobile-card project-card-hover bg-transparent border border-white/10 hover:border-mint-400/30 transition-all duration-300 h-[400px] group rounded-lg"
+                className="unified-card mobile-card h-full group rounded-lg"
               >
                 <CardContent className="p-8 flex flex-col h-full">
                   <div className="aspect-video bg-gray-800 overflow-hidden rounded-lg mb-6">
@@ -416,25 +430,25 @@ export default function Page() {
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                     />
                   </div>
-                  <div className="flex-1">
+                  <div className="flex-1 flex flex-col">
                     <h3 className="text-xl font-light mb-3 text-white group-hover:text-mint-300 transition-colors">
                       {project.title}
                     </h3>
-                    <p className="mobile-text text-gray-400 text-sm mb-6 leading-relaxed">{project.description}</p>
+                    <p className="mobile-text text-base text-gray-400 text-base mb-6 leading-relaxed flex-grow">{project.description}</p>
                   </div>
-                  <div className="mt-auto flex space-x-4 justify-center">
+                  <div className="mt-auto flex flex-col sm:flex-row space-y-4 sm:space-y-0 space-x-0 sm:space-x-4 justify-center">
                     <Button
                       variant="outline"
-                      className="unified-button rounded-lg flex items-center text-sm"
+                      className="unified-button rounded-lg flex items-center text-base"
                     >
-                      <ExternalLink className="mr-2 h-3 w-3" />
+                      <ExternalLink className="mr-2 h-4 w-4" />
                       LIVE DEMO
                     </Button>
                     <Button
                       variant="outline"
-                      className="unified-button rounded-lg flex items-center text-sm"
+                      className="unified-button rounded-lg flex items-center text-base"
                     >
-                      <ArrowRight className="mr-2 h-3 w-3" />
+                      <ArrowRight className="mr-2 h-4 w-4" />
                       CASE STUDY
                     </Button>
                   </div>
@@ -449,14 +463,14 @@ export default function Page() {
       <section id="connect" className="py-32 section-padding">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-16">
-            <h2 className="mobile-heading font-light mb-8 text-white">LET'S CONNECT</h2>
+            <h2 className="mobile-heading md:text-5xl font-light mb-8 text-white">LET'S CONNECT</h2>
             <div className="h-px w-24 bg-gradient-to-r from-mist-400 to-mint-400 mx-auto mb-8"></div>
-            <p className="mobile-text text-gray-400 text-lg">
+            <p className="mobile-text text-base text-gray-400 text-base">
               Ready to build something secure and extraordinary? Tell us about your project.
             </p>
           </div>
 
-          <Card className="mobile-card bg-transparent border border-white/10 backdrop-blur-sm rounded-lg">
+          <Card className="unified-card mobile-card backdrop-blur-sm rounded-lg">
             <CardContent className="p-8 md:p-12">
               <form className="space-y-6">
                 <div className="space-y-4">
@@ -485,7 +499,7 @@ export default function Page() {
                     className="form-field-hover bg-black/50 border-white/10 text-white min-h-[150px]"
                   />
                 </div>
-                <Button className="unified-button w-full submit-button">
+                <Button className="unified-button w-full submit-button text-base">
                   SEND MESSAGE
                 </Button>
               </form>

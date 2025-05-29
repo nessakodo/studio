@@ -107,23 +107,23 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-  background: #000000;
+  background: #000000; /* Pure black track */
 }
 
 ::-webkit-scrollbar-thumb {
   background: linear-gradient(to bottom, 
-    #1a1a1a,
-    #2a2a2a,
-    #333333
+    #333333, /* Dark grey at the top */
+    #1a1a1a, /* Fading to very dark grey */
+    #0a0a0a  /* Almost black at the bottom */
   );
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
   background: linear-gradient(to bottom,
+    #404040,
     #2a2a2a,
-    #333333,
-    #404040
+    #1a1a1a
   );
 }
 
@@ -136,42 +136,13 @@ body {
   @apply opacity-100;
 }
 
-/* Mobile Navigation */
+/* Enhanced mobile menu */
 .mobile-menu {
   @apply fixed inset-0 bg-black/95 backdrop-blur-lg z-50 transform transition-transform duration-300;
 }
 
 .mobile-menu.hidden {
   @apply translate-x-full;
-}
-
-.mobile-menu-content {
-  @apply flex flex-col items-center justify-center h-full space-y-8;
-}
-
-.mobile-nav-link {
-  @apply text-lg font-light text-white/80 hover:text-white transition-colors;
-  padding: 0.75rem 1.5rem;
-}
-
-.hamburger-menu {
-  @apply flex flex-col justify-center items-center w-6 h-6 cursor-pointer;
-}
-
-.hamburger-line {
-  @apply w-6 h-px bg-white/80 transition-all duration-300;
-}
-
-.hamburger-menu[aria-expanded="true"] .hamburger-line:nth-child(1) {
-  @apply transform rotate-45 translate-y-1.5;
-}
-
-.hamburger-menu[aria-expanded="true"] .hamburger-line:nth-child(2) {
-  @apply opacity-0;
-}
-
-.hamburger-menu[aria-expanded="true"] .hamburger-line:nth-child(3) {
-  @apply transform -rotate-45 -translate-y-1.5;
 }
 
 /* Form select enhancements */
@@ -196,22 +167,6 @@ body {
     @apply text-white bg-white/10;
 }
 
-/* Custom Gradients */
-.gradient-green-glow {
-  box-shadow: 0 0 20px rgba(72, 187, 120, 0.4);
-  border-color: rgba(72, 187, 120, 0.6);
-}
-
-.gradient-purple-sage {
-  box-shadow: 0 0 20px rgba(147, 51, 234, 0.4);
-  border-color: rgba(147, 51, 234, 0.6);
-}
-
-.gradient-misty-blue {
-  box-shadow: 0 0 20px rgba(59, 130, 246, 0.4);
-  border-color: rgba(59, 130, 246, 0.6);
-}
-
 /* Form Field Hover Effects */
 .form-field-hover {
   transition: all 0.3s ease;
@@ -226,39 +181,34 @@ body {
   background: rgba(0, 0, 0, 0.4);
 }
 
-/* Card Hover Effects */
-.showcase-card-hover {
+/* Card Styles - Unified */
+.unified-card {
   transition: all 0.3s ease;
   border: 1px solid rgba(255, 255, 255, 0.1);
+  background: transparent;
+  /* Ensure border-radius is applied */
+  border-radius: 0.5rem;
 }
 
-.showcase-card-hover:hover {
-  box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
-  border-color: rgba(255, 255, 255, 0.2);
-}
-
-.project-card-hover {
-  transition: all 0.3s ease;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.project-card-hover:hover {
-  box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
-  border-color: rgba(255, 255, 255, 0.2);
+.unified-card:hover {
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.15); /* Increased subtle white glow */
+  border-color: rgba(255, 255, 255, 0.4); /* More prominent white border on hover */
 }
 
 /* Unified Button Styles */
 .unified-button {
   @apply relative overflow-hidden transition-all duration-300;
   background: transparent;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.3); /* Subtle white border */
   color: white;
+  /* Ensure rounded corners */
+  border-radius: 0.25rem; /* Default rounded-lg in page.tsx is larger, this acts as a fallback */
 }
 
 .unified-button:hover {
-  border-color: transparent;
-  box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
-  background: rgba(255, 255, 255, 0.05);
+  border-color: transparent; /* Border becomes transparent on hover as glow takes over */
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.2); /* Increased subtle white glow */
+  background: rgba(255, 255, 255, 0.08); /* Very subtle white background */
 }
 
 .unified-button::before {
@@ -271,30 +221,42 @@ body {
   border-radius: inherit;
   padding: 1px;
   background: linear-gradient(45deg,
-    rgba(255, 255, 255, 0.2),
-    rgba(255, 255, 255, 0.1),
-    rgba(255, 255, 255, 0.2)
+    rgba(255, 255, 255, 0.3), /* More prominent white gradient */
+    rgba(255, 255, 255, 0.15),
+    rgba(255, 255, 255, 0.3)
   );
   -webkit-mask: 
     linear-gradient(#fff 0 0) content-box, 
     linear-gradient(#fff 0 0);
   -webkit-mask-composite: xor;
   mask-composite: exclude;
-  opacity: 0;
+  opacity: 0; /* Hidden by default */
   transition: opacity 0.3s ease;
 }
 
 .unified-button:hover::before {
-  opacity: 1;
+  opacity: 1; /* Visible on hover */
 }
 
-/* Navbar Padding */
+/* Navbar Styles */
+.navbar {
+  transition: background-color 0.3s ease, backdrop-filter 0.3s ease;
+}
+
+.navbar.scrolled {
+  background-color: rgba(0, 0, 0, 0.8); /* Semi-transparent black */
+  backdrop-filter: blur(10px); /* Blur effect */
+}
+
+/* Navbar Padding - Kept for reference if needed, but using content-padding in page.tsx */
+/*
 .navbar-padding {
   padding: 1.5rem 2.5rem;
 }
+*/
 
 .nav-link {
-  @apply text-sm font-light text-white/80 hover:text-white transition-colors;
+  @apply text-base font-light text-white/80 hover:text-white transition-colors;
   padding: 0.5rem 1rem;
 }
 
@@ -303,7 +265,7 @@ html {
   scroll-behavior: smooth;
 }
 
-/* Submit Button Height */
+/* Submit Button Height - Apply unified button styles and keep height */
 .submit-button {
   height: 48px !important;
   min-height: 48px !important;
@@ -315,7 +277,7 @@ html {
 }
 
 .content-padding {
-  @apply px-4 md:px-8 lg:px-12;
+  @apply px-6 md:px-8 lg:px-12;
 }
 
 /* Mobile Scroll Indicator */
@@ -324,14 +286,52 @@ html {
   padding-left: 2rem;
 }
 
+/* Mobile Navigation */
+.mobile-menu {
+  @apply fixed inset-0 bg-black/95 backdrop-blur-lg z-50 transform transition-transform duration-300;
+}
+
+.mobile-menu.hidden {
+  @apply translate-x-full;
+}
+
+.mobile-menu-content {
+  @apply flex flex-col items-center justify-center h-full space-y-8;
+}
+
+.mobile-nav-link {
+  @apply text-2xl font-light text-white hover:text-gray-300 transition-colors; /* Increased font size for mobile menu */
+  padding: 1rem 1.5rem; /* Increased padding */
+}
+
+.hamburger-menu {
+  @apply flex flex-col justify-center items-center w-8 h-8 cursor-pointer relative z-50; /* Increased size and z-index */
+}
+
+.hamburger-line {
+  @apply block w-8 h-px bg-white transition-all duration-300 ease-in-out;
+}
+
+.hamburger-menu[aria-expanded="true"] .hamburger-line:nth-child(1) {
+  @apply transform rotate-45 translate-y-2.5;
+}
+
+.hamburger-menu[aria-expanded="true"] .hamburger-line:nth-child(2) {
+  @apply opacity-0;
+}
+
+.hamburger-menu[aria-expanded="true"] .hamburger-line:nth-child(3) {
+  @apply transform -rotate-45 -translate-y-2.5;
+}
+
 /* Enhanced Mobile Styles */
 @media (max-width: 768px) {
   .mobile-section {
-    @apply py-16;
+    @apply py-24;
   }
   
   .mobile-heading {
-    @apply text-3xl md:text-4xl;
+    @apply text-4xl;
   }
   
   .mobile-text {
@@ -339,6 +339,27 @@ html {
   }
   
   .mobile-card {
-    @apply p-6;
+    @apply p-8;
+  }
+
+  /* Adjust padding for hero section on mobile */
+  .hero-section-mobile-padding {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+}
+
+@media (min-width: 769px) {
+  /* Adjust font sizes for web view */
+  .web-text-lg {
+    font-size: 1.125rem; /* Equivalent to text-lg */
+  }
+
+  .web-text-base {
+    font-size: 1rem; /* Equivalent to text-base */
+  }
+
+  .web-heading-xl {
+    font-size: 1.25rem; /* Equivalent to text-xl */
   }
 }
