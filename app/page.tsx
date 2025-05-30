@@ -625,6 +625,8 @@ export default function Page() {
                   className="relative w-full submit-button text-base overflow-hidden group"
                   type="submit"
                   disabled={isSubmitting}
+                  data-loading={isSubmitting}
+                  data-success={isSuccess}
                   aria-label={isSubmitting ? "Sending message..." : "Send message"}
                 >
                   <div className="button-content">
@@ -652,7 +654,6 @@ export default function Page() {
                       </>
                     )}
                   </div>
-                  <div className="absolute inset-0 bg-gradient-to-r from-mint-400/20 via-mist-400/20 to-sage-400/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                 </Button>
               </form>
             </div>
