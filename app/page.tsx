@@ -211,9 +211,9 @@ export default function Page() {
               <button
                 key={link.id}
                 onClick={() => scrollToSection(link.id)}
-                className="nav-link"
+                className="unified-button"
               >
-                {link.label}
+                <span className="button-content">{link.label}</span>
               </button>
             ))}
           </nav>
@@ -240,9 +240,9 @@ export default function Page() {
             <button
               key={link.id}
               onClick={() => scrollToSection(link.id)}
-              className="mobile-nav-link"
+              className="unified-button"
             >
-              {link.label}
+              <span className="button-content">{link.label}</span>
             </button>
           ))}
         </div>
@@ -250,10 +250,12 @@ export default function Page() {
 
       {/* Scroll to Top Button */}
       <button 
-        className={`scroll-to-top ${showScrollTop ? 'visible' : ''}`}
+        className={`unified-button ${showScrollTop ? 'visible' : ''}`}
         onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
       >
-        <ChevronUp className="w-6 h-6" />
+        <span className="button-content">
+            <ChevronUp className="button-icon" />
+        </span>
       </button>
 
       {/* Hero Section */}
@@ -289,10 +291,9 @@ export default function Page() {
           <div className="mt-16 md:mt-24 flex flex-col md:flex-row justify-between items-start md:items-end space-y-8 md:space-y-0">
             <div className="max-w-md">
               <Button
-                variant="outline"
-                className="unified-button rounded-lg px-8 py-3 font-medium tracking-wide text-base"
+                className="unified-button primary full-width rounded-lg"
               >
-                <span className="relative z-10">DISCUSS YOUR PROJECT</span>
+                <span className="button-content">DISCUSS YOUR PROJECT</span>
               </Button>
               <p className="mt-6 md:mt-8 text-base leading-relaxed text-gray-400">
                 PIONEERING SECURE SOLUTIONS FOR
@@ -472,10 +473,9 @@ export default function Page() {
                       <span>{post.readTime}</span>
                     </div>
                     <Button
-                      variant="outline"
-                      className="unified-button w-full rounded-lg"
+                      className="unified-button full-width rounded-lg"
                     >
-                      READ MORE
+                      <span className="button-content">READ MORE</span>
                     </Button>
                   </div>
                 </CardContent>
@@ -511,18 +511,20 @@ export default function Page() {
                   </div>
                   <div className="mt-auto flex flex-col sm:flex-row space-y-4 sm:space-y-0 space-x-0 sm:space-x-4 justify-center">
                     <Button
-                      variant="outline"
-                      className="unified-button rounded-lg flex items-center text-base"
+                      className="unified-button rounded-lg flex items-center"
                     >
-                      <ExternalLink className="mr-2 h-4 w-4" />
-                      LIVE DEMO
+                      <span className="button-content">
+                        <ExternalLink className="button-icon" />
+                        LIVE DEMO
+                      </span>
                     </Button>
                     <Button
-                      variant="outline"
-                      className="unified-button rounded-lg flex items-center text-base"
+                      className="unified-button rounded-lg flex items-center"
                     >
-                      <ArrowRight className="mr-2 h-4 w-4" />
-                      CASE STUDY
+                      <span className="button-content">
+                        <ArrowRight className="button-icon" />
+                        CASE STUDY
+                      </span>
                     </Button>
                   </div>
                 </CardContent>
