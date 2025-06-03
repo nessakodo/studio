@@ -405,7 +405,7 @@ export default function Page() {
           <div className="grid md:grid-cols-3 gap-8">
             <Card className="unified-card mobile-card rounded-lg">
               <CardContent className="p-8">
-                <h3 className="text-xl font-light mb-4 text-white">FUTURE-PROOF SOFTWARE</h3>
+                <h3 className="text-xl font-light mb-4 text-transparent bg-clip-text bg-gradient-to-r from-sage-400 via-mist-400 to-mint-400 group-hover:from-mint-400 group-hover:via-mist-400 group-hover:to-sage-400 transition-all duration-300">FUTURE-PROOF SOFTWARE</h3>
                 <p className="mobile-text text-base text-gray-400 mb-6">
                   We craft intelligent, secure applications that evolve with your business. Our development philosophy
                   combines cutting-edge technology with battle-tested security principles.
@@ -421,7 +421,7 @@ export default function Page() {
 
             <Card className="unified-card mobile-card rounded-lg">
               <CardContent className="p-8">
-                <h3 className="text-xl font-light mb-4 text-white">SECURITY INTELLIGENCE</h3>
+                <h3 className="text-xl font-light mb-4 text-transparent bg-clip-text bg-gradient-to-r from-sage-400 via-mist-400 to-mint-400 group-hover:from-mint-400 group-hover:via-mist-400 group-hover:to-sage-400 transition-all duration-300">SECURITY INTELLIGENCE</h3>
                 <p className="mobile-text text-base text-gray-400 mb-6">
                   Our security experts don't just find vulnerabilities—we architect comprehensive defense strategies
                   that anticipate and neutralize emerging threats.
@@ -437,7 +437,7 @@ export default function Page() {
 
             <Card className="unified-card mobile-card rounded-lg">
               <CardContent className="p-8">
-                <h3 className="text-xl font-light mb-4 text-white">DIGITAL TRANSFORMATION</h3>
+                <h3 className="text-xl font-light mb-4 text-transparent bg-clip-text bg-gradient-to-r from-sage-400 via-mist-400 to-mint-400 group-hover:from-mint-400 group-hover:via-mist-400 group-hover:to-sage-400 transition-all duration-300">DIGITAL TRANSFORMATION</h3>
                 <p className="mobile-text text-base text-gray-400 mb-6">
                   Complete ecosystem transformation that doesn't just digitize—it revolutionizes. We reimagine business
                   processes through the lens of security and innovation.
@@ -460,11 +460,11 @@ export default function Page() {
           <h2 className="mobile-heading md:text-5xl font-light mb-16 text-white">THINKING</h2>
           <div className="grid md:grid-cols-3 gap-8">
             {blogPosts.map((post, index) => (
-              <Card key={index} className="mobile-card unified-card h-full rounded-lg">
+              <Card key={index} className="mobile-card unified-card h-full rounded-lg group">
                 <CardContent className="p-8 flex flex-col h-full">
                   <div className="flex-1">
                     <span className="text-base text-gray-400 mb-2 block">{post.category}</span>
-                    <h3 className="text-xl font-light mb-4 text-white">{post.title}</h3>
+                    <h3 className="text-xl font-light mb-4 text-transparent bg-clip-text bg-gradient-to-r from-sage-400 via-mist-400 to-mint-400 group-hover:from-mint-400 group-hover:via-mist-400 group-hover:to-sage-400 transition-all duration-300">{post.title}</h3>
                     <p className="mobile-text text-base text-gray-400 mb-4">{post.excerpt}</p>
                   </div>
                   <div className="mt-auto">
@@ -473,7 +473,7 @@ export default function Page() {
                       <span>{post.readTime}</span>
                     </div>
                     <Button
-                      className="unified-button full-width rounded-lg no-default-border"
+                      className="unified-button full-width rounded-lg no-default-border w-full"
                     >
                       <span className="button-content">READ MORE</span>
                     </Button>
@@ -492,7 +492,6 @@ export default function Page() {
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {projects.map((project, index) => (
               <Card
-              
                 key={index}
                 className="unified-card mobile-card h-full group rounded-lg"
               >
@@ -505,17 +504,17 @@ export default function Page() {
                     />
                   </div>
                   <div className="flex-1 flex flex-col">
-                    <h3 className="showcase-title">{project.title}</h3>
+                    <h3 className="showcase-title text-transparent bg-clip-text bg-gradient-to-r from-sage-400 via-mist-400 to-mint-400 group-hover:from-mint-400 group-hover:via-mist-400 group-hover:to-sage-400 transition-all duration-300">{project.title}</h3>
                     <p className="showcase-desc">{project.description}</p>
                   </div>
                   <div className="mt-auto flex flex-row gap-4">
-                    <Button className="unified-button showcase-button no-default-border">
+                    <Button className="unified-button showcase-button no-default-border w-full">
                       <span className="button-content">
                         <ExternalLink className="button-icon" />
                         LIVE DEMO
                       </span>
                     </Button>
-                    <Button className="unified-button showcase-button no-default-border">
+                    <Button className="unified-button showcase-button no-default-border w-full">
                       <span className="button-content">
                         <ArrowRight className="button-icon" />
                         CASE STUDY

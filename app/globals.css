@@ -209,77 +209,55 @@ body {
   transition: all 0.3s ease;
   border: 1px solid rgba(255, 255, 255, 0.1);
   background: transparent;
-  /* Ensure border-radius is applied */
   border-radius: 0.5rem;
+  position: relative;
+  overflow: hidden;
 }
 
 .unified-card:hover {
-  box-shadow: 0 0 20px rgba(255, 255, 255, 0.15); /* Increased subtle white glow */
-  border-color: rgba(255, 255, 255, 0.4); /* More prominent white border on hover */
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.4);
+  transform: translateY(-2px);
+}
+
+.unified-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(88,200,150,0.1), rgba(147,112,219,0.1));
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.unified-card:hover::before {
+  opacity: 1;
 }
 
 /* Unified Button System */
 .unified-button,
-.unified-button .button-content,
-.showcase-button,
-.showcase-button .button-content {
-  position: relative;
-  border: 1.5px solid rgba(180,255,255,0.18);
-  background: rgba(0,0,0,0.18);
-  box-shadow: none;
+.showcase-button {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid rgba(255,255,255,0.1);
+  background: linear-gradient(135deg, rgba(0,0,0,0.22), rgba(40,60,50,0.13), rgba(60,40,80,0.13), rgba(0,0,0,0.28));
   border-radius: 0.65rem;
   backdrop-filter: blur(14px) saturate(140%);
   transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
   overflow: hidden;
   padding: 0.65rem 1.2rem;
-  font-size: 0.76rem !important;
+  font-size: 0.96rem;
   font-weight: 500;
   letter-spacing: 0.04em;
   color: #fff;
   text-shadow: 0 1px 2px rgba(0,0,0,0.25);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.75rem;
   min-height: 2.75rem;
-  width: 100%;
-}
-
-.unified-button::before,
-.unified-button::after,
-.showcase-button::before,
-.showcase-button::after {
-  display: none !important;
-}
-
-.unified-button:hover::before {
-  left: 0;
-  opacity: 1;
-  animation: gradientMove 3s cubic-bezier(0.4, 0, 0.2, 1) infinite;
-}
-
-@keyframes gradientMove {
-  0% { transform: translateX(-75%) skewX(-15deg); }
-  100% { transform: translateX(0%) skewX(-15deg); }
-}
-
-.unified-button:hover {
-  background: linear-gradient(135deg, rgba(0,0,0,0.28), rgba(88,200,150,0.13), rgba(147,112,219,0.13), rgba(0,0,0,0.32));
-  border-color: rgba(118, 180, 255, 0.32);
-  box-shadow: none;
-  transform: translateY(-1px);
-}
-
-.unified-button:active {
-  background: linear-gradient(135deg, rgba(0,0,0,0.38), rgba(88,200,150,0.18), rgba(147,112,219,0.18), rgba(0,0,0,0.45));
-  border-color: rgba(118, 180, 255, 0.38);
-  box-shadow: none;
-  transform: translateY(1px);
-}
-
-.button-content {
   position: relative;
-  z-index: 1;
+}
+
+.unified-button .button-content,
+.showcase-button .button-content {
+  width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -288,8 +266,36 @@ body {
   letter-spacing: 0.04em;
   text-shadow: 0 1px 2px rgba(0,0,0,0.25);
   color: #fff;
-  width: 100%;
   font-size: 1rem;
+  box-sizing: border-box;
+}
+
+.unified-button:hover,
+.showcase-button:hover {
+  border-color: rgba(255,255,255,0.4);
+  box-shadow: 0 0 20px 0 rgba(255,255,255,0.15), 0 0 32px 4px rgba(147,112,219,0.10), 0 0 16px 2px rgba(127,255,212,0.10);
+  background: linear-gradient(135deg, rgba(0,0,0,0.28), rgba(88,200,150,0.13), rgba(147,112,219,0.13), rgba(0,0,0,0.32));
+  outline: none;
+}
+
+.unified-button:active,
+.showcase-button:active {
+  border-color: rgba(255,255,255,0.4);
+  box-shadow: 0 0 12px 0 rgba(255,255,255,0.13), 0 0 24px 2px rgba(147,112,219,0.08);
+  background: linear-gradient(135deg, rgba(0,0,0,0.38), rgba(88,200,150,0.18), rgba(147,112,219,0.18), rgba(0,0,0,0.45));
+}
+
+@media (max-width: 768px) {
+  .unified-button,
+  .showcase-button {
+    font-size: 0.88rem;
+    padding: 0.55rem 0.7rem;
+    min-height: 2.1rem;
+  }
+  .unified-button .button-content,
+  .showcase-button .button-content {
+    font-size: 0.92rem;
+  }
 }
 
 .button-icon {
@@ -349,23 +355,6 @@ body {
 @keyframes spin {
   to {
     transform: rotate(360deg);
-  }
-}
-
-/* Mobile Optimizations */
-@media (max-width: 768px) {
-  .unified-button,
-  .unified-button .button-content,
-  .showcase-button,
-  .showcase-button .button-content {
-    font-size: 0.72rem !important;
-    padding: 0.55rem 0.9rem;
-    min-height: 2.2rem;
-  }
-  .button-content, .button-icon, .success-icon, .loading-spinner {
-    font-size: 0.88rem;
-    width: 0.95rem;
-    height: 0.95rem;
   }
 }
 
@@ -640,6 +629,8 @@ html {
   padding: 0.5rem 1rem;
   border-radius: 0.65rem;
   gap: 0.6rem;
+  flex: 1;
+  box-sizing: border-box;
 }
 
 @media (max-width: 768px) {
@@ -655,7 +646,9 @@ html {
   font-size: 1.05rem;
   font-weight: 500;
   margin-bottom: 0.5rem;
+  transition: all 0.3s ease;
 }
+
 .showcase-desc {
   font-size: 0.97rem;
   color: #bfc9d1;
@@ -691,12 +684,14 @@ html {
   box-shadow: none;
   justify-content: center;
   align-items: center;
+  box-sizing: border-box;
 }
 .button-group-outline .showcase-button {
-  border: none !important;
+  border: 1.5px solid rgba(180,255,255,0.18) !important;
   box-shadow: none !important;
   border-radius: 0.65rem;
   background: transparent;
+  box-sizing: border-box;
 }
 @media (max-width: 768px) {
   .button-group-outline {
