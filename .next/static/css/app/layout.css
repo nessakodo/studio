@@ -3682,7 +3682,7 @@ html {
 
 /* Form Container Styling */
 .form-container {
-  background: rgba(10,10,15,0.02);
+  background: rgba(10, 10, 15, 0.02);
   backdrop-filter: blur(12px) saturate(180%);
   border: 1px solid rgba(180,255,255,0.06);
   border-radius: 1rem;
@@ -3795,6 +3795,253 @@ html {
   .connect-form .unified-button .button-icon {
     width: 1rem;
     height: 1rem;
+  }
+}
+
+/* Let's Connect Section */
+.connect-section {
+  position: relative;
+  padding: 6rem 1.5rem;
+  text-align: center;
+  overflow: hidden;
+  background: rgba(10, 10, 15, 0.01); /* Very subtle dark background */
+  backdrop-filter: blur(5px);
+}
+
+.connect-section-content {
+  position: relative;
+  z-index: 1;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.connect-heading {
+  font-size: 2.5rem;
+  font-weight: 200;
+  color: rgba(180, 255, 255, 0.95);
+  margin-bottom: 1rem;
+  letter-spacing: 0.05em;
+  text-shadow: 0 0 15px rgba(88, 200, 150, 0.2);
+}
+
+.connect-subheading {
+  font-size: 1.1rem;
+  color: rgba(180, 255, 255, 0.7);
+  margin-bottom: 3rem;
+  line-height: 1.6;
+}
+
+/* Connect Info Links (Email/Schedule) */
+.connect-info-links {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  margin-bottom: 3rem;
+  flex-wrap: wrap;
+}
+
+.connect-info-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: rgba(180, 255, 255, 0.85);
+  font-size: 1rem;
+  text-decoration: none;
+  transition: color 0.3s ease, text-shadow 0.3s ease;
+}
+
+.connect-info-link:hover {
+  color: rgba(180, 255, 255, 1);
+  text-shadow: 0 0 10px rgba(88, 200, 150, 0.5);
+}
+
+.connect-info-link .icon {
+  width: 1.2rem;
+  height: 1.2rem;
+  fill: currentColor;
+}
+
+/* Form Container Styling - Matches Cards with Green Tint */
+.connect-form-container {
+  background: rgba(15, 20, 15, 0.05); /* Subtle green tint and transparency */
+  backdrop-filter: blur(15px) saturate(180%);
+  border: 1px solid rgba(88, 200, 150, 0.12); /* Greenish border matching card outline */
+  border-radius: 1.5rem;
+  padding: 3rem;
+  box-shadow: 
+    0 0 30px rgba(88, 200, 150, 0.06),
+    0 0 60px rgba(120, 180, 200, 0.04);
+  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+  text-align: left; /* Align form content left */
+}
+
+.connect-form-container:hover {
+  background: rgba(20, 25, 20, 0.08); /* Slightly more opaque green on hover */
+  backdrop-filter: blur(20px) saturate(200%);
+  border-color: rgba(88, 200, 150, 0.18);
+  box-shadow: 
+    0 0 40px rgba(88, 200, 150, 0.1),
+    0 0 80px rgba(120, 180, 200, 0.06);
+}
+
+/* Form Field Group */
+/* Reusing form-group and form-label from previous edits for consistency */
+
+/* Form Fields */
+/* Reusing form-field-hover from previous edits for consistency */
+
+/* Connect Submit Button - Matches 'discuss your project' button style */
+.connect-form .unified-button.primary {
+  width: 100%;
+  min-height: 3rem;
+  padding: 0.85rem 1.5rem;
+  font-size: 1rem;
+  letter-spacing: 0.05em;
+  background: transparent; /* Transparent default */
+  border: 1.5px solid rgba(180, 255, 255, 0.08); /* Subtle border */
+  box-shadow: none; /* No default shadow */
+  backdrop-filter: blur(8px) saturate(180%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 2rem;
+  position: relative;
+  overflow: hidden;
+  color: rgba(180, 255, 255, 0.9);
+  text-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.connect-form .unified-button.primary::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(88,200,150,0.1),
+    rgba(120,180,200,0.1),
+    rgba(88,200,150,0.1)
+  ); /* Subtle gradient */
+  opacity: 0;
+  transition: opacity 0.4s ease-in-out;
+  z-index: 0;
+}
+
+.connect-form .unified-button.primary:hover {
+  background: rgba(20, 20, 30, 0.4); /* Match primary button hover background */
+  border-color: rgba(180, 255, 255, 0.25); /* Match primary button hover border */
+  box-shadow:
+    0 0 25px rgba(88, 200, 150, 0.1),
+    0 0 35px rgba(120, 180, 200, 0.08),
+    0 0 45px rgba(88, 200, 150, 0.06);
+  backdrop-filter: blur(15px) saturate(220%);
+  transform: translateY(-1px);
+  color: rgba(180, 255, 255, 1);
+}
+
+.connect-form .unified-button.primary:hover::before {
+  opacity: 1; /* Show gradient on hover */
+}
+
+/* Button Icon for Send Message - Arrow, Circle, Checkmark Morph */
+.connect-form .unified-button.primary .button-icon {
+  width: 1.3rem;
+  height: 1.3rem;
+  margin-right: 0.75rem;
+  fill: rgba(180, 255, 255, 0.7); /* Default icon color */
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  transform-origin: center;
+}
+
+.connect-form .unified-button.primary:hover .button-icon {
+  transform: scale(1.1); /* Subtle scale on hover */
+  fill: rgba(180, 255, 255, 1); /* Icon color on hover */
+}
+
+/* Icon Success Animation */
+@keyframes iconMorphSuccess {
+  0% { transform: scale(1) rotate(0deg); opacity: 1; } /* Arrow */
+  30% { transform: scale(1.2) rotate(45deg); opacity: 0.8; } /* Transition to circle */
+  60% { transform: scale(1.2) rotate(90deg); opacity: 0.6; } /* Transition to circle */
+  80% { transform: scale(1.1) rotate(135deg); opacity: 0.9; } /* Transition to checkmark */
+  100% { transform: scale(1) rotate(180deg); opacity: 1; } /* Checkmark */
+}
+
+.connect-form .unified-button.primary[data-success="true"] .button-icon {
+  animation: iconMorphSuccess 0.8s ease-in-out forwards; /* Apply animation on success */
+}
+
+/* Divider Styling */
+.site-divider {
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(90deg, 
+    transparent 0%,
+    rgba(88, 200, 150, 0.2) 20%,
+    rgba(120, 180, 200, 0.2) 50%,
+    rgba(88, 200, 150, 0.2) 80%,
+    transparent 100%
+  );
+  margin: 4rem auto;
+  opacity: 0.6;
+}
+
+/* Site Footer */
+.site-footer {
+  text-align: center;
+  padding: 3rem 1.5rem;
+  color: rgba(180, 255, 255, 0.6);
+  font-size: 0.9rem;
+  letter-spacing: 0.03em;
+}
+
+/* Mobile Optimizations */
+@media (max-width: 768px) {
+  .connect-section {
+    padding: 4rem 1rem;
+  }
+
+  .connect-heading {
+    font-size: 2rem;
+  }
+
+  .connect-subheading {
+    font-size: 1rem;
+    margin-bottom: 2rem;
+  }
+
+  .connect-info-links {
+    flex-direction: column;
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+
+  .connect-form-container {
+    padding: 2rem 1.5rem;
+    border-radius: 1rem;
+  }
+
+  .connect-form .unified-button.primary {
+    min-height: 2.75rem;
+    padding: 0.6rem 1.2rem;
+    font-size: 0.9rem;
+  }
+
+  .connect-form .unified-button.primary .button-icon {
+    width: 1.1rem;
+    height: 1.1rem;
+    margin-right: 0.5rem;
+  }
+
+  .site-divider {
+    margin: 3rem auto;
+  }
+
+  .site-footer {
+    padding: 2rem 1rem;
+    font-size: 0.8rem;
   }
 }
 .file\:border-0::file-selector-button {
