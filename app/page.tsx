@@ -211,9 +211,9 @@ export default function Page() {
               <button
                 key={link.id}
                 onClick={() => scrollToSection(link.id)}
-                className="unified-button"
+                className="navbar-link"
               >
-                <span className="button-content">{link.label}</span>
+                {link.label}
               </button>
             ))}
           </nav>
@@ -235,14 +235,14 @@ export default function Page() {
       <div className={`mobile-menu ${isMobileMenuOpen ? '' : 'hidden'}`}>
         <div className="mobile-menu-content">
           {/* Close button */}
-          <button onClick={() => setIsMobileMenuOpen(false)} className="absolute top-4 right-4 text-white text-3xl">&times;</button>
+          <button onClick={() => setIsMobileMenuOpen(false)} className="absolute top-4 right-4 close-menu-btn text-white text-3xl">&times;</button>
           {navLinks.map((link) => (
             <button
               key={link.id}
               onClick={() => scrollToSection(link.id)}
-              className="unified-button"
+              className="navbar-link"
             >
-              <span className="button-content">{link.label}</span>
+              {link.label}
             </button>
           ))}
         </div>
@@ -250,7 +250,7 @@ export default function Page() {
 
       {/* Scroll to Top Button */}
       <button 
-        className={`unified-button ${showScrollTop ? 'visible' : ''}`}
+        className={`unified-button no-default-border ${showScrollTop ? 'visible' : ''}`}
         onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
       >
         <span className="button-content">
@@ -291,7 +291,7 @@ export default function Page() {
           <div className="mt-16 md:mt-24 flex flex-col md:flex-row justify-between items-start md:items-end space-y-8 md:space-y-0">
             <div className="max-w-md">
               <Button
-                className="unified-button primary full-width rounded-lg"
+                className="unified-button primary full-width rounded-lg no-default-border"
               >
                 <span className="button-content">DISCUSS YOUR PROJECT</span>
               </Button>
@@ -473,7 +473,7 @@ export default function Page() {
                       <span>{post.readTime}</span>
                     </div>
                     <Button
-                      className="unified-button full-width rounded-lg"
+                      className="unified-button full-width rounded-lg no-default-border"
                     >
                       <span className="button-content">READ MORE</span>
                     </Button>
@@ -492,6 +492,7 @@ export default function Page() {
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {projects.map((project, index) => (
               <Card
+              
                 key={index}
                 className="unified-card mobile-card h-full group rounded-lg"
               >
@@ -504,23 +505,17 @@ export default function Page() {
                     />
                   </div>
                   <div className="flex-1 flex flex-col">
-                    <h3 className="text-xl font-light mb-3 text-white group-hover:text-mint-300 transition-colors">
-                      {project.title}
-                    </h3>
-                    <p className="mobile-text text-base text-gray-400 text-base mb-6 leading-relaxed flex-grow">{project.description}</p>
+                    <h3 className="showcase-title">{project.title}</h3>
+                    <p className="showcase-desc">{project.description}</p>
                   </div>
-                  <div className="mt-auto flex flex-col sm:flex-row space-y-4 sm:space-y-0 space-x-0 sm:space-x-4 justify-center">
-                    <Button
-                      className="unified-button rounded-lg flex items-center"
-                    >
+                  <div className="mt-auto flex flex-row gap-4">
+                    <Button className="unified-button showcase-button no-default-border">
                       <span className="button-content">
                         <ExternalLink className="button-icon" />
                         LIVE DEMO
                       </span>
                     </Button>
-                    <Button
-                      className="unified-button rounded-lg flex items-center"
-                    >
+                    <Button className="unified-button showcase-button no-default-border">
                       <span className="button-content">
                         <ArrowRight className="button-icon" />
                         CASE STUDY
@@ -625,7 +620,7 @@ export default function Page() {
                 )}
                 <button
                   type="submit"
-                  className="unified-button primary"
+                  className="unified-button primary no-default-border"
                   disabled={isSubmitting}
                   data-loading={isSubmitting}
                   data-success={isSuccess}

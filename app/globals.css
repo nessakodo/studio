@@ -30,6 +30,20 @@ body {
   .hover-glow:hover {
     @apply bg-black text-white border-white shadow-[0_0_15px_rgba(255,255,255,0.3)];
   }
+
+  .no-default-border {
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+  }
+
+  .no-default-border:focus,
+  .no-default-border:active,
+  .no-default-border:focus-visible {
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+  }
 }
 
 @layer base {
@@ -105,9 +119,6 @@ body {
 }
 
 @layer base {
-  * {
-    @apply border-border;
-  }
   body {
     @apply bg-background text-foreground;
   }
@@ -208,15 +219,20 @@ body {
 }
 
 /* Unified Button System */
-.unified-button {
+.unified-button,
+.unified-button .button-content,
+.showcase-button,
+.showcase-button .button-content {
   position: relative;
-  background: rgba(20, 20, 20, 0.35); /* darker, glassy */
-  border: 1px solid rgba(255, 255, 255, 0.07);
+  border: 1.5px solid rgba(180,255,255,0.18);
+  background: rgba(0,0,0,0.18);
+  box-shadow: none;
+  border-radius: 0.65rem;
   backdrop-filter: blur(14px) saturate(140%);
   transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
   overflow: hidden;
-  padding: 0.75rem 1.5rem;
-  font-size: 1rem;
+  padding: 0.65rem 1.2rem;
+  font-size: 0.76rem !important;
   font-weight: 500;
   letter-spacing: 0.04em;
   color: #fff;
@@ -226,22 +242,14 @@ body {
   justify-content: center;
   gap: 0.75rem;
   min-height: 2.75rem;
-  border-radius: 0.65rem;
-  box-shadow: 0 2px 16px 0 rgba(0,0,0,0.18), 0 1.5px 8px 0 rgba(88,200,150,0.07), 0 1.5px 8px 0 rgba(147,112,219,0.07);
   width: 100%;
 }
 
-.unified-button::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 400%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(88,200,150,0.13), rgba(147,112,219,0.13), transparent);
-  transition: 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-  opacity: 0;
-  transform: skewX(-15deg);
+.unified-button::before,
+.unified-button::after,
+.showcase-button::before,
+.showcase-button::after {
+  display: none !important;
 }
 
 .unified-button:hover::before {
@@ -256,16 +264,16 @@ body {
 }
 
 .unified-button:hover {
-  background: linear-gradient(135deg, rgba(20,20,20,0.45), rgba(88,200,150,0.18), rgba(147,112,219,0.18), rgba(20,20,20,0.5));
-  border-color: rgba(147,112,219,0.18);
-  box-shadow: 0 0 24px 0 rgba(147,112,219,0.13), 0 0 32px 0 rgba(88,200,150,0.13), 0 2px 24px 0 rgba(0,0,0,0.22);
+  background: linear-gradient(135deg, rgba(0,0,0,0.28), rgba(88,200,150,0.13), rgba(147,112,219,0.13), rgba(0,0,0,0.32));
+  border-color: rgba(118, 180, 255, 0.32);
+  box-shadow: none;
   transform: translateY(-1px);
 }
 
 .unified-button:active {
-  background: linear-gradient(135deg, rgba(10,10,10,0.55), rgba(88,200,150,0.22), rgba(147,112,219,0.22), rgba(10,10,10,0.6));
-  box-shadow: 0 0 12px 0 rgba(147,112,219,0.10), 0 0 16px 0 rgba(88,200,150,0.10), 0 1px 8px 0 rgba(0,0,0,0.28), inset 0 2px 8px 0 rgba(0,0,0,0.18);
-  border-color: rgba(88,200,150,0.22);
+  background: linear-gradient(135deg, rgba(0,0,0,0.38), rgba(88,200,150,0.18), rgba(147,112,219,0.18), rgba(0,0,0,0.45));
+  border-color: rgba(118, 180, 255, 0.38);
+  box-shadow: none;
   transform: translateY(1px);
 }
 
@@ -346,16 +354,18 @@ body {
 
 /* Mobile Optimizations */
 @media (max-width: 768px) {
-  .unified-button {
-    padding: 0.625rem 1.25rem;
-    font-size: 0.95rem;
-    min-height: 2.5rem;
-    gap: 0.5rem;
+  .unified-button,
+  .unified-button .button-content,
+  .showcase-button,
+  .showcase-button .button-content {
+    font-size: 0.72rem !important;
+    padding: 0.55rem 0.9rem;
+    min-height: 2.2rem;
   }
   .button-content, .button-icon, .success-icon, .loading-spinner {
-    font-size: 0.95rem;
-    width: 1rem;
-    height: 1rem;
+    font-size: 0.88rem;
+    width: 0.95rem;
+    height: 0.95rem;
   }
 }
 
@@ -586,5 +596,116 @@ html {
 
   .web-heading-xl {
     font-size: 1.25rem; /* Equivalent to text-xl */
+  }
+}
+
+/* Navbar Link Styles */
+.navbar-link {
+  background: none;
+  border: none;
+  color: rgba(255,255,255,0.85);
+  font-size: 1rem;
+  font-weight: 400;
+  padding: 0.5rem 1rem;
+  border-radius: 0.25rem;
+  transition: color 0.2s, background 0.2s;
+  box-shadow: none;
+  outline: none;
+  cursor: pointer;
+}
+.navbar-link:hover, .navbar-link:focus {
+  color: #fff;
+  background: rgba(255,255,255,0.06);
+  text-decoration: underline;
+}
+
+.hamburger-menu, .close-menu-btn {
+  background: none;
+  border: none;
+  box-shadow: none;
+  color: #fff;
+  padding: 0.5rem;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.hamburger-menu:hover, .close-menu-btn:hover {
+  background: rgba(255,255,255,0.08);
+}
+
+/* Showcase Button Variant */
+.showcase-button {
+  font-size: 0.76rem;
+  letter-spacing: 0.06em;
+  padding: 0.5rem 1rem;
+  border-radius: 0.65rem;
+  gap: 0.6rem;
+}
+
+@media (max-width: 768px) {
+  .showcase-button {
+    font-size: 0.72rem;
+    padding: 0.42rem 0.7rem;
+    gap: 0.5rem;
+  }
+}
+
+/* Showcase Card Text Sizing */
+.showcase-title {
+  font-size: 1.05rem;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+.showcase-desc {
+  font-size: 0.97rem;
+  color: #bfc9d1;
+  margin-bottom: 1.2rem;
+  line-height: 1.6;
+}
+
+/* Unified Card Font Sizing */
+.showcase-title,
+.showcase-desc,
+.showcase-meta,
+.showcase-button {
+  font-size: 0.93rem;
+}
+
+@media (max-width: 768px) {
+  .showcase-title,
+  .showcase-desc,
+  .showcase-meta,
+  .showcase-button {
+    font-size: 0.88rem;
+  }
+}
+
+/* Button Group Outline for Showcase */
+.button-group-outline {
+  display: flex;
+  gap: 1rem;
+  padding: 0.3rem;
+  border: 2px solid rgba(180,255,255,0.18);
+  border-radius: 0.8rem;
+  background: rgba(0,0,0,0.18);
+  box-shadow: none;
+  justify-content: center;
+  align-items: center;
+}
+.button-group-outline .showcase-button {
+  border: none !important;
+  box-shadow: none !important;
+  border-radius: 0.65rem;
+  background: transparent;
+}
+@media (max-width: 768px) {
+  .button-group-outline {
+    flex-direction: column;
+    gap: 0.7rem;
+    padding: 0.18rem;
+  }
+  .button-group-outline .showcase-button {
+    width: 100%;
+    justify-content: center;
   }
 }
