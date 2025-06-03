@@ -27,11 +27,20 @@ type FormData = z.infer<typeof formSchema>;
 // Add this constant at the top of the file, after imports
 const WEB3FORMS_ACCESS_KEY = process.env.NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY || process.env.WEB3FORMS_ACCESS_KEY;
 
+// Define posts per page for the thinking section
+const POSTS_PER_PAGE = 9;
+
 export default function Page() {
   const [scrollY, setScrollY] = useState(0)
   const [showScrollTop, setShowScrollTop] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [error, setError] = useState<string | null>(null);
+  const [blogPosts, setBlogPosts] = useState([]);
+  const [loadingPosts, setLoadingPosts] = useState(true);
+  const [postsError, setPostsError] = useState<string | null>(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [hasMorePosts, setHasMorePosts] = useState(false);
+  const [totalPages, setTotalPages] = useState(1);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -56,6 +65,33 @@ export default function Page() {
     emailjs.init(EMAILJS_CONFIG.PUBLIC_KEY);
   }, []);
 
+  useEffect(() => {
+    const fetchBlogPosts = async () => {
+      try {
+        setLoadingPosts(true);
+        const response = await fetch(`https://dev.to/api/articles?username=nessakodo&per_page=${POSTS_PER_PAGE}&page=${currentPage}`);
+        if (!response.ok) {
+          throw new Error(`Error fetching posts: ${response.statusText}`);
+        }
+        const data = await response.json();
+        const filteredData = data.filter((post: any) => post.cover_image !== null);
+        setBlogPosts(filteredData);
+        // Calculate total pages based on the total count from headers
+        const totalCount = parseInt(response.headers.get('total-count') || '0');
+        const calculatedTotalPages = Math.ceil(totalCount / POSTS_PER_PAGE);
+        setTotalPages(calculatedTotalPages);
+        setHasMorePosts(currentPage < calculatedTotalPages);
+      } catch (err) {
+        console.error("Failed to fetch blog posts:", err);
+        setPostsError(err instanceof Error ? err.message : 'An unexpected error occurred while fetching posts.');
+      } finally {
+        setLoadingPosts(false);
+      }
+    };
+
+    fetchBlogPosts();
+  }, [currentPage]);
+
   const scrollToSection = (id: string) => {
     const element = document.getElementById(id)
     if (element) {
@@ -70,51 +106,6 @@ export default function Page() {
     }
     setIsMobileMenuOpen(false)
   }
-
-  const blogPosts = [
-    { 
-      title: "The Future of Cybersecurity in 2024", 
-      category: "Security",
-      date: "March 15, 2024",
-      readTime: "5 min read",
-      excerpt: "Exploring the emerging trends and technologies that will shape cybersecurity in the coming year."
-    },
-    { 
-      title: "Building Scalable Microservices Architecture", 
-      category: "Development",
-      date: "March 10, 2024",
-      readTime: "7 min read",
-      excerpt: "A comprehensive guide to designing and implementing scalable microservices."
-    },
-    { 
-      title: "Zero Trust Security Implementation", 
-      category: "Security",
-      date: "March 5, 2024",
-      readTime: "6 min read",
-      excerpt: "Understanding and implementing zero trust security principles in modern applications."
-    },
-    { 
-      title: "AI-Driven Development Workflows", 
-      category: "Innovation",
-      date: "February 28, 2024",
-      readTime: "8 min read",
-      excerpt: "How AI is transforming software development processes and workflows."
-    },
-    { 
-      title: "Cloud Infrastructure Best Practices", 
-      category: "DevOps",
-      date: "February 20, 2024",
-      readTime: "6 min read",
-      excerpt: "Essential practices for building and maintaining robust cloud infrastructure."
-    },
-    { 
-      title: "Modern Authentication Systems", 
-      category: "Security",
-      date: "February 15, 2024",
-      readTime: "5 min read",
-      excerpt: "Implementing secure and user-friendly authentication in modern applications."
-    },
-  ]
 
   const projects = [
     {
@@ -152,6 +143,18 @@ export default function Page() {
     resolver: zodResolver(formSchema)
   });
   const [isSuccess, setIsSuccess] = useState(false);
+
+  const handlePreviousPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+
+  const handleNextPage = () => {
+    if (hasMorePosts) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
 
   const onSubmit = async (data: FormData) => {
     try {
@@ -459,31 +462,58 @@ export default function Page() {
       {/* Thinking Section */}
       <section id="thinking" className="py-32 section-padding">
         <div className="max-w-6xl mx-auto">
-          <h2 className="mobile-heading md:text-5xl font-light mb-16 text-white">THINKING</h2>
-          <div className="grid md:grid-cols-3 gap-8">
-            {blogPosts.map((post, index) => (
-              <Card key={index} className="mobile-card unified-card h-full rounded-lg group">
-                <CardContent className="p-8 flex flex-col h-full">
-                  <div className="flex-1">
-                    <span className="text-base text-gray-400 mb-2 block">{post.category}</span>
-                    <h3 className="text-xl font-light mb-4 text-transparent bg-clip-text bg-gradient-to-r from-sage-400 via-mist-400 to-mint-400 group-hover:from-mint-400 group-hover:via-mist-400 group-hover:to-sage-400 transition-all duration-300">{post.title}</h3>
-                    <p className="mobile-text text-base text-gray-400 mb-4">{post.excerpt}</p>
-                  </div>
-                  <div className="mt-auto">
-                    <div className="flex justify-between text-base text-gray-400 mb-4">
-                      <span>{post.date}</span>
-                      <span>{post.readTime}</span>
-                    </div>
-                    <Button
-                      className="unified-button full-width rounded-lg"
-                    >
-                      <span className="button-content">READ MORE</span>
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
+          <h2 className="mobile-heading md:text-5xl font-light mb-16 text-white text-center">THINKING</h2>
+          {loadingPosts && <p className="text-center text-gray-400">Loading posts...</p>}
+          {postsError && <p className="text-center text-red-400">Error loading posts: {postsError}</p>}
+          {!loadingPosts && !postsError && blogPosts.length > 0 && (
+            <>
+              <div className="grid md:grid-cols-3 gap-8">
+                {blogPosts.map((post: any) => (
+                  <Card key={post.id} className="mobile-card unified-card h-full rounded-lg group">
+                    <CardContent className="p-8 flex flex-col h-full">
+                      <div className="flex-1">
+                        {/* Using the first tag as the category for now */}
+                        {post.tag_list && post.tag_list.length > 0 && (
+                          <span className="thinking-category">{post.tag_list[0]}</span>
+                        )}
+                        <h3 className="text-xl font-light mb-4 text-transparent bg-clip-text bg-gradient-to-r from-sage-400 via-mist-400 to-mint-400 group-hover:from-mint-400 group-hover:via-mist-400 group-hover:to-sage-400 transition-all duration-300">{post.title}</h3>
+                        <p className="mobile-text text-base text-gray-400 mb-4">{post.description}</p>
+                      </div>
+                      <div className="mt-auto">
+                        <div className="flex justify-between text-base text-gray-400 mb-4">
+                          <span>{new Date(post.published_timestamp).toLocaleDateString()}</span>
+                          <span>{post.reading_time_minutes} min read</span>
+                        </div>
+                        <Link href={post.url} target="_blank" rel="noopener noreferrer" className="block w-full">
+                          <Button
+                            className="unified-button full-width rounded-lg"
+                          >
+                            <span className="button-content">READ ARTICLE</span>
+                          </Button>
+                        </Link>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+              {/* Pagination Dots */}
+              {totalPages > 1 && (
+                <div className="pagination-dots">
+                  {Array.from({ length: totalPages }, (_, i) => i + 1).map((pageNum) => (
+                    <button
+                      key={pageNum}
+                      className={`pagination-dot ${currentPage === pageNum ? 'active' : ''}`}
+                      onClick={() => setCurrentPage(pageNum)}
+                      aria-label={`Go to page ${pageNum}`}
+                    />
+                  ))}
+                </div>
+              )}
+            </>
+          )}
+          {!loadingPosts && !postsError && blogPosts.length === 0 && (
+            <p className="text-center text-gray-400">No blog posts found.</p>
+          )}
         </div>
       </section>
 
@@ -495,7 +525,7 @@ export default function Page() {
             {projects.map((project, index) => (
               <Card
                 key={index}
-                className="unified-card mobile-card h-full group rounded-lg"
+                className="unified-card mobile-card h-full group rounded-lg showcase-card-variant"
               >
                 <CardContent className="p-8 flex flex-col h-full">
                   <div className="aspect-video bg-gray-800 overflow-hidden rounded-lg mb-6">
@@ -562,7 +592,7 @@ export default function Page() {
           <div className="backdrop-blur-md bg-black/30 rounded-lg border border-white/10">
             <div className="p-8 md:p-12">
               <form 
-                className="space-y-6"
+                className="space-y-6 connect-form"
                 onSubmit={handleSubmit(onSubmit)}
               >
                 <div className="space-y-4">
@@ -642,7 +672,7 @@ export default function Page() {
                         <svg className="button-icon" viewBox="0 0 24 24">
                           <path d="M22 2L11 13M22 2L15 22L11 13L2 9L22 2Z" stroke="currentColor"/>
                         </svg>
-                        <span>Send Message</span>
+                        <span>SEND MESSAGE</span>
                       </>
                     )}
                   </div>
