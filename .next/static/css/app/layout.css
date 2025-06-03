@@ -2280,6 +2280,26 @@ body {
   animation: none; /* No animation */
 }
 
+/* Our Expertise Card Variant Hover Styles (Mist Blue) */
+.unified-card.expertise-card-variant:hover {
+  box-shadow: 0 0 10px rgba(150,180,200,0.15), 0 0 15px rgba(180,200,220,0.1), 0 0 25px rgba(150,180,200,0.08); /* Subtle mist blue glow */
+  border-color: rgba(180,200,220,0.5); /* Mist blue border */
+  background: rgba(10,10,15,0.15); /* Match transparency level with other card hovers */
+  backdrop-filter: blur(10px) saturate(160%); /* Adjusted blur/saturation */
+  transform: none; /* No transform */
+  animation: none; /* No animation */
+}
+
+.unified-card.expertise-card-variant:hover::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(150,180,200,0.3), rgba(180,200,220,0.3), rgba(150,180,200,0.3)); /* More intense mist blue gradient */
+  opacity: 1; /* Make gradient visible on hover */
+  transition: opacity 0.4s ease-in-out; /* Subtle transition */
+  animation: none; /* No animation */
+}
+
 /* Unified Button Default State (Read Article buttons) */
 .unified-button {
   display: block;
@@ -3275,6 +3295,27 @@ html {
   100% {
     background-position: 0% 50%;
   }
+}
+
+/* Expertise Button Hover State - Match Expertise Card Hover Glow/Style */
+.expertise-button:hover {
+  border-color: rgba(180,200,220,0.5); /* Match expertise card hover border */
+  box-shadow: 0 0 10px rgba(150,180,200,0.15), 0 0 15px rgba(180,200,220,0.1), 0 0 25px rgba(150,180,200,0.08); /* Match expertise card hover glow */
+  background: rgba(10,10,15,0.15); /* Match expertise card background transparency */
+  backdrop-filter: blur(10px) saturate(160%); /* Match expertise card hover blur */
+  transform: scale(1.02); /* Grow slightly in place */
+  animation: none; /* No pulse animation on button */
+}
+
+.expertise-button:hover::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(150,180,200,0.3), rgba(180,200,220,0.3), rgba(150,180,200,0.3)); /* Match expertise card before hover gradient */
+  opacity: 1; /* Make gradient visible on hover, match expertise card hover ::before */
+  transition: opacity 0.4s ease-in-out; /* Subtle transition */
+  animation: none; /* No animation */
+  z-index: 0;
 }
 
 .file\:border-0::file-selector-button {

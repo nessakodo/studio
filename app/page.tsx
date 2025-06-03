@@ -408,7 +408,7 @@ export default function Page() {
         <div className="max-w-6xl mx-auto">
           <h2 className="mobile-heading md:text-5xl font-light mb-16 text-center text-white">OUR EXPERTISE</h2>
           <div className="grid md:grid-cols-3 gap-8">
-            <Card className="unified-card mobile-card rounded-lg">
+            <Card className="unified-card expertise-card-variant mobile-card rounded-lg">
               <CardContent className="p-8">
                 <h3 className="text-xl font-light mb-4 text-transparent bg-clip-text bg-gradient-to-r from-sage-400 via-mist-400 to-mint-400 group-hover:from-mint-400 group-hover:via-mist-400 group-hover:to-sage-400 transition-all duration-300">FUTURE-PROOF SOFTWARE</h3>
                 <p className="mobile-text text-base text-gray-400 mb-6">
@@ -424,7 +424,7 @@ export default function Page() {
               </CardContent>
             </Card>
 
-            <Card className="unified-card mobile-card rounded-lg">
+            <Card className="unified-card expertise-card-variant mobile-card rounded-lg">
               <CardContent className="p-8">
                 <h3 className="text-xl font-light mb-4 text-transparent bg-clip-text bg-gradient-to-r from-sage-400 via-mist-400 to-mint-400 group-hover:from-mint-400 group-hover:via-mist-400 group-hover:to-sage-400 transition-all duration-300">SECURITY INTELLIGENCE</h3>
                 <p className="mobile-text text-base text-gray-400 mb-6">
@@ -440,7 +440,7 @@ export default function Page() {
               </CardContent>
             </Card>
 
-            <Card className="unified-card mobile-card rounded-lg">
+            <Card className="unified-card expertise-card-variant mobile-card rounded-lg">
               <CardContent className="p-8">
                 <h3 className="text-xl font-light mb-4 text-transparent bg-clip-text bg-gradient-to-r from-sage-400 via-mist-400 to-mint-400 group-hover:from-mint-400 group-hover:via-mist-400 group-hover:to-sage-400 transition-all duration-300">DIGITAL TRANSFORMATION</h3>
                 <p className="mobile-text text-base text-gray-400 mb-6">
