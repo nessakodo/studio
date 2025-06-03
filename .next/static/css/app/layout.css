@@ -2261,16 +2261,15 @@ body {
 
 /* Enhanced Card Styles with Parallax */
 .unified-card {
-  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-  border: 1px solid rgba(180,255,255,0.08);
-  background: rgba(10,10,15,0.15);
+  background: rgba(10,10,15,0.02);
+  backdrop-filter: blur(12px) saturate(180%);
+  border: 1px solid rgba(180,255,255,0.06);
   border-radius: 1rem;
   position: relative;
   overflow: hidden;
   box-shadow: 
-    0 0 20px rgba(88,200,150,0.03),
-    0 0 40px rgba(120,180,200,0.02);
-  backdrop-filter: blur(12px) saturate(180%);
+    0 0 20px rgba(88,200,150,0.01),
+    0 0 40px rgba(120,180,200,0.01);
   transform: translateY(0);
   opacity: 0;
   animation: cardFadeIn 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
@@ -2288,14 +2287,13 @@ body {
 }
 
 .unified-card:hover {
-  transform: translateY(-5px) scale(1.02);
-  border-color: rgba(180,255,255,0.2);
-  box-shadow: 
-    0 0 30px rgba(88,200,150,0.08),
-    0 0 50px rgba(120,180,200,0.06),
-    0 0 70px rgba(88,200,150,0.04);
-  background: rgba(10,10,15,0.2);
+  background: rgba(10,10,15,0.05);
   backdrop-filter: blur(15px) saturate(200%);
+  border-color: rgba(180,255,255,0.12);
+  box-shadow: 
+    0 0 30px rgba(88,200,150,0.03),
+    0 0 50px rgba(120,180,200,0.02);
+  transform: translateY(-5px) scale(1.02);
 }
 
 .unified-card::before {
@@ -2304,9 +2302,9 @@ body {
   inset: 0;
   background: linear-gradient(
     135deg,
-    rgba(88,200,150,0.05),
-    rgba(120,180,200,0.05),
-    rgba(88,200,150,0.05)
+    rgba(88,200,150,0.02),
+    rgba(120,180,200,0.02),
+    rgba(88,200,150,0.02)
   );
   opacity: 0;
   transition: opacity 0.4s ease-in-out;
@@ -2321,12 +2319,12 @@ body {
 .form-field-hover {
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   border: 1px solid rgba(180,255,255,0.08);
-  background: rgba(10,10,15,0.15);
+  background: rgba(10,10,15,0.05);
+  backdrop-filter: blur(8px) saturate(180%);
   color: rgba(180,255,255,0.9);
   border-radius: 0.75rem;
   padding: 0.75rem 1rem;
-  backdrop-filter: blur(8px) saturate(180%);
-  box-shadow: 0 0 15px rgba(88,200,150,0.03);
+  box-shadow: 0 0 15px rgba(88,200,150,0.02);
   opacity: 0;
   transform: translateY(10px);
   animation: formFieldFadeIn 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
@@ -2344,20 +2342,21 @@ body {
 }
 
 .form-field-hover:hover {
-  border-color: rgba(180,255,255,0.2);
-  background: rgba(10,10,15,0.2);
-  box-shadow: 
-    0 0 20px rgba(88,200,150,0.06),
-    0 0 30px rgba(120,180,200,0.04);
+  border-color: rgba(180,255,255,0.15);
+  background: rgba(10,10,15,0.08);
   backdrop-filter: blur(12px) saturate(200%);
+  box-shadow: 
+    0 0 20px rgba(88,200,150,0.04),
+    0 0 30px rgba(120,180,200,0.03);
 }
 
 .form-field-hover:focus {
-  border-color: rgba(180,255,255,0.3);
-  background: rgba(10,10,15,0.25);
+  border-color: rgba(180,255,255,0.2);
+  background: rgba(10,10,15,0.1);
+  backdrop-filter: blur(15px) saturate(220%);
   box-shadow: 
-    0 0 25px rgba(88,200,150,0.08),
-    0 0 35px rgba(120,180,200,0.06);
+    0 0 25px rgba(88,200,150,0.06),
+    0 0 35px rgba(120,180,200,0.04);
   outline: none;
 }
 
@@ -2423,14 +2422,18 @@ body {
   .unified-card {
     border-radius: 0.75rem;
     margin: 0.5rem;
-    transform: none !important;
   }
 
-  .unified-card:hover {
-    transform: none !important;
-    box-shadow: 
-      0 0 20px rgba(88,200,150,0.06),
-      0 0 30px rgba(120,180,200,0.04);
+  .card-content {
+    padding: 1.25rem;
+  }
+
+  .card-title {
+    font-size: 1.1rem;
+  }
+
+  .card-description {
+    font-size: 0.9rem;
   }
 
   .form-field-hover {
@@ -2502,13 +2505,52 @@ html {
 
 /* Enhanced Card Variants */
 .unified-card.showcase-card-variant {
-  background: rgba(10,10,15,0.12);
-  border-color: rgba(88,200,150,0.08);
+  background: rgba(10,10,15,0.02);
+  border-color: rgba(88,200,150,0.06);
+  backdrop-filter: blur(12px) saturate(180%);
+}
+
+.unified-card.showcase-card-variant:hover {
+  background: rgba(10,10,15,0.05);
+  border-color: rgba(88,200,150,0.12);
+  backdrop-filter: blur(15px) saturate(200%);
 }
 
 .unified-card.expertise-card-variant {
-  background: rgba(10,10,15,0.12);
-  border-color: rgba(120,180,200,0.08);
+  background: rgba(10,10,15,0.02);
+  border-color: rgba(120,180,200,0.06);
+  backdrop-filter: blur(12px) saturate(180%);
+}
+
+.unified-card.expertise-card-variant:hover {
+  background: rgba(10,10,15,0.05);
+  border-color: rgba(120,180,200,0.12);
+  backdrop-filter: blur(15px) saturate(200%);
+}
+
+/* Card Content Styling */
+.card-content {
+  position: relative;
+  z-index: 1;
+  padding: 1.5rem;
+  color: rgba(180,255,255,0.9);
+}
+
+/* Card Title */
+.card-title {
+  color: rgba(180,255,255,0.95);
+  font-size: 1.25rem;
+  font-weight: 300;
+  margin-bottom: 1rem;
+  transition: all 0.3s ease;
+}
+
+/* Card Description */
+.card-description {
+  color: rgba(180,255,255,0.7);
+  font-size: 1rem;
+  line-height: 1.7;
+  margin-bottom: 1.5rem;
 }
 
 /* Form Group Styling */
@@ -2517,6 +2559,12 @@ html {
   opacity: 0;
   transform: translateY(10px);
   animation: formGroupFadeIn 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  background: rgba(10,10,15,0.03);
+  backdrop-filter: blur(8px) saturate(180%);
+  border-radius: 1rem;
+  padding: 1.5rem;
+  border: 1px solid rgba(180,255,255,0.05);
+  box-shadow: 0 0 20px rgba(88,200,150,0.02);
 }
 
 @keyframes formGroupFadeIn {
@@ -3107,23 +3155,6 @@ html {
   }
 }
 
-/* Showcase Card Text Sizing */
-.showcase-title {
-  font-size: 1.25rem;
-  font-weight: 300;
-  margin-bottom: 1rem;
-  transition: all 0.3s ease;
-  line-height: 1.4;
-  color: #fff;
-}
-
-.showcase-desc {
-  font-size: 1rem;
-  color: #a0aec0;
-  margin-bottom: 1.5rem;
-  line-height: 1.7;
-}
-
 /* Unified Card Font Sizing */
 /* Adjust font sizes for buttons within cards */
 .unified-card .unified-button,
@@ -3513,6 +3544,239 @@ html {
   }
   
   .unified-button.primary .button-content {
+    font-size: 0.8rem;
+  }
+}
+
+/* Full Width Button Variant */
+.unified-button.full-width {
+  width: 100%;
+  min-height: 2.75rem;
+  padding: 0.75rem 1.5rem;
+  font-size: 0.85rem;
+  letter-spacing: 0.04em;
+  background: rgba(10,10,15,0.1);
+  border-color: rgba(180,255,255,0.1);
+  backdrop-filter: blur(8px) saturate(180%);
+}
+
+.unified-button.full-width:hover {
+  background: rgba(10,10,15,0.15);
+  border-color: rgba(180,255,255,0.2);
+  box-shadow: 
+    0 0 20px rgba(88,200,150,0.08),
+    0 0 30px rgba(120,180,200,0.06);
+}
+
+/* Success Animation for Icons */
+.unified-button[data-success="true"] .button-icon {
+  animation: iconSuccess 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes iconSuccess {
+  0% {
+    transform: scale(1);
+    color: rgba(180,255,255,0.7);
+  }
+  50% {
+    transform: scale(1.3);
+    color: rgba(88,200,150,1);
+  }
+  100% {
+    transform: scale(1);
+    color: rgba(180,255,255,1);
+  }
+}
+
+/* Updated Card Backgrounds */
+.unified-card {
+  background: rgba(10,10,15,0.02);
+  backdrop-filter: blur(12px) saturate(180%);
+  border: 1px solid rgba(180,255,255,0.06);
+  border-radius: 1rem;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 
+    0 0 20px rgba(88,200,150,0.01),
+    0 0 40px rgba(120,180,200,0.01);
+  transform: translateY(0);
+  opacity: 0;
+  animation: cardFadeIn 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.unified-card:hover {
+  background: rgba(10,10,15,0.05);
+  backdrop-filter: blur(15px) saturate(200%);
+  border-color: rgba(180,255,255,0.12);
+  box-shadow: 
+    0 0 30px rgba(88,200,150,0.03),
+    0 0 50px rgba(120,180,200,0.02);
+  transform: translateY(-5px) scale(1.02);
+}
+
+/* Updated Form Field Backgrounds */
+.form-field-hover {
+  background: rgba(10,10,15,0.05);
+  backdrop-filter: blur(8px) saturate(180%);
+  border: 1px solid rgba(180,255,255,0.08);
+  box-shadow: 0 0 15px rgba(88,200,150,0.02);
+}
+
+.form-field-hover:hover {
+  background: rgba(10,10,15,0.08);
+  backdrop-filter: blur(12px) saturate(200%);
+  border-color: rgba(180,255,255,0.15);
+  box-shadow: 
+    0 0 20px rgba(88,200,150,0.04),
+    0 0 30px rgba(120,180,200,0.03);
+}
+
+.form-field-hover:focus {
+  background: rgba(10,10,15,0.1);
+  backdrop-filter: blur(15px) saturate(220%);
+  border-color: rgba(180,255,255,0.2);
+  box-shadow: 
+    0 0 25px rgba(88,200,150,0.06),
+    0 0 35px rgba(120,180,200,0.04);
+}
+
+/* Form Group Background */
+.form-group {
+  background: rgba(10,10,15,0.03);
+  backdrop-filter: blur(8px) saturate(180%);
+  border-radius: 1rem;
+  padding: 1.5rem;
+  border: 1px solid rgba(180,255,255,0.05);
+  box-shadow: 0 0 20px rgba(88,200,150,0.02);
+}
+
+/* Mobile Optimizations */
+@media (max-width: 768px) {
+  .unified-button.full-width {
+    min-height: 2.5rem;
+    padding: 0.6rem 1.2rem;
+    font-size: 0.8rem;
+  }
+  
+  .form-group {
+    padding: 1rem;
+    border-radius: 0.75rem;
+  }
+}
+
+/* Showcase Card Text Styling */
+.showcase-title {
+  color: rgba(180,255,255,0.95);
+  font-size: 1.25rem;
+  font-weight: 300;
+  margin-bottom: 1rem;
+  line-height: 1.5;
+  letter-spacing: 0.02em;
+  text-shadow: 0 0 10px rgba(88,200,150,0.1);
+  transition: all 0.3s ease;
+}
+
+.showcase-desc {
+  color: rgba(180,255,255,0.7);
+  font-size: 1rem;
+  line-height: 1.7;
+  margin-bottom: 1.5rem;
+  letter-spacing: 0.01em;
+  text-shadow: 0 0 8px rgba(88,200,150,0.05);
+}
+
+/* Form Container Styling */
+.form-container {
+  background: rgba(10,10,15,0.02);
+  backdrop-filter: blur(12px) saturate(180%);
+  border: 1px solid rgba(180,255,255,0.06);
+  border-radius: 1rem;
+  padding: 2rem;
+  box-shadow: 
+    0 0 20px rgba(88,200,150,0.01),
+    0 0 40px rgba(120,180,200,0.01);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.form-container:hover {
+  background: rgba(10,10,15,0.05);
+  backdrop-filter: blur(15px) saturate(200%);
+  border-color: rgba(180,255,255,0.12);
+  box-shadow: 
+    0 0 30px rgba(88,200,150,0.03),
+    0 0 50px rgba(120,180,200,0.02);
+}
+
+/* Connect Form Button */
+.connect-form .unified-button {
+  width: 100%;
+  min-height: 2.75rem;
+  padding: 0.75rem 1.5rem;
+  font-size: 0.85rem;
+  letter-spacing: 0.04em;
+  background: rgba(10,10,15,0.1);
+  border-color: rgba(180,255,255,0.1);
+  backdrop-filter: blur(8px) saturate(180%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 1.5rem;
+}
+
+.connect-form .unified-button:hover {
+  background: rgba(10,10,15,0.15);
+  border-color: rgba(180,255,255,0.2);
+  box-shadow: 
+    0 0 20px rgba(88,200,150,0.08),
+    0 0 30px rgba(120,180,200,0.06);
+}
+
+/* Form Field Group */
+.form-field-group {
+  margin-bottom: 1.5rem;
+  opacity: 0;
+  transform: translateY(10px);
+  animation: formFieldFadeIn 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.form-field-group:nth-child(2) {
+  animation-delay: 0.1s;
+}
+
+.form-field-group:nth-child(3) {
+  animation-delay: 0.2s;
+}
+
+/* Form Label */
+.form-label {
+  color: rgba(180,255,255,0.9);
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+  display: block;
+  letter-spacing: 0.02em;
+  text-shadow: 0 0 8px rgba(88,200,150,0.05);
+}
+
+/* Mobile Optimizations */
+@media (max-width: 768px) {
+  .showcase-title {
+    font-size: 1.1rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .showcase-desc {
+    font-size: 0.9rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .form-container {
+    padding: 1.5rem;
+    border-radius: 0.75rem;
+  }
+
+  .connect-form .unified-button {
+    min-height: 2.5rem;
+    padding: 0.6rem 1.2rem;
     font-size: 0.8rem;
   }
 }
