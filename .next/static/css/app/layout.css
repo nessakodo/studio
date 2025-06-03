@@ -1492,6 +1492,9 @@ video {
 .border-white\/10 {
   border-color: rgb(255 255 255 / 0.1);
 }
+.border-white\/5 {
+  border-color: rgb(255 255 255 / 0.05);
+}
 .border-l-transparent {
   border-left-color: transparent;
 }
@@ -1566,6 +1569,9 @@ video {
 .bg-white {
   --tw-bg-opacity: 1;
   background-color: rgb(255 255 255 / var(--tw-bg-opacity, 1));
+}
+.bg-black\/10 {
+  background-color: rgb(0 0 0 / 0.1);
 }
 .bg-gradient-to-br {
   background-image: linear-gradient(to bottom right, var(--tw-gradient-stops));
@@ -1773,6 +1779,10 @@ video {
 .py-6 {
   padding-top: 1.5rem;
   padding-bottom: 1.5rem;
+}
+.py-48 {
+  padding-top: 12rem;
+  padding-bottom: 12rem;
 }
 .pb-3 {
   padding-bottom: 0.75rem;
@@ -3504,6 +3514,10 @@ html {
   border-color: rgb(255 255 255 / 0.2);
 }
 
+.hover\:border-white\/10:hover {
+  border-color: rgb(255 255 255 / 0.1);
+}
+
 .hover\:bg-accent:hover {
   background-color: hsl(var(--accent));
 }
@@ -3746,6 +3760,10 @@ html {
 
 .group:hover .group-hover\:text-transparent {
   color: transparent;
+}
+
+.group:hover .group-hover\:text-white\/90 {
+  color: rgb(255 255 255 / 0.9);
 }
 
 .group\/menu-item:hover .group-hover\/menu-item\:opacity-100 {

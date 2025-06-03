@@ -372,7 +372,7 @@ export default function Page() {
       </div>
 
       {/* Who We Are Section */}
-      <section id="who-we-are" className="relative py-32 section-padding">
+      <section id="who-we-are" className="relative py-48 section-padding">
         <div className="relative max-w-6xl mx-auto">
           <div className="grid md:grid-cols-2 gap-16 items-center">
             <div>
@@ -405,7 +405,7 @@ export default function Page() {
       </section>
 
       {/* Offerings Section */}
-      <section id="offerings" className="py-32 section-padding">
+      <section id="offerings" className="py-48 section-padding">
         <div className="max-w-6xl mx-auto">
           <h2 className="mobile-heading md:text-5xl font-light mb-16 text-center text-white">OUR EXPERTISE</h2>
           <div className="grid md:grid-cols-3 gap-8">
@@ -461,7 +461,7 @@ export default function Page() {
       </section>
 
       {/* Thinking Section */}
-      <section id="thinking" className="relative py-32 section-padding">
+      <section id="thinking" className="relative py-48 section-padding min-h-screen">
         <div className="absolute inset-0 z-0">
           <ThinkingUniverse />
         </div>
@@ -473,13 +473,13 @@ export default function Page() {
             <>
               <div className="grid md:grid-cols-3 gap-8">
                 {blogPosts.map((post: any) => (
-                  <Card key={post.id} className="mobile-card unified-card h-full rounded-lg group backdrop-blur-md bg-black/20 border border-white/10 hover:border-white/20 transition-all duration-300">
+                  <Card key={post.id} className="mobile-card unified-card h-full rounded-lg group backdrop-blur-md bg-black/10 border border-white/5 hover:border-white/10 transition-all duration-300">
                     <CardContent className="p-8 flex flex-col h-full">
                       <div className="flex-1">
                         {post.tag_list && post.tag_list.length > 0 && (
                           <span className="thinking-category">{post.tag_list[0]}</span>
                         )}
-                        <h3 className="text-xl font-light mb-4 text-white group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-sage-400 group-hover:via-mist-400 group-hover:to-mint-400 transition-all duration-300">{post.title}</h3>
+                        <h3 className="text-xl font-light mb-4 text-white group-hover:text-white/90 transition-all duration-300">{post.title}</h3>
                         <p className="mobile-text text-base text-gray-300 mb-4">{post.description}</p>
                       </div>
                       <div className="mt-auto">
@@ -489,7 +489,7 @@ export default function Page() {
                         </div>
                         <Link href={post.url} target="_blank" rel="noopener noreferrer" className="block w-full">
                           <Button
-                            className="unified-button full-width rounded-lg backdrop-blur-sm bg-black/30 border border-white/10 hover:border-white/20 transition-all duration-300"
+                            className="unified-button full-width rounded-lg backdrop-blur-sm bg-black/20 border border-white/5 hover:border-white/10 transition-all duration-300"
                           >
                             <span className="button-content">READ ARTICLE</span>
                           </Button>
@@ -521,7 +521,7 @@ export default function Page() {
       </section>
 
       {/* Showcase Section */}
-      <section id="showcase" className="py-32 section-padding">
+      <section id="showcase" className="py-48 section-padding">
         <div className="max-w-6xl mx-auto">
           <h2 className="mobile-heading md:text-5xl font-light mb-16 text-center text-white">PROJECT SHOWCASE</h2>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -562,7 +562,7 @@ export default function Page() {
       </section>
 
       {/* Connect Section */}
-      <section id="connect" className="py-32 section-padding">
+      <section id="connect" className="py-48 section-padding">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="mobile-heading md:text-5xl font-light mb-8 text-white">LET'S CONNECT</h2>
