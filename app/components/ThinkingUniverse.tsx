@@ -20,13 +20,13 @@ export default function ThinkingUniverse() {
 
     // Create particles with improved distribution
     const particlesGeometry = new THREE.BufferGeometry()
-    const particleCount = 4000
+    const particleCount = 5000
     const positions = new Float32Array(particleCount * 3)
     const colors = new Float32Array(particleCount * 3)
     const sizes = new Float32Array(particleCount)
 
     for (let i = 0; i < particleCount; i++) {
-      const radius = 40 * (0.75 + Math.random() * 0.5)
+      const radius = 60 * (0.75 + Math.random() * 0.5)
       const theta = Math.random() * Math.PI * 2
       const phi = Math.acos(2 * Math.random() - 1)
       
@@ -60,17 +60,17 @@ export default function ThinkingUniverse() {
     const particles = new THREE.Points(particlesGeometry, particlesMaterial)
     scene.add(particles)
 
-    // Create vortex effect
+    // Create extended vortex effect
     const vortexGeometry = new THREE.BufferGeometry()
-    const vortexCount = 2000
+    const vortexCount = 3000
     const vortexPositions = new Float32Array(vortexCount * 3)
     const vortexColors = new Float32Array(vortexCount * 3)
 
     for (let i = 0; i < vortexCount; i++) {
       const t = i / vortexCount
-      const radius = 50 * (1 - t)
-      const angle = t * Math.PI * 8
-      const height = 100 * (t - 0.5)
+      const radius = 70 * (1 - t)
+      const angle = t * Math.PI * 12
+      const height = 200 * (t - 0.5)
 
       vortexPositions[i * 3] = radius * Math.cos(angle)
       vortexPositions[i * 3 + 1] = height
@@ -109,7 +109,7 @@ export default function ThinkingUniverse() {
     pointLight2.position.set(-10, -10, -10)
     scene.add(pointLight2)
 
-    camera.position.z = 45
+    camera.position.z = 65
 
     // Enhanced controls
     const controls = new OrbitControls(camera, renderer.domElement)
@@ -165,7 +165,7 @@ export default function ThinkingUniverse() {
   }, [])
 
   return (
-    <div className="absolute inset-0">
+    <div className="fixed inset-0 pointer-events-none">
       <div ref={mountRef} className="absolute inset-0" />
     </div>
   )
