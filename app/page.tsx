@@ -13,6 +13,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import emailjs from '@emailjs/browser';
 import { EMAILJS_CONFIG } from './config/emailjs';
+import ThinkingUniverse from "./components/ThinkingUniverse"
 
 // Form validation schema
 const formSchema = z.object({
@@ -294,7 +295,7 @@ export default function Page() {
           <div className="mt-16 md:mt-24 flex flex-col md:flex-row justify-between items-start md:items-end space-y-8 md:space-y-0">
             <div className="max-w-md">
               <Button
-                className="unified-button primary full-width rounded-lg"
+                className="unified-button primary full-width rounded-lg backdrop-blur-md bg-black/30 border border-white/10 hover:border-white/20 transition-all duration-300 hover:bg-black/40"
                 onClick={() => scrollToSection('connect')}
               >
                 <span className="button-content">DISCUSS YOUR PROJECT</span>
@@ -460,8 +461,11 @@ export default function Page() {
       </section>
 
       {/* Thinking Section */}
-      <section id="thinking" className="py-32 section-padding">
-        <div className="max-w-6xl mx-auto">
+      <section id="thinking" className="relative py-32 section-padding">
+        <div className="absolute inset-0 z-0">
+          <ThinkingUniverse />
+        </div>
+        <div className="relative z-10 max-w-6xl mx-auto">
           <h2 className="mobile-heading md:text-5xl font-light mb-16 text-white text-center">THINKING</h2>
           {loadingPosts && <p className="text-center text-gray-400">Loading posts...</p>}
           {postsError && <p className="text-center text-red-400">Error loading posts: {postsError}</p>}
@@ -469,15 +473,14 @@ export default function Page() {
             <>
               <div className="grid md:grid-cols-3 gap-8">
                 {blogPosts.map((post: any) => (
-                  <Card key={post.id} className="mobile-card unified-card h-full rounded-lg group">
+                  <Card key={post.id} className="mobile-card unified-card h-full rounded-lg group backdrop-blur-md bg-black/20 border border-white/10 hover:border-white/20 transition-all duration-300">
                     <CardContent className="p-8 flex flex-col h-full">
                       <div className="flex-1">
-                        {/* Using the first tag as the category for now */}
                         {post.tag_list && post.tag_list.length > 0 && (
                           <span className="thinking-category">{post.tag_list[0]}</span>
                         )}
-                        <h3 className="text-xl font-light mb-4 text-transparent bg-clip-text bg-gradient-to-r from-sage-400 via-mist-400 to-mint-400 group-hover:from-mint-400 group-hover:via-mist-400 group-hover:to-sage-400 transition-all duration-300">{post.title}</h3>
-                        <p className="mobile-text text-base text-gray-400 mb-4">{post.description}</p>
+                        <h3 className="text-xl font-light mb-4 text-white group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-sage-400 group-hover:via-mist-400 group-hover:to-mint-400 transition-all duration-300">{post.title}</h3>
+                        <p className="mobile-text text-base text-gray-300 mb-4">{post.description}</p>
                       </div>
                       <div className="mt-auto">
                         <div className="flex justify-between text-base text-gray-400 mb-4">
@@ -486,7 +489,7 @@ export default function Page() {
                         </div>
                         <Link href={post.url} target="_blank" rel="noopener noreferrer" className="block w-full">
                           <Button
-                            className="unified-button full-width rounded-lg"
+                            className="unified-button full-width rounded-lg backdrop-blur-sm bg-black/30 border border-white/10 hover:border-white/20 transition-all duration-300"
                           >
                             <span className="button-content">READ ARTICLE</span>
                           </Button>
@@ -498,7 +501,7 @@ export default function Page() {
               </div>
               {/* Pagination Dots */}
               {totalPages > 1 && (
-                <div className="pagination-dots">
+                <div className="pagination-dots mt-8">
                   {Array.from({ length: totalPages }, (_, i) => i + 1).map((pageNum) => (
                     <button
                       key={pageNum}
