@@ -203,7 +203,7 @@ export default function Page() {
       <header className={`fixed top-0 z-50 w-full navbar ${scrollY > 50 ? 'scrolled' : ''}`}>
         <div className="flex items-center justify-between content-padding py-6">
           <Link href="/" className="text-xl font-light">
-            LOGO
+            <img src="/assets/logo.png" alt="Kodex Studio Logo" className="h-8" />
           </Link>
           {/* Desktop Navigation */}
           <nav className="hidden md:flex space-x-4">
@@ -248,7 +248,7 @@ export default function Page() {
         </div>
       </div>
 
-      {/* Scroll to Top Button */}
+      {/* Scroll to Top Button - Initially hidden */}
       <button 
         className={`unified-button no-default-border ${showScrollTop ? 'visible' : ''}`}
         onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
@@ -291,7 +291,8 @@ export default function Page() {
           <div className="mt-16 md:mt-24 flex flex-col md:flex-row justify-between items-start md:items-end space-y-8 md:space-y-0">
             <div className="max-w-md">
               <Button
-                className="unified-button primary full-width rounded-lg no-default-border"
+                className="unified-button primary full-width rounded-lg"
+                onClick={() => scrollToSection('connect')}
               >
                 <span className="button-content">DISCUSS YOUR PROJECT</span>
               </Button>
@@ -302,6 +303,7 @@ export default function Page() {
               </p>
             </div>
 
+            {/* Moved scroll indicator here */}
             <div className="scroll-indicator">
               <span className="text-sm md:text-base">SCROLL TO EXPLORE</span>
               <span className="h-px bg-white w-12"></span>
@@ -473,7 +475,7 @@ export default function Page() {
                       <span>{post.readTime}</span>
                     </div>
                     <Button
-                      className="unified-button full-width rounded-lg no-default-border w-full"
+                      className="unified-button full-width rounded-lg"
                     >
                       <span className="button-content">READ MORE</span>
                     </Button>
@@ -508,13 +510,13 @@ export default function Page() {
                     <p className="showcase-desc">{project.description}</p>
                   </div>
                   <div className="mt-auto flex flex-row gap-4">
-                    <Button className="unified-button showcase-button no-default-border w-full">
+                    <Button className="unified-button showcase-button">
                       <span className="button-content">
                         <ExternalLink className="button-icon" />
                         LIVE DEMO
                       </span>
                     </Button>
-                    <Button className="unified-button showcase-button no-default-border w-full">
+                    <Button className="unified-button showcase-button">
                       <span className="button-content">
                         <ArrowRight className="button-icon" />
                         CASE STUDY
@@ -619,7 +621,7 @@ export default function Page() {
                 )}
                 <button
                   type="submit"
-                  className="unified-button primary no-default-border"
+                  className="unified-button primary"
                   disabled={isSubmitting}
                   data-loading={isSubmitting}
                   data-success={isSuccess}

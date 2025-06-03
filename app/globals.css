@@ -206,27 +206,33 @@ body {
 
 /* Card Styles - Unified */
 .unified-card {
-  transition: all 0.3s ease;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  background: transparent;
-  border-radius: 0.5rem;
+  transition: all 0.4s ease-in-out;
+  border: 1.5px solid rgba(180,255,255,0.1);
+  background: rgba(10,10,15,0.2);
+  border-radius: 0.75rem;
   position: relative;
   overflow: hidden;
+  box-shadow: 0 0 4px rgba(127,255,212,0.02), 0 0 6px rgba(147,112,219,0.015);
+  backdrop-filter: blur(10px);
+  animation: none !important;
 }
 
 .unified-card:hover {
-  box-shadow: 0 0 20px rgba(255, 255, 255, 0.15);
-  border-color: rgba(255, 255, 255, 0.4);
-  transform: translateY(-2px);
+  box-shadow: 0 0 35px rgba(120,150,180,0.4), 0 0 60px rgba(140,100,180,0.3), 0 0 90px rgba(120,150,180,0.25);
+  border-color: rgba(150,180,200,0.7);
+  transform: translateY(-4px);
+  background: rgba(30,30,45,0.7);
+  backdrop-filter: blur(25px) brightness(1.3);
+  animation: cardHoverGlow 2s infinite ease-in-out;
 }
 
 .unified-card::before {
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(135deg, rgba(88,200,150,0.1), rgba(147,112,219,0.1));
+  background: linear-gradient(135deg, rgba(88,200,150,0.1), rgba(147,112,219,0.1), rgba(88,200,150,0.1));
   opacity: 0;
-  transition: opacity 0.3s ease;
+  transition: opacity 0.4s ease-in-out;
 }
 
 .unified-card:hover::before {
@@ -239,20 +245,35 @@ body {
   display: block;
   width: 100%;
   box-sizing: border-box;
-  border: 1px solid rgba(255,255,255,0.1);
-  background: linear-gradient(135deg, rgba(0,0,0,0.22), rgba(40,60,50,0.13), rgba(60,40,80,0.13), rgba(0,0,0,0.28));
-  border-radius: 0.65rem;
-  backdrop-filter: blur(14px) saturate(140%);
+  border: 1.5px solid rgba(100,150,200,0.15);
+  background: transparent;
+  border-radius: 0.6rem;
+  backdrop-filter: blur(5px) saturate(140%);
   transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
   overflow: hidden;
-  padding: 0.65rem 1.2rem;
-  font-size: 0.96rem;
+  padding: 0.4rem 0.7rem;
+  font-size: 0.8rem;
   font-weight: 500;
-  letter-spacing: 0.04em;
-  color: #fff;
-  text-shadow: 0 1px 2px rgba(0,0,0,0.25);
-  min-height: 2.75rem;
+  letter-spacing: 0.02em;
+  color: #c0c0c0;
+  text-shadow: 0 0 3px rgba(0,0,0,0.3);
+  min-height: 2.2rem;
   position: relative;
+  box-shadow: 0 0 5px rgba(80,120,160,0.06), 0 0 8px rgba(100,80,140,0.04);
+}
+
+.unified-button.primary {
+  background: linear-gradient(90deg, rgba(150,255,200,0.2), rgba(180,200,255,0.2), rgba(150,255,200,0.2));
+  background-size: 200% 100%;
+  border-color: rgba(127,255,212,0.5);
+  box-shadow: 0 0 18px rgba(127,255,212,0.3), 0 0 24px rgba(147,112,219,0.2);
+  color: #fff;
+  backdrop-filter: blur(12px) saturate(180%);
+  transition: all 0.4s ease-in-out, background-position 0.6s ease-in-out;
+  min-height: 2.75rem;
+  font-size: 0.9rem;
+  padding: 0.65rem 1.2rem;
+  letter-spacing: 0.04em;
 }
 
 .unified-button .button-content,
@@ -261,63 +282,109 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.75rem;
+  gap: 0.5rem;
   font-weight: 500;
-  letter-spacing: 0.04em;
-  text-shadow: 0 1px 2px rgba(0,0,0,0.25);
-  color: #fff;
-  font-size: 1rem;
+  letter-spacing: 0.02em;
+  text-shadow: 0 0 3px rgba(0,0,0,0.3);
+  color: #c0c0c0;
+  font-size: 0.8rem;
   box-sizing: border-box;
+}
+
+.unified-button.primary .button-content {
+  color: #fff;
+  gap: 0.75rem;
+  font-size: 0.9rem;
+  letter-spacing: 0.04em;
+  text-shadow: 0 0 5px rgba(0,0,0,0.5);
 }
 
 .unified-button:hover,
 .showcase-button:hover {
-  border-color: rgba(255,255,255,0.4);
-  box-shadow: 0 0 20px 0 rgba(255,255,255,0.15), 0 0 32px 4px rgba(147,112,219,0.10), 0 0 16px 2px rgba(127,255,212,0.10);
-  background: linear-gradient(135deg, rgba(0,0,0,0.28), rgba(88,200,150,0.13), rgba(147,112,219,0.13), rgba(0,0,0,0.32));
+  border-color: rgba(127,255,212,0.5);
+  box-shadow: 0 0 20px rgba(127,255,212,0.2), 0 0 35px rgba(147,112,219,0.15), 0 0 50px rgba(127,255,212,0.1);
+  background: linear-gradient(135deg, rgba(88,200,150,0.25), rgba(147,112,219,0.25));
+  backdrop-filter: blur(15px) brightness(1.2);
   outline: none;
+  animation: buttonGlowPulse 2s infinite ease-in-out;
+  color: #fff;
+}
+
+.unified-button.primary:hover {
+    border-color: rgba(127,255,212,0.8);
+    box-shadow: 0 0 35px rgba(127,255,212,0.45), 0 0 50px rgba(147,112,219,0.35), 0 0 80px rgba(127,255,212,0.3);
+    background-position: 100% 50%;
+    animation: buttonPrimaryGlowPulse 2.5s infinite ease-in-out, primaryGradientMove 4s ease-in-out infinite;
+    color: #fff;
 }
 
 .unified-button:active,
 .showcase-button:active {
-  border-color: rgba(255,255,255,0.4);
-  box-shadow: 0 0 12px 0 rgba(255,255,255,0.13), 0 0 24px 2px rgba(147,112,219,0.08);
-  background: linear-gradient(135deg, rgba(0,0,0,0.38), rgba(88,200,150,0.18), rgba(147,112,219,0.18), rgba(0,0,0,0.45));
+  border-color: rgba(127,255,212,0.3);
+  box-shadow: 0 0 12px rgba(127,255,212,0.12), 0 0 20px rgba(147,112,219,0.08);
+  background: rgba(40,40,60,0.7);
+  backdrop-filter: blur(12px) brightness(1.2);
+  color: #fff;
+}
+
+.unified-button.primary:active {
+    border-color: rgba(127,255,212,0.6);
+    box-shadow: 0 0 20px rgba(127,255,212,0.25), 0 0 35px rgba(147,112,219,0.2);
+    background-position: 100% 50%;
+    animation: buttonPrimaryGlowPulse 2.5s infinite ease-in-out, primaryGradientMove 4s ease-in-out infinite;
+    color: #fff;
 }
 
 @media (max-width: 768px) {
   .unified-button,
   .showcase-button {
-    font-size: 0.88rem;
-    padding: 0.55rem 0.7rem;
-    min-height: 2.1rem;
+    font-size: 0.65rem;
+    padding: 0.25rem 0.35rem;
+    min-height: 1.4rem;
   }
   .unified-button .button-content,
   .showcase-button .button-content {
-    font-size: 0.92rem;
+    font-size: 0.65rem;
+  }
+  .button-icon {
+    width: 0.9rem;
+    height: 0.9rem;
   }
 }
 
 .button-icon {
-  width: 1.25rem;
-  height: 1.25rem;
+  width: 1rem;
+  height: 1rem;
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   transform-origin: center;
-  color: #fff;
+  color: rgba(180,255,255,0.7);
+}
+
+.unified-button.primary .button-icon {
+    color: #fff;
 }
 
 .button-icon path {
-  stroke: #fff;
+  stroke: rgba(180,255,255,0.7);
   fill: none;
   transition: stroke 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+.unified-button.primary .button-icon path {
+    stroke: #fff;
+}
+
 .unified-button:hover .button-icon {
-  transform: translateX(4px) scale(1.1);
+  transform: translateX(2px) scale(1.05);
   color: #fff;
 }
 
-.unified-button:hover .button-icon path {
+.unified-button.primary:hover .button-icon {
+    transform: translateX(4px) scale(1.1);
+}
+
+.unified-button:hover .button-icon path,
+.unified-button.primary:hover .button-icon path {
   stroke: #fff;
 }
 
@@ -397,16 +464,46 @@ html {
   }
 }
 
-@keyframes buttonGlow {
+@keyframes buttonGlowPulse {
   0% {
-    background-position: 0% 50%;
+    box-shadow: 0 0 8px rgba(80,120,160,0.1), 0 0 12px rgba(100,80,140,0.08);
   }
   50% {
-    background-position: 100% 50%;
+    box-shadow: 0 0 20px rgba(127,255,212,0.2), 0 0 35px rgba(147,112,219,0.15), 0 0 50px rgba(127,255,212,0.1);
   }
   100% {
-    background-position: 0% 50%;
+    box-shadow: 0 0 8px rgba(80,120,160,0.1), 0 0 12px rgba(100,80,140,0.08);
   }
+}
+
+@keyframes buttonPrimaryGlowPulse {
+    0% {
+      box-shadow: 0 0 18px rgba(127,255,212,0.25), 0 0 24px rgba(147,112,219,0.18);
+    }
+    50% {
+      box-shadow: 0 0 40px rgba(127,255,212,0.5), 0 0 60px rgba(147,112,219,0.4), 0 0 90px rgba(127,255,212,0.35);
+    }
+    100% {
+      box-shadow: 0 0 18px rgba(127,255,212,0.25), 0 0 24px rgba(147,112,219,0.18);
+    }
+  }
+
+@keyframes cardHoverGlow {
+  0% {
+    box-shadow: 0 0 35px rgba(120,150,180,0.4), 0 0 60px rgba(140,100,180,0.3), 0 0 90px rgba(120,150,180,0.25);
+  }
+  50% {
+    box-shadow: 0 0 45px rgba(120,150,180,0.5), 0 0 70px rgba(140,100,180,0.4), 0 0 100px rgba(120,150,180,0.35);
+  }
+  100% {
+    box-shadow: 0 0 35px rgba(120,150,180,0.4), 0 0 60px rgba(140,100,180,0.3), 0 0 90px rgba(120,150,180,0.25);
+  }
+}
+
+@keyframes primaryGradientMove {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
 }
 
 /* Holographic Button Styles */
@@ -643,17 +740,19 @@ html {
 
 /* Showcase Card Text Sizing */
 .showcase-title {
-  font-size: 1.05rem;
-  font-weight: 500;
-  margin-bottom: 0.5rem;
+  font-size: 1.25rem;
+  font-weight: 300;
+  margin-bottom: 1rem;
   transition: all 0.3s ease;
+  line-height: 1.4;
+  color: #fff;
 }
 
 .showcase-desc {
-  font-size: 0.97rem;
-  color: #bfc9d1;
-  margin-bottom: 1.2rem;
-  line-height: 1.6;
+  font-size: 1rem;
+  color: #a0aec0;
+  margin-bottom: 1.5rem;
+  line-height: 1.7;
 }
 
 /* Unified Card Font Sizing */
