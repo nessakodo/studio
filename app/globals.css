@@ -220,17 +220,27 @@ body {
 .unified-card:hover {
   box-shadow: 0 0 10px rgba(120,150,180,0.15), 0 0 15px rgba(140,100,180,0.1), 0 0 25px rgba(120,150,180,0.08); /* Subtle thinking card hover glow (Blue/Purple) */
   border-color: rgba(150,180,200,0.5);
-  transform: none; /* No upward movement */
-  background: rgba(10,10,15,0.15); /* Slightly more transparent on hover */
+  transform: none; /* No upward movement, match showcase card behavior */
+  background: rgba(10,10,15,0.15); /* Slightly more transparent on hover, match showcase card transparency level */
   backdrop-filter: blur(12px) brightness(1.05); /* Adjusted blur/brightness */
   animation: cardHoverGlow 2s infinite ease-in-out; /* Keep pulse animation */
+}
+
+.unified-card:hover::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(160,100,220,0.25), rgba(110,140,255,0.25), rgba(160,100,220,0.25)); /* Adjusted subtle blue/purple gradient hues */
+  opacity: 1; /* Make gradient visible on hover, similar to showcase */
+  transition: opacity 0.4s ease-in-out; /* Subtle transition */
+  animation: none; /* No animation */
 }
 
 /* Showcase Card Variant Hover Styles */
 .unified-card.showcase-card-variant:hover {
   box-shadow: 0 0 10px rgba(88,200,150,0.15), 0 0 15px rgba(120,180,200,0.1), 0 0 25px rgba(88,200,150,0.08); /* Subtle showcase card hover glow (Green/Blue) - Consistent intensity */
   border-color: rgba(120,180,200,0.5); /* Match thinking card hover border */
-  background: rgba(10,10,15,0.08); /* Tiny bit more transparent on hover */
+  background: rgba(10,10,15,0.15); /* Match transparency level with thinking card hover */
   backdrop-filter: blur(8px) saturate(150%); /* Keep current blur */
   transform: none; /* No transform */
   animation: none; /* No animation */
@@ -268,7 +278,7 @@ body {
   box-shadow: none; /* No default glow */
 }
 
-/* Unified Button Hover State (Read Article buttons) - Match Thinking Card Hover Glow/Style, Scale In Place */
+/* Unified Button Hover State (Read Article buttons) - Match Thinking Card Hover Style */
 .unified-button:hover {
   border-color: rgba(150,180,200,0.5); /* Match thinking card hover border */
   box-shadow: 0 0 10px rgba(120,150,180,0.15), 0 0 15px rgba(140,100,180,0.1), 0 0 25px rgba(120,150,180,0.08); /* Match thinking card hover glow */
@@ -279,9 +289,14 @@ body {
 }
 
 .unified-button:hover::before {
-  /* Hidden ::before for this specific hover effect */
-  opacity: 0;
-  animation: none;
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(160,100,220,0.25), rgba(110,140,255,0.25), rgba(160,100,220,0.25)); /* Adjusted subtle blue/purple/mint gradient */
+  opacity: 1; /* Make gradient visible on hover, match thinking card hover ::before */
+  transition: opacity 0.4s ease-in-out; /* Subtle transition */
+  animation: none; /* No animation */
+  z-index: 0;
 }
 
 /* Primary Button - Keep distinct default */
@@ -327,7 +342,7 @@ body {
 .showcase-button:hover {
   border-color: rgba(120,180,200,0.5); /* Match showcase card hover border */
   box-shadow: 0 0 10px rgba(88,200,150,0.15), 0 0 15px rgba(120,180,200,0.1), 0 0 25px rgba(88,200,150,0.08); /* Match showcase card variant hover glow */
-  background: rgba(10,10,15,0.08); /* Match showcase card background transparency */
+  background: rgba(10,10,15,0.15); /* Match showcase card background transparency */
   backdrop-filter: blur(8px) saturate(150%); /* Match showcase card backdrop filter */
   transform: none; /* No transform, button stays in place */
   animation: none; /* No animation */
@@ -341,6 +356,7 @@ body {
   background: linear-gradient(135deg, rgba(88,200,150,0.3), rgba(120,180,200,0.3), rgba(88,200,150,0.3)); /* Match showcase card before hover gradient */
   opacity: 1; /* Match showcase card before hover opacity */
   animation: none;
+  z-index: 0;
 }
 
 /* Keep .unified-button::before for default state if needed, but remove its hover modifications */
@@ -803,7 +819,7 @@ html {
 .showcase-button:hover {
   border-color: rgba(120,180,200,0.5); /* Match showcase card hover border */
   box-shadow: 0 0 10px rgba(88,200,150,0.15), 0 0 15px rgba(120,180,200,0.1), 0 0 25px rgba(88,200,150,0.08); /* Match showcase card variant hover glow */
-  background: rgba(10,10,15,0.08); /* Match showcase card background transparency */
+  background: rgba(10,10,15,0.15); /* Match showcase card background transparency */
   backdrop-filter: blur(8px) saturate(150%); /* Match showcase card backdrop filter */
   transform: none; /* No transform, button stays in place */
   animation: none; /* No animation */
@@ -817,6 +833,7 @@ html {
   background: linear-gradient(135deg, rgba(88,200,150,0.3), rgba(120,180,200,0.3), rgba(88,200,150,0.3)); /* Match showcase card before hover gradient */
   opacity: 1; /* Match showcase card before hover opacity */
   animation: none;
+  z-index: 0;
 }
 
 .showcase-button:active {
