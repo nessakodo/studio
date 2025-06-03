@@ -2319,7 +2319,7 @@ body {
   color: rgba(180,255,255,0.9);
   border-radius: 0.75rem;
   padding: 0.75rem 1rem;
-  box-shadow: 0 0 15px rgba(88,200,150,0.02);
+  box-shadow: none; /* Removed default glow */
   opacity: 0;
   transform: translateY(10px);
   animation: formFieldFadeIn 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
@@ -2342,7 +2342,7 @@ body {
   backdrop-filter: blur(12px) saturate(200%);
   box-shadow: 
     0 0 20px rgba(88,200,150,0.04),
-    0 0 30px rgba(120,180,200,0.03);
+    0 0 30px rgba(120,180,200,0.03); /* Glow on hover */
 }
 
 .form-field-hover:focus {
@@ -2351,7 +2351,7 @@ body {
   backdrop-filter: blur(15px) saturate(220%);
   box-shadow: 
     0 0 25px rgba(88,200,150,0.06),
-    0 0 35px rgba(120,180,200,0.04);
+    0 0 35px rgba(120,180,200,0.04); /* Glow on focus */
   outline: none;
 }
 
@@ -2559,7 +2559,7 @@ html {
   border-radius: 1rem;
   padding: 1.5rem;
   border: 1px solid rgba(180,255,255,0.05);
-  box-shadow: 0 0 20px rgba(88,200,150,0.02);
+  box-shadow: none; /* Explicitly removed default glow from form group */
 }
 
 @keyframes formGroupFadeIn {
@@ -3614,7 +3614,7 @@ html {
   background: rgba(10,10,15,0.05);
   backdrop-filter: blur(8px) saturate(180%);
   border: 1px solid rgba(180,255,255,0.08);
-  box-shadow: 0 0 15px rgba(88,200,150,0.02);
+  box-shadow: none; /* Removed default glow */
 }
 
 .form-field-hover:hover {
@@ -3623,7 +3623,7 @@ html {
   border-color: rgba(180,255,255,0.15);
   box-shadow: 
     0 0 20px rgba(88,200,150,0.04),
-    0 0 30px rgba(120,180,200,0.03);
+    0 0 30px rgba(120,180,200,0.03); /* Glow on hover */
 }
 
 .form-field-hover:focus {
@@ -3632,7 +3632,8 @@ html {
   border-color: rgba(180,255,255,0.2);
   box-shadow: 
     0 0 25px rgba(88,200,150,0.06),
-    0 0 35px rgba(120,180,200,0.04);
+    0 0 35px rgba(120,180,200,0.04); /* Glow on focus */
+  outline: none;
 }
 
 /* Form Group Background */
@@ -3642,7 +3643,7 @@ html {
   border-radius: 1rem;
   padding: 1.5rem;
   border: 1px solid rgba(180,255,255,0.05);
-  box-shadow: 0 0 20px rgba(88,200,150,0.02);
+  box-shadow: none; /* Explicitly removed default glow from form group */
 }
 
 /* Mobile Optimizations */
@@ -3737,20 +3738,19 @@ html {
   padding: 0.75rem 1.5rem;
   font-size: 0.85rem;
   letter-spacing: 0.04em;
-  background: rgba(15,15,20,0.3);
-  border: 1.5px solid rgba(180,255,255,0.08);
-  box-shadow: 
-    0 0 20px rgba(88,200,150,0.05),
-    0 0 30px rgba(120,180,200,0.04);
-  backdrop-filter: blur(10px) saturate(200%);
+  background: transparent; /* Transparent default as requested */
+  border: 1.5px solid rgba(180, 255, 255, 0.08); /* Subtle border */
+  box-shadow: none; /* No default shadow/glow */
+  backdrop-filter: blur(8px) saturate(180%);
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 1.5rem;
+  margin-top: 2rem;
   position: relative;
   overflow: hidden;
-  color: rgba(180,255,255,0.8);
-  text-shadow: 0 0 3px rgba(0,0,0,0.3);
+  color: rgba(255, 255, 255, 0.95); /* White text */
+  text-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); /* Smooth transition for all properties */
 }
 
 .connect-form .unified-button:hover {
@@ -3761,8 +3761,8 @@ html {
     0 0 35px rgba(120,180,200,0.08),
     0 0 45px rgba(88,200,150,0.06);
   backdrop-filter: blur(15px) saturate(220%);
-  transform: translateY(-1px);
-  color: rgba(180,255,255,1);
+  transform: translateY(-1px); /* Subtle lift */
+  color: rgba(255, 255, 255, 1); /* Pure white text on hover */
 }
 
 .connect-form .unified-button .button-icon {
@@ -3865,7 +3865,7 @@ html {
 .connect-form-container {
   background: rgba(15, 20, 15, 0.05); /* Subtle green tint and transparency */
   backdrop-filter: blur(15px) saturate(180%);
-  border: 1px solid rgba(88, 200, 150, 0.12); /* Greenish border matching card outline */
+  border: 1px solid rgba(88, 200, 150, 0.08); /* Greenish border matching card outline, adjusted opacity */
   border-radius: 1.5rem;
   padding: 3rem;
   box-shadow: 
@@ -3880,7 +3880,7 @@ html {
 .connect-form-container:hover {
   background: rgba(20, 25, 20, 0.08); /* Slightly more opaque green on hover */
   backdrop-filter: blur(20px) saturate(200%);
-  border-color: rgba(88, 200, 150, 0.18);
+  border-color: rgba(88, 200, 150, 0.15); /* Greenish border on hover, adjusted opacity */
   box-shadow: 
     0 0 40px rgba(88, 200, 150, 0.1),
     0 0 80px rgba(120, 180, 200, 0.06);
@@ -3892,16 +3892,16 @@ html {
 /* Form Fields */
 /* Reusing form-field-hover from previous edits for consistency */
 
-/* Connect Submit Button - Matches 'discuss your project' button style */
+/* Connect Submit Button - Matches 'discuss your project' button style (Revised) */
 .connect-form .unified-button.primary {
   width: 100%;
   min-height: 3rem;
   padding: 0.85rem 1.5rem;
   font-size: 1rem;
   letter-spacing: 0.05em;
-  background: transparent; /* Transparent default */
+  background: transparent; /* Transparent default as requested */
   border: 1.5px solid rgba(180, 255, 255, 0.08); /* Subtle border */
-  box-shadow: none; /* No default shadow */
+  box-shadow: none; /* No default shadow/glow */
   backdrop-filter: blur(8px) saturate(180%);
   display: flex;
   justify-content: center;
@@ -3909,9 +3909,9 @@ html {
   margin-top: 2rem;
   position: relative;
   overflow: hidden;
-  color: rgba(180, 255, 255, 0.9);
+  color: rgba(255, 255, 255, 0.95); /* White text */
   text-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); /* Smooth transition for all properties */
 }
 
 .connect-form .unified-button.primary::before {
@@ -3923,54 +3923,53 @@ html {
     rgba(88,200,150,0.1),
     rgba(120,180,200,0.1),
     rgba(88,200,150,0.1)
-  ); /* Subtle gradient */
-  opacity: 0;
+  ); /* Subtle gradient for hover fill */
+  opacity: 0; /* Hidden by default */
   transition: opacity 0.4s ease-in-out;
   z-index: 0;
 }
 
 .connect-form .unified-button.primary:hover {
-  background: rgba(20, 20, 30, 0.4); /* Match primary button hover background */
-  border-color: rgba(180, 255, 255, 0.25); /* Match primary button hover border */
+  background: rgba(20, 20, 30, 0.4); /* Darker background on hover */
+  border-color: rgba(180, 255, 255, 0.25); /* Brighter border on hover */
   box-shadow:
-    0 0 25px rgba(88, 200, 150, 0.1),
+    0 0 25px rgba(88, 200, 150, 0.1), /* Glow matching 'discuss project' hover */
     0 0 35px rgba(120, 180, 200, 0.08),
     0 0 45px rgba(88, 200, 150, 0.06);
   backdrop-filter: blur(15px) saturate(220%);
-  transform: translateY(-1px);
-  color: rgba(180, 255, 255, 1);
+  transform: translateY(-1px); /* Subtle lift */
+  color: rgba(255, 255, 255, 1); /* Pure white text on hover */
 }
 
 .connect-form .unified-button.primary:hover::before {
   opacity: 1; /* Show gradient on hover */
 }
 
-/* Button Icon for Send Message - Arrow, Circle, Checkmark Morph */
+/* Button Icon for Send Message */
 .connect-form .unified-button.primary .button-icon {
   width: 1.3rem;
   height: 1.3rem;
   margin-right: 0.75rem;
-  fill: rgba(180, 255, 255, 0.7); /* Default icon color */
+  fill: rgba(255, 255, 255, 0.8); /* Default icon color (near white) */
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   transform-origin: center;
 }
 
 .connect-form .unified-button.primary:hover .button-icon {
   transform: scale(1.1); /* Subtle scale on hover */
-  fill: rgba(180, 255, 255, 1); /* Icon color on hover */
+  fill: rgba(255, 255, 255, 1); /* Icon color on hover (white) */
 }
 
-/* Icon Success Animation */
+/* Icon Success Animation (Sleek Morph) */
 @keyframes iconMorphSuccess {
-  0% { transform: scale(1) rotate(0deg); opacity: 1; } /* Arrow */
-  30% { transform: scale(1.2) rotate(45deg); opacity: 0.8; } /* Transition to circle */
-  60% { transform: scale(1.2) rotate(90deg); opacity: 0.6; } /* Transition to circle */
-  80% { transform: scale(1.1) rotate(135deg); opacity: 0.9; } /* Transition to checkmark */
-  100% { transform: scale(1) rotate(180deg); opacity: 1; } /* Checkmark */
+  0% { transform: scale(1) rotate(0deg); opacity: 1; } /* Start as Arrow */
+  50% { transform: scale(0.8) rotate(180deg); opacity: 0; } /* Intermediate state (briefly disappear) */
+  51% { transform: scale(0.8) rotate(180deg); opacity: 0; fill: rgba(88, 200, 150, 0.0); } /* Switch fill color while hidden */
+  100% { transform: scale(1) rotate(360deg); opacity: 1; fill: rgba(88, 200, 150, 1); } /* End as Checkmark with green fill */
 }
 
 .connect-form .unified-button.primary[data-success="true"] .button-icon {
-  animation: iconMorphSuccess 0.8s ease-in-out forwards; /* Apply animation on success */
+  animation: iconMorphSuccess 0.7s ease-out forwards; /* Apply animation on success, slightly faster */
 }
 
 /* Divider Styling */
@@ -4042,6 +4041,213 @@ html {
   .site-footer {
     padding: 2rem 1rem;
     font-size: 0.8rem;
+  }
+}
+
+/* Connect Form Section - Full Width Card Style */
+.connect-form-section {
+  max-width: 100%; /* Ensure full width */
+  margin: 0 auto;
+  padding: 0 1.5rem; /* Add padding for smaller screens */
+}
+
+.connect-form-container {
+  background: rgba(15, 20, 15, 0.05); /* Subtle green tint and transparency */
+  backdrop-filter: blur(15px) saturate(180%);
+  border: 1px solid rgba(88, 200, 150, 0.1); /* Greenish border matching card outline */
+  border-radius: 1.5rem;
+  padding: 3rem;
+  box-shadow: none; /* Explicitly removed default glow */
+  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+  text-align: left; /* Align form content left */
+}
+
+.connect-form-container:hover {
+  background: rgba(20, 25, 20, 0.08); /* Slightly more opaque green on hover */
+  backdrop-filter: blur(20px) saturate(200%);
+  border-color: rgba(88, 200, 150, 0.15); /* Greenish border on hover */
+  box-shadow: 
+    0 0 40px rgba(88, 200, 150, 0.1),
+    0 0 80px rgba(120, 180, 200, 0.06); /* Glow on hover */
+}
+
+/* Form Field Group */
+.form-group {
+  margin-bottom: 1.5rem;
+  opacity: 0;
+  transform: translateY(10px);
+  animation: formFieldFadeIn 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  background: rgba(10,10,15,0.03);
+  backdrop-filter: blur(8px) saturate(180%);
+  border-radius: 1rem;
+  padding: 1.5rem;
+  border: 1px solid rgba(180,255,255,0.05);
+  box-shadow: none; /* Explicitly removed default glow from form group */
+}
+
+@keyframes formGroupFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.form-group:nth-child(2) {
+  animation-delay: 0.1s;
+}
+
+.form-group:nth-child(3) {
+  animation-delay: 0.2s;
+}
+
+/* Form Fields styles (form-field-hover) */
+.form-field-hover {
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 1px solid rgba(180,255,255,0.08);
+  background: rgba(10,10,15,0.05);
+  backdrop-filter: blur(8px) saturate(180%);
+  color: rgba(180,255,255,0.9);
+  border-radius: 0.75rem;
+  padding: 0.75rem 1rem;
+  box-shadow: none; /* Explicitly removed default glow */
+  opacity: 0;
+  transform: translateY(10px);
+  animation: formFieldFadeIn 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes formFieldFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.form-field-hover:hover {
+  border-color: rgba(180,255,255,0.15);
+  background: rgba(10,10,15,0.08);
+  backdrop-filter: blur(12px) saturate(200%);
+  box-shadow: 
+    0 0 20px rgba(88,200,150,0.04),
+    0 0 30px rgba(120,180,200,0.03); /* Glow on hover */
+}
+
+.form-field-hover:focus {
+  border-color: rgba(180,255,255,0.2);
+  background: rgba(10,10,15,0.1);
+  backdrop-filter: blur(15px) saturate(220%);
+  box-shadow: 
+    0 0 25px rgba(88,200,150,0.06),
+    0 0 35px rgba(120,180,200,0.04); /* Glow on focus */
+  outline: none;
+}
+
+/* Connect Submit Button - Full Width, Unified Style with Arrow to Checkmark Animation */
+.connect-form .unified-button {
+  width: 100%; /* Full width */
+  min-height: 3rem;
+  padding: 0.85rem 1.5rem;
+  font-size: 1rem;
+  letter-spacing: 0.05em;
+  background: transparent; /* Transparent default as requested */
+  border: 1.5px solid rgba(180, 255, 255, 0.08); /* Subtle border matching other unified buttons */
+  box-shadow: none; /* Explicitly removed default shadow/glow */
+  backdrop-filter: blur(8px) saturate(180%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 2rem;
+  position: relative;
+  overflow: hidden;
+  color: rgba(255, 255, 255, 0.95); /* White text */
+  text-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); /* Smooth transition */
+}
+
+.connect-form .unified-button::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(88,200,150,0.1),
+    rgba(120,180,200,0.1),
+    rgba(88,200,150,0.1)
+  ); /* Subtle gradient for hover fill */
+  opacity: 0; /* Hidden by default */
+  transition: opacity 0.4s ease-in-out;
+  z-index: 0;
+}
+
+.connect-form .unified-button:hover {
+  background: rgba(20, 20, 30, 0.4); /* Darker background on hover */
+  border-color: rgba(180, 255, 255, 0.25); /* Brighter border on hover */
+  box-shadow:
+    0 0 25px rgba(88, 200, 150, 0.1), /* Glow matching 'discuss project' hover */
+    0 0 35px rgba(120, 180, 200, 0.08),
+    0 0 45px rgba(88, 200, 150, 0.06);
+  backdrop-filter: blur(15px) saturate(220%);
+  transform: translateY(-1px); /* Subtle lift */
+  color: rgba(255, 255, 255, 1); /* Pure white text on hover */
+}
+
+.connect-form .unified-button:hover::before {
+  opacity: 1; /* Show gradient on hover */
+}
+
+/* Button Icon for Send Message (Arrow/Checkmark) */
+.connect-form .unified-button .button-icon {
+  width: 1.3rem;
+  height: 1.3rem;
+  margin-right: 0.75rem;
+  fill: rgba(255, 255, 255, 0.8); /* Default icon color (near white) */
+  transition: transform 0.3s ease-out, opacity 0.3s ease-out, fill 0.3s ease-out; /* Smooth transition for icon properties */
+  transform-origin: center;
+}
+
+/* Icon Success Animation (Sleek Arrow to Checkmark) */
+@keyframes iconMorphSuccessSleek {
+  0% { transform: scale(1) rotate(0deg); opacity: 1; fill: rgba(255, 255, 255, 0.8); } /* Start as Arrow, visible, default color */
+  49% { transform: scale(0.8) rotate(45deg); opacity: 0; } /* Arrow shrinks, rotates, fades out */
+  50% { transform: scale(0.8) rotate(45deg); opacity: 0; fill: rgba(88, 200, 150, 0); } /* Hold hidden, switch fill color transparent */
+  51% { transform: scale(0.8) rotate(180deg); opacity: 0; fill: rgba(88, 200, 150, 1); } /* Rotate to checkmark orientation, fill color green, still hidden */
+  100% { transform: scale(1) rotate(360deg); opacity: 1; fill: rgba(88, 200, 150, 1); } /* Checkmark scales up, rotates, fades in with green fill */
+}
+
+.connect-form .unified-button[data-success="true"] .button-icon {
+  animation: iconMorphSuccessSleek 0.7s ease-in-out forwards; /* Apply animation on success */
+}
+
+/* Mobile Optimizations */
+@media (max-width: 768px) {
+  .connect-form-section {
+    padding: 0 1rem; /* Adjust padding for mobile */
+  }
+
+  .connect-form-container {
+    padding: 2rem 1.5rem; /* Adjust padding */
+    border-radius: 1rem; /* Adjust border radius */
+  }
+
+  .connect-form .unified-button {
+    min-height: 2.75rem;
+    padding: 0.6rem 1.2rem;
+    font-size: 0.9rem;
+  }
+
+  .connect-form .unified-button .button-icon {
+    width: 1.1rem;
+    height: 1.1rem;
+    margin-right: 0.5rem;
   }
 }
 .file\:border-0::file-selector-button {
