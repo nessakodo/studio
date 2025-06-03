@@ -512,13 +512,11 @@ export default function Page() {
                   <div className="mt-auto flex flex-row gap-4">
                     <Button className="unified-button showcase-button">
                       <span className="button-content">
-                        <ExternalLink className="button-icon" />
                         LIVE DEMO
                       </span>
                     </Button>
                     <Button className="unified-button showcase-button">
                       <span className="button-content">
-                        <ArrowRight className="button-icon" />
                         CASE STUDY
                       </span>
                     </Button>

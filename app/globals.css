@@ -218,11 +218,11 @@ body {
 }
 
 .unified-card:hover {
-  box-shadow: 0 0 35px rgba(120,150,180,0.4), 0 0 60px rgba(140,100,180,0.3), 0 0 90px rgba(120,150,180,0.25);
-  border-color: rgba(150,180,200,0.7);
-  transform: translateY(-4px);
-  background: rgba(30,30,45,0.7);
-  backdrop-filter: blur(25px) brightness(1.3);
+  box-shadow: 0 0 25px rgba(120,150,180,0.3), 0 0 40px rgba(140,100,180,0.2), 0 0 60px rgba(120,150,180,0.15);
+  border-color: rgba(150,180,200,0.5);
+  transform: translateY(-2px);
+  background: rgba(30,30,45,0.5);
+  backdrop-filter: blur(15px) brightness(1.1);
   animation: cardHoverGlow 2s infinite ease-in-out;
 }
 
@@ -230,43 +230,41 @@ body {
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(135deg, rgba(88,200,150,0.1), rgba(147,112,219,0.1), rgba(88,200,150,0.1));
+  background: linear-gradient(135deg, rgba(88,200,150,0.08), rgba(120,180,200,0.08), rgba(88,200,150,0.08));
   opacity: 0;
   transition: opacity 0.4s ease-in-out;
 }
 
 .unified-card:hover::before {
-  opacity: 1;
+  opacity: 0.8;
 }
 
 /* Unified Button System */
-.unified-button,
-.showcase-button {
+.unified-button, 
+.showcase-button { /* Apply to both types */
   display: block;
   width: 100%;
   box-sizing: border-box;
-  border: 1.5px solid rgba(100,150,200,0.1);
-  background: transparent;
+  border: 1.5px solid rgba(180,255,255,0.08); /* Subtle default border */
+  background: rgba(10,10,15,0.1); /* Subtle dark background */
   border-radius: 0.6rem;
-  backdrop-filter: blur(5px) saturate(140%);
+  backdrop-filter: blur(6px) saturate(130%);
   transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1), background-position 0.4s ease-in-out;
   overflow: hidden;
   padding: 0.4rem 0.7rem;
   font-size: 0.8rem;
   font-weight: 500;
   letter-spacing: 0.02em;
-  color: #c0c0c0;
+  color: #c0c0c0; /* Default text color */
   text-shadow: 0 0 3px rgba(0,0,0,0.3);
   min-height: 2.2rem;
   position: relative;
-  box-shadow: 0 0 3px rgba(80,120,160,0.04), 0 0 6px rgba(100,80,140,0.03);
-  background-image: linear-gradient(90deg, rgba(88,200,150,0), rgba(120,180,200,0), rgba(88,200,150,0));
-  background-size: 200% 100%;
-  background-position: 0% 50%;
+  box-shadow: 0 0 4px rgba(127,255,212,0.02); /* Subtle default glow */
 }
 
+/* Primary Button - Keep distinct default */
 .unified-button.primary {
-  background: transparent;
+  background: rgba(10,10,15,0.2); /* Slightly more visible */
   border-color: rgba(127,255,212,0.15);
   box-shadow: 0 0 6px rgba(127,255,212,0.08), 0 0 8px rgba(120,180,200,0.06);
   color: #fff;
@@ -276,9 +274,6 @@ body {
   font-size: 0.9rem;
   padding: 0.65rem 1.2rem;
   letter-spacing: 0.04em;
-  background-image: linear-gradient(90deg, rgba(88,200,150,0), rgba(120,180,200,0), rgba(88,200,150,0));
-  background-size: 200% 100%;
-  background-position: 0% 50%;
 }
 
 .unified-button .button-content,
@@ -291,76 +286,115 @@ body {
   font-weight: 500;
   letter-spacing: 0.02em;
   text-shadow: 0 0 3px rgba(0,0,0,0.3);
-  color: #c0c0c0;
+  color: #c0c0c0; /* Default text color */
   font-size: 0.8rem;
   box-sizing: border-box;
+  position: relative; /* Ensure content is above pseudo-element */
+  z-index: 1;
 }
 
 .unified-button.primary .button-content {
-  color: #fff;
+  color: #fff; /* Primary button text color */
   gap: 0.75rem;
   font-size: 0.9rem;
   letter-spacing: 0.04em;
   text-shadow: 0 0 5px rgba(0,0,0,0.5);
 }
 
-.unified-button:hover,
+/* Hover state for both types */
+.unified-button:hover, 
 .showcase-button:hover {
-  border-color: rgba(127,255,212,0.3);
-  box-shadow: 0 0 12px rgba(127,255,212,0.12), 0 0 25px rgba(120,180,200,0.08), 0 0 35px rgba(127,255,212,0.06);
-  background-image: linear-gradient(90deg, rgba(88,200,150,0.15), rgba(120,180,200,0.15), rgba(88,200,150,0.15));
-  background-position: 100% 50%;
-  backdrop-filter: blur(15px) brightness(1.2);
+  border-color: rgba(150,180,200,0.5); /* Matches card border */
+  box-shadow: 0 0 25px rgba(120,150,180,0.3), 0 0 40px rgba(140,100,180,0.2), 0 0 60px rgba(120,150,180,0.15); /* Matches card glow */
+  background: rgba(30,30,45,0.5); /* Matches card background */
+  backdrop-filter: blur(15px) brightness(1.1); /* Matches card backdrop */
   outline: none;
-  animation: buttonGlowPulse 2s infinite ease-in-out, primaryGradientMove 4s ease-in-out infinite;
-  color: #fff;
+  color: #fff; /* White text on hover */
+  transform: translateY(-1px); /* Slight lift effect */
+  animation: buttonHoverGlow 2s infinite ease-in-out; /* New animation for button hover */
 }
 
+/* Primary Button Hover state */
 .unified-button.primary:hover {
-    border-color: rgba(127,255,212,0.3);
-    box-shadow: 0 0 15px rgba(127,255,212,0.2), 0 0 30px rgba(120,180,200,0.15), 0 0 45px rgba(127,255,212,0.1);
-    background-image: linear-gradient(90deg, rgba(88,200,150,0.25), rgba(120,180,200,0.25), rgba(88,200,150,0.25));
-    background-size: 200% 100%;
-    background-position: 100% 50%;
-    animation: buttonPrimaryHoverGlowPulse 2.5s infinite ease-in-out, primaryGradientMove 4s ease-in-out infinite;
+    border-color: rgba(127,255,212,0.3); /* Slightly stronger border */
+    box-shadow: 0 0 15px rgba(127,255,212,0.2), 0 0 30px rgba(120,180,200,0.15), 0 0 45px rgba(127,255,212,0.1); /* Stronger primary glow */
+    background: rgba(30,30,45,0.7); /* Slightly more solid */
+    backdrop-filter: blur(15px) brightness(1.2); /* Slightly stronger backdrop */
+    animation: buttonPrimaryHoverGlowPulse 2.5s infinite ease-in-out; /* Keep primary specific animation */
     color: #fff;
 }
 
-.unified-button:active,
+/* Active state for both types */
+.unified-button:active, 
 .showcase-button:active {
-  border-color: rgba(127,255,212,0.25);
-  box-shadow: 0 0 8px rgba(127,255,212,0.08), 0 0 15px rgba(120,180,200,0.06);
-  background-image: linear-gradient(90deg, rgba(88,200,150,0.25), rgba(120,180,200,0.25), rgba(88,200,150,0.25));
-  background-position: 100% 50%;
-  backdrop-filter: blur(12px) brightness(1.2);
+  border-color: rgba(150,180,200,0.4); /* Slightly less intense */
+  box-shadow: 0 0 15px rgba(120,150,180,0.25), 0 0 25px rgba(140,100,180,0.15); /* Less intense glow */
+  background: rgba(30,30,45,0.6); /* Slightly more solid */
+  backdrop-filter: blur(10px) brightness(1.1);
   color: #fff;
-  animation: primaryGradientMove 4s ease-in-out infinite;
+  transform: translateY(0); /* Reset lift */
+  animation: none; /* Remove pulse on active */
 }
 
+/* Primary Button Active state */
 .unified-button.primary:active {
     border-color: rgba(127,255,212,0.25);
     box-shadow: 0 0 12px rgba(127,255,212,0.15), 0 0 20px rgba(120,180,200,0.1);
-    background-image: linear-gradient(90deg, rgba(88,200,150,0.35), rgba(120,180,200,0.35), rgba(88,200,150,0.35));
-    background-size: 200% 100%;
-    background-position: 100% 50%;
-    animation: buttonPrimaryHoverGlowPulse 2.5s infinite ease-in-out, primaryGradientMove 4s ease-in-out infinite;
+    background: rgba(30,30,45,0.8);
+    backdrop-filter: blur(12px) brightness(1.2);
     color: #fff;
+    animation: none;
+}
+
+/* Gradient overlay on hover for both types */
+.unified-button::before, 
+.showcase-button::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, 
+    rgba(88,200,150,0.05), /* Subtle mint */
+    rgba(120,180,200,0.05), /* Subtle blue */
+    rgba(88,200,150,0.05) /* Subtle mint */
+  );
+  background-size: 200% 100%;
+  background-position: 0% 50%;
+  opacity: 0;
+  transition: opacity 0.4s ease, background-position 0.4s ease;
+  z-index: 0; /* Ensure gradient is below content */
+}
+
+.unified-button:hover::before, 
+.showcase-button:hover::before {
+  opacity: 1; /* Make gradient visible on hover */
+  background-position: 100% 50%; /* Animate gradient */
+  animation: primaryGradientMove 4s ease-in-out infinite; /* Animate gradient movement */
+}
+
+/* Primary Button Gradient on Hover - Slightly more intense */
+.unified-button.primary::before {
+    background: linear-gradient(90deg, 
+        rgba(88,200,150,0.1), 
+        rgba(120,180,200,0.1), 
+        rgba(88,200,150,0.1)
+    );
+}
+.unified-button.primary:hover::before {
+    opacity: 1;
+    background-position: 100% 50%;
+    animation: primaryGradientMove 4s ease-in-out infinite;
 }
 
 @media (max-width: 768px) {
-  .unified-button,
+  .unified-button, 
   .showcase-button {
     font-size: 0.65rem;
     padding: 0.25rem 0.35rem;
     min-height: 1.4rem;
   }
-  .unified-button .button-content,
+  .unified-button .button-content, 
   .showcase-button .button-content {
     font-size: 0.65rem;
-  }
-  .button-icon {
-    width: 0.9rem;
-    height: 0.9rem;
   }
 }
 
@@ -369,35 +403,36 @@ body {
   height: 1rem;
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   transform-origin: center;
-  color: rgba(180,255,255,0.7);
+  color: rgba(180,255,255,0.7); /* Default icon color */
+  z-index: 1; /* Ensure icon is above pseudo-element */
 }
 
 .unified-button.primary .button-icon {
-    color: #fff;
+    color: #fff; /* Primary icon color */
 }
 
 .button-icon path {
-  stroke: rgba(180,255,255,0.7);
+  stroke: rgba(180,255,255,0.7); /* Default icon stroke */
   fill: none;
   transition: stroke 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .unified-button.primary .button-icon path {
-    stroke: #fff;
+    stroke: #fff; /* Primary icon stroke */
 }
 
 .unified-button:hover .button-icon {
-  transform: translateX(2px) scale(1.05);
-  color: #fff;
+  transform: scale(1.05); /* Subtle scale on hover */
+  color: #fff; /* White icon on hover */
 }
 
 .unified-button.primary:hover .button-icon {
-    transform: translateX(4px) scale(1.1);
+    transform: scale(1.1); /* Slightly larger scale */
 }
 
 .unified-button:hover .button-icon path,
 .unified-button.primary:hover .button-icon path {
-  stroke: #fff;
+  stroke: #fff; /* White stroke on hover */
 }
 
 .success-icon {
@@ -502,13 +537,13 @@ html {
 
 @keyframes cardHoverGlow {
   0% {
-    box-shadow: 0 0 35px rgba(120,150,180,0.4), 0 0 60px rgba(140,100,180,0.3), 0 0 90px rgba(120,150,180,0.25);
+    box-shadow: 0 0 25px rgba(120,150,180,0.3), 0 0 40px rgba(140,100,180,0.2), 0 0 60px rgba(120,150,180,0.15);
   }
   50% {
-    box-shadow: 0 0 45px rgba(120,150,180,0.5), 0 0 70px rgba(140,100,180,0.4), 0 0 100px rgba(120,150,180,0.35);
+    box-shadow: 0 0 30px rgba(120,150,180,0.35), 0 0 50px rgba(140,100,180,0.25), 0 0 70px rgba(120,150,180,0.2);
   }
   100% {
-    box-shadow: 0 0 35px rgba(120,150,180,0.4), 0 0 60px rgba(140,100,180,0.3), 0 0 90px rgba(120,150,180,0.25);
+    box-shadow: 0 0 25px rgba(120,150,180,0.3), 0 0 40px rgba(140,100,180,0.2), 0 0 60px rgba(120,150,180,0.15);
   }
 }
 
@@ -737,16 +772,122 @@ html {
   letter-spacing: 0.06em;
   padding: 0.5rem 1rem;
   border-radius: 0.65rem;
-  gap: 0.6rem;
   flex: 1;
   box-sizing: border-box;
+  background: transparent;
+  border: 1px solid rgba(180,255,255,0.08);
+  box-shadow: 0 0 4px rgba(127,255,212,0.03);
+  backdrop-filter: blur(4px);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.showcase-button::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, 
+    rgba(88,200,150,0), 
+    rgba(120,180,200,0), 
+    rgba(88,200,150,0)
+  );
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.showcase-button:hover {
+  border-color: rgba(180,255,255,0.15);
+  box-shadow: 0 0 8px rgba(127,255,212,0.08), 0 0 15px rgba(120,180,200,0.06);
+  background: transparent;
+  transform: translateY(-1px);
+}
+
+.showcase-button:hover::before {
+  opacity: 0.15;
+  animation: showcaseGradientMove 3s ease-in-out infinite;
+}
+
+.showcase-button:active {
+  border-color: rgba(180,255,255,0.12);
+  box-shadow: 0 0 6px rgba(127,255,212,0.06);
+  transform: translateY(0);
+  background: rgba(88,200,150,0.05);
+}
+
+.showcase-button .button-content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(180,255,255,0.8);
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.showcase-button:hover .button-content {
+  color: rgba(180,255,255,1);
+}
+
+/* Button Group Outline for Showcase */
+.button-group-outline {
+  display: flex;
+  gap: 0.8rem; /* Adjusted gap */
+  padding: 0.25rem; /* Adjusted padding */
+  border: 1px solid rgba(180,255,255,0.08);
+  border-radius: 0.7rem; /* Adjusted radius */
+  background: rgba(0,0,0,0.1); /* Subtle background */
+  box-shadow: 0 0 4px rgba(127,255,212,0.02); /* Subtle glow */
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+  backdrop-filter: blur(4px);
+  transition: all 0.4s ease;
+}
+
+.button-group-outline:hover {
+  border-color: rgba(180,255,255,0.15);
+  box-shadow: 0 0 8px rgba(127,255,212,0.08), 0 0 15px rgba(120,180,200,0.06);
+  background: rgba(0,0,0,0.15);
+}
+
+.button-group-outline .unified-button, /* Use unified-button class */
+.button-group-outline .showcase-button {
+  border: 1px solid rgba(180,255,255,0.08); /* Override border if needed */
+  box-shadow: none; /* Remove individual button shadow */
+  background: transparent; /* Transparent background */
+  border-radius: 0.55rem; /* Slightly smaller radius than group */
+  box-sizing: border-box;
+  padding: 0.35rem 0.6rem; /* Adjust padding */
+  font-size: 0.75rem; /* Adjust font size */
+  min-height: 2rem; /* Adjust min height */
+}
+
+.button-group-outline .unified-button:hover, 
+.button-group-outline .showcase-button:hover {
+  border-color: rgba(180,255,255,0.15);
+  box-shadow: 0 0 8px rgba(127,255,212,0.08); /* Subtle glow on individual hover */
+  background: rgba(10,10,15,0.1); /* Subtle background on hover */
+  transform: none; /* Remove lift effect */
+  animation: none; /* Remove pulse animation */
 }
 
 @media (max-width: 768px) {
-  .showcase-button {
-    font-size: 0.72rem;
-    padding: 0.42rem 0.7rem;
-    gap: 0.5rem;
+  .button-group-outline {
+    flex-direction: column;
+    gap: 0.6rem; /* Adjusted gap */
+    padding: 0.15rem; /* Adjusted padding */
+    border-radius: 0.6rem; /* Adjusted radius */
+  }
+  .button-group-outline .unified-button, 
+  .button-group-outline .showcase-button {
+    width: 100%;
+    justify-content: center;
+    font-size: 0.7rem; /* Adjust font size */
+    padding: 0.3rem 0.5rem; /* Adjust padding */
+    min-height: 1.8rem; /* Adjust min height */
+    border-radius: 0.5rem; /* Adjust radius */
   }
 }
 
@@ -768,50 +909,51 @@ html {
 }
 
 /* Unified Card Font Sizing */
-.showcase-title,
-.showcase-desc,
-.showcase-meta,
-.showcase-button {
-  font-size: 0.93rem;
+/* Adjust font sizes for buttons within cards */
+.unified-card .unified-button,
+.unified-card .showcase-button {
+  font-size: 0.93rem; /* Match thinking card buttons */
 }
 
 @media (max-width: 768px) {
-  .showcase-title,
-  .showcase-desc,
-  .showcase-meta,
-  .showcase-button {
-    font-size: 0.88rem;
+  .unified-card .unified-button,
+  .unified-card .showcase-button {
+    font-size: 0.88rem; /* Match thinking card buttons mobile */
   }
 }
 
-/* Button Group Outline for Showcase */
-.button-group-outline {
-  display: flex;
-  gap: 1rem;
-  padding: 0.3rem;
-  border: 2px solid rgba(180,255,255,0.18);
-  border-radius: 0.8rem;
-  background: rgba(0,0,0,0.18);
-  box-shadow: none;
-  justify-content: center;
-  align-items: center;
-  box-sizing: border-box;
-}
-.button-group-outline .showcase-button {
-  border: 1.5px solid rgba(180,255,255,0.18) !important;
-  box-shadow: none !important;
-  border-radius: 0.65rem;
-  background: transparent;
-  box-sizing: border-box;
-}
-@media (max-width: 768px) {
-  .button-group-outline {
-    flex-direction: column;
-    gap: 0.7rem;
-    padding: 0.18rem;
+@keyframes buttonHoverGlow {
+  0% {
+    box-shadow: 0 0 25px rgba(120,150,180,0.3), 0 0 40px rgba(140,100,180,0.2), 0 0 60px rgba(120,150,180,0.15);
   }
-  .button-group-outline .showcase-button {
-    width: 100%;
-    justify-content: center;
+  50% {
+    box-shadow: 0 0 30px rgba(120,150,180,0.35), 0 0 50px rgba(140,100,180,0.25), 0 0 70px rgba(120,150,180,0.2);
+  }
+  100% {
+    box-shadow: 0 0 25px rgba(120,150,180,0.3), 0 0 40px rgba(140,100,180,0.2), 0 0 60px rgba(120,150,180,0.15);
+  }
+}
+
+@keyframes buttonPrimaryHoverGlowPulse {
+    0% {
+      box-shadow: 0 0 15px rgba(127,255,212,0.2), 0 0 30px rgba(120,180,200,0.15), 0 0 45px rgba(127,255,212,0.1);
+    }
+    50% {
+      box-shadow: 0 0 20px rgba(127,255,212,0.25), 0 0 40px rgba(120,180,200,0.2), 0 0 55px rgba(127,255,212,0.15);
+    }
+    100% {
+      box-shadow: 0 0 15px rgba(127,255,212,0.2), 0 0 30px rgba(120,180,200,0.15), 0 0 45px rgba(127,255,212,0.1);
+    }
+  }
+
+@keyframes showcaseGradientMove {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
   }
 }
