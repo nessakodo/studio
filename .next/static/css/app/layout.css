@@ -2269,11 +2269,11 @@ body {
   display: block;
   width: 100%;
   box-sizing: border-box;
-  border: 1.5px solid rgba(100,150,200,0.15);
+  border: 1.5px solid rgba(100,150,200,0.1);
   background: transparent;
   border-radius: 0.6rem;
   backdrop-filter: blur(5px) saturate(140%);
-  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1), background-position 0.4s ease-in-out;
   overflow: hidden;
   padding: 0.4rem 0.7rem;
   font-size: 0.8rem;
@@ -2283,21 +2283,26 @@ body {
   text-shadow: 0 0 3px rgba(0,0,0,0.3);
   min-height: 2.2rem;
   position: relative;
-  box-shadow: 0 0 5px rgba(80,120,160,0.06), 0 0 8px rgba(100,80,140,0.04);
+  box-shadow: 0 0 3px rgba(80,120,160,0.04), 0 0 6px rgba(100,80,140,0.03);
+  background-image: linear-gradient(90deg, rgba(88,200,150,0), rgba(120,180,200,0), rgba(88,200,150,0));
+  background-size: 200% 100%;
+  background-position: 0% 50%;
 }
 
 .unified-button.primary {
-  background: linear-gradient(90deg, rgba(150,255,200,0.2), rgba(180,200,255,0.2), rgba(150,255,200,0.2));
-  background-size: 200% 100%;
-  border-color: rgba(127,255,212,0.5);
-  box-shadow: 0 0 18px rgba(127,255,212,0.3), 0 0 24px rgba(147,112,219,0.2);
+  background: transparent;
+  border-color: rgba(127,255,212,0.15);
+  box-shadow: 0 0 6px rgba(127,255,212,0.08), 0 0 8px rgba(120,180,200,0.06);
   color: #fff;
-  backdrop-filter: blur(12px) saturate(180%);
+  backdrop-filter: blur(8px) saturate(150%);
   transition: all 0.4s ease-in-out, background-position 0.6s ease-in-out;
   min-height: 2.75rem;
   font-size: 0.9rem;
   padding: 0.65rem 1.2rem;
   letter-spacing: 0.04em;
+  background-image: linear-gradient(90deg, rgba(88,200,150,0), rgba(120,180,200,0), rgba(88,200,150,0));
+  background-size: 200% 100%;
+  background-position: 0% 50%;
 }
 
 .unified-button .button-content,
@@ -2325,37 +2330,44 @@ body {
 
 .unified-button:hover,
 .showcase-button:hover {
-  border-color: rgba(127,255,212,0.5);
-  box-shadow: 0 0 20px rgba(127,255,212,0.2), 0 0 35px rgba(147,112,219,0.15), 0 0 50px rgba(127,255,212,0.1);
-  background: linear-gradient(135deg, rgba(88,200,150,0.25), rgba(147,112,219,0.25));
+  border-color: rgba(127,255,212,0.3);
+  box-shadow: 0 0 12px rgba(127,255,212,0.12), 0 0 25px rgba(120,180,200,0.08), 0 0 35px rgba(127,255,212,0.06);
+  background-image: linear-gradient(90deg, rgba(88,200,150,0.15), rgba(120,180,200,0.15), rgba(88,200,150,0.15));
+  background-position: 100% 50%;
   backdrop-filter: blur(15px) brightness(1.2);
   outline: none;
-  animation: buttonGlowPulse 2s infinite ease-in-out;
+  animation: buttonGlowPulse 2s infinite ease-in-out, primaryGradientMove 4s ease-in-out infinite;
   color: #fff;
 }
 
 .unified-button.primary:hover {
-    border-color: rgba(127,255,212,0.8);
-    box-shadow: 0 0 35px rgba(127,255,212,0.45), 0 0 50px rgba(147,112,219,0.35), 0 0 80px rgba(127,255,212,0.3);
+    border-color: rgba(127,255,212,0.3);
+    box-shadow: 0 0 15px rgba(127,255,212,0.2), 0 0 30px rgba(120,180,200,0.15), 0 0 45px rgba(127,255,212,0.1);
+    background-image: linear-gradient(90deg, rgba(88,200,150,0.25), rgba(120,180,200,0.25), rgba(88,200,150,0.25));
+    background-size: 200% 100%;
     background-position: 100% 50%;
-    animation: buttonPrimaryGlowPulse 2.5s infinite ease-in-out, primaryGradientMove 4s ease-in-out infinite;
+    animation: buttonPrimaryHoverGlowPulse 2.5s infinite ease-in-out, primaryGradientMove 4s ease-in-out infinite;
     color: #fff;
 }
 
 .unified-button:active,
 .showcase-button:active {
-  border-color: rgba(127,255,212,0.3);
-  box-shadow: 0 0 12px rgba(127,255,212,0.12), 0 0 20px rgba(147,112,219,0.08);
-  background: rgba(40,40,60,0.7);
+  border-color: rgba(127,255,212,0.25);
+  box-shadow: 0 0 8px rgba(127,255,212,0.08), 0 0 15px rgba(120,180,200,0.06);
+  background-image: linear-gradient(90deg, rgba(88,200,150,0.25), rgba(120,180,200,0.25), rgba(88,200,150,0.25));
+  background-position: 100% 50%;
   backdrop-filter: blur(12px) brightness(1.2);
   color: #fff;
+  animation: primaryGradientMove 4s ease-in-out infinite;
 }
 
 .unified-button.primary:active {
-    border-color: rgba(127,255,212,0.6);
-    box-shadow: 0 0 20px rgba(127,255,212,0.25), 0 0 35px rgba(147,112,219,0.2);
+    border-color: rgba(127,255,212,0.25);
+    box-shadow: 0 0 12px rgba(127,255,212,0.15), 0 0 20px rgba(120,180,200,0.1);
+    background-image: linear-gradient(90deg, rgba(88,200,150,0.35), rgba(120,180,200,0.35), rgba(88,200,150,0.35));
+    background-size: 200% 100%;
     background-position: 100% 50%;
-    animation: buttonPrimaryGlowPulse 2.5s infinite ease-in-out, primaryGradientMove 4s ease-in-out infinite;
+    animation: buttonPrimaryHoverGlowPulse 2.5s infinite ease-in-out, primaryGradientMove 4s ease-in-out infinite;
     color: #fff;
 }
 
@@ -2504,25 +2516,25 @@ html {
 
 @keyframes buttonGlowPulse {
   0% {
-    box-shadow: 0 0 8px rgba(80,120,160,0.1), 0 0 12px rgba(100,80,140,0.08);
+    box-shadow: 0 0 3px rgba(80,120,160,0.04), 0 0 6px rgba(100,80,140,0.03);
   }
   50% {
-    box-shadow: 0 0 20px rgba(127,255,212,0.2), 0 0 35px rgba(147,112,219,0.15), 0 0 50px rgba(127,255,212,0.1);
+    box-shadow: 0 0 12px rgba(127,255,212,0.12), 0 0 25px rgba(120,180,200,0.08), 0 0 35px rgba(127,255,212,0.06);
   }
   100% {
-    box-shadow: 0 0 8px rgba(80,120,160,0.1), 0 0 12px rgba(100,80,140,0.08);
+    box-shadow: 0 0 3px rgba(80,120,160,0.04), 0 0 6px rgba(100,80,140,0.03);
   }
 }
 
 @keyframes buttonPrimaryGlowPulse {
     0% {
-      box-shadow: 0 0 18px rgba(127,255,212,0.25), 0 0 24px rgba(147,112,219,0.18);
+      box-shadow: 0 0 6px rgba(127,255,212,0.08), 0 0 8px rgba(120,180,200,0.06);
     }
     50% {
-      box-shadow: 0 0 40px rgba(127,255,212,0.5), 0 0 60px rgba(147,112,219,0.4), 0 0 90px rgba(127,255,212,0.35);
+      box-shadow: 0 0 15px rgba(127,255,212,0.2), 0 0 30px rgba(120,180,200,0.15), 0 0 45px rgba(127,255,212,0.1);
     }
     100% {
-      box-shadow: 0 0 18px rgba(127,255,212,0.25), 0 0 24px rgba(147,112,219,0.18);
+      box-shadow: 0 0 6px rgba(127,255,212,0.08), 0 0 8px rgba(120,180,200,0.06);
     }
   }
 
