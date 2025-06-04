@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Card, CardContent } from "@/components/ui/card"
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import { ExternalLink, ArrowRight, ChevronUp, Mail, Calendar, Search } from "lucide-react"
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -15,6 +15,13 @@ import emailjs from '@emailjs/browser';
 import { EMAILJS_CONFIG } from './config/emailjs';
 import ThinkingUniverse from "./components/ThinkingUniverse"
 import BlogPagination from "./components/BlogPagination"
+import ExpertiseCard from "@/components/ExpertiseCard";
+import SpotlightOverlay from "../components/SpotlightOverlay"
+import { cn } from "@/lib/utils"
+import { motion } from "framer-motion"
+import EtherealSoftwareIcon from "@/components/EtherealSoftwareIcon";
+import EtherealSecurityIcon from "@/components/EtherealSecurityIcon";
+import EtherealTransformationIcon from "@/components/EtherealTransformationIcon";
 
 // Form validation schema
 const formSchema = z.object({
@@ -32,19 +39,177 @@ const WEB3FORMS_ACCESS_KEY = process.env.NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY || pro
 // Define posts per page for the thinking section
 const POSTS_PER_PAGE = 3;
 
+// Sample SVG Animation Component (Shield) - Enhanced
+const ShieldAnimation = () => (
+  <motion.svg
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 100 100"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    className="h-24 w-24 text-mint-400 drop-shadow-[0_0_5px_rgba(108,200,170,0.5)]"
+    initial={{ opacity: 0, scale: 0.8 }}
+    animate={{ opacity: 1, scale: 1 }}
+    transition={{ duration: 0.6, ease: "easeOut" }}
+  >
+    {/* Base Shield Outline - Drawn first */}
+    <motion.path 
+      d="M10 30 Q 10 10, 30 10 L 70 10 Q 90 10, 90 30 L 90 70 Q 90 90, 70 90 L 30 90 Q 10 90, 10 70 L 10 30 Z"
+      initial={{ pathLength: 0, opacity: 0.5 }}
+      animate={{ pathLength: 1, opacity: 1 }}
+      transition={{ duration: 1.2, ease: "easeInOut" }}
+      stroke="rgba(108,200,170,0.8)"
+      strokeWidth="3"
+    />
+
+    {/* Inner Security Layers - Appear with delay */}
+    <motion.path
+      d="M25 40 L 50 25 L 75 40 L 75 60 L 50 75 L 25 60 Z"
+      initial={{ opacity: 0, scale: 0.8 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ duration: 0.6, delay: 0.5, ease: "easeOut" }}
+      stroke="rgba(108,200,170,0.6)"
+      fill="rgba(108,200,170,0.1)"
+    />
+    <motion.path
+      d="M35 50 L 50 41 L 65 50 L 65 50 L 50 59 L 35 50 Z"
+      initial={{ opacity: 0, scale: 0.8 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ duration: 0.6, delay: 0.7, ease: "easeOut" }}
+      stroke="rgba(108,200,170,0.6)"
+      fill="rgba(108,200,170,0.1)"
+    />
+
+    {/* Central Lock Icon - Appears last */}
+    <motion.circle cx="50" cy="50" r="8"
+      initial={{ scale: 0, opacity: 0 }}
+      animate={{ scale: 1, opacity: 1 }}
+      transition={{ duration: 0.5, delay: 1, ease: "easeOut" }}
+      stroke="rgba(108,200,170,0.9)"
+      strokeWidth="2"
+      fill="rgba(108,200,170,0.2)"
+    />
+     <motion.path d="M50 42 L 50 35"
+      initial={{ pathLength: 0, opacity: 0 }}
+      animate={{ pathLength: 1, opacity: 1 }}
+      transition={{ duration: 0.3, delay: 1.3, ease: "easeOut" }}
+      stroke="rgba(108,200,170,0.9)"
+      strokeWidth="2"
+    />
+
+  </motion.svg>
+);
+
+// Sample Code Animation Placeholder - Moved from ExpertiseCard
+const CodeAnimation = () => (
+  <div className="text-sm font-mono text-sage-400">
+    <motion.p
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5, delay: 0.1 }}
+    >
+      {`const secureFunction = (data) => {`}
+    </motion.p>
+     <motion.p
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5, delay: 0.3 }}
+    >
+      {`  // Validate and sanitize`}
+    </motion.p>
+     <motion.p
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5, delay: 0.5 }}
+    >
+      {`  return processedData;`}
+    </motion.p>
+    <motion.p
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5, delay: 0.7 }}
+    >
+      {`};`}
+    </motion.p>
+  </div>
+);
+
+// Sample Nodes Animation Placeholder - Moved from ExpertiseCard
+const NodesAnimation = () => (
+   <div className="w-full h-full relative">
+     <motion.div
+       className="absolute inset-0 flex items-center justify-center"
+       initial={{ opacity: 0 }}
+       animate={{ opacity: 1 }}
+       transition={{ duration: 0.5 }}
+     >
+       {/* Replace with actual node/line SVG or Canvas animation */}
+       <div className="w-16 h-16 rounded-full bg-mist-400/30 animate-pulse"></div>
+     </motion.div>
+  </div>
+);
+
+const renderAnimation = (animationType: 'code' | 'shield' | 'nodes' | undefined) => {
+  switch (animationType) {
+    case 'shield':
+      return <ShieldAnimation />;
+    case 'code':
+      return <CodeAnimation />;
+    case 'nodes':
+      return <NodesAnimation />;
+    default:
+      return null;
+  }
+};
+
+// Define type for Expertise Pillar data
+interface ExpertisePillar {
+  title: string;
+  description: string;
+  microcopy: string;
+  animationType?: 'code' | 'shield' | 'nodes';
+}
+
+// Define data for Expertise section
+const expertiseData: ExpertisePillar[] = [
+  {
+    title: "FUTURE-PROOF SOFTWARE",
+    description: "We craft intelligent, secure applications that evolve with your business. Our development philosophy combines cutting-edge technology with battle-tested security principles.",
+    microcopy: "Intelligent Code. Adaptive Security. Engineered for the Horizon.",
+    animationType: 'code'
+  },
+  {
+    title: "SECURITY INTELLIGENCE",
+    description: "Our security experts don't just find vulnerabilities—we architect comprehensive defense strategies that anticipate and neutralize emerging threats.",
+    microcopy: "Proactive Defense. Engineered Resilience. Anticipate and Neutralize.",
+    animationType: 'shield'
+  },
+  {
+    title: "DIGITAL TRANSFORMATION",
+    description: "Complete ecosystem transformation that doesn't just digitize—it revolutionizes. We reimagine business processes through the lens of security and innovation.",
+    microcopy: "Strategic Evolution. Seamless Integration. Revolutionizing Digital Ecosystems.",
+    animationType: 'nodes'
+  },
+];
+
 export default function Page() {
   const [scrollY, setScrollY] = useState(0)
   const [showScrollTop, setShowScrollTop] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [error, setError] = useState<string | null>(null);
-  const [blogPosts, setBlogPosts] = useState([]);
-  const [filteredPosts, setFilteredPosts] = useState([]);
+  const [blogPosts, setBlogPosts] = useState<any[]>([]);
+  const [filteredPosts, setFilteredPosts] = useState<any[]>([]);
   const [loadingPosts, setLoadingPosts] = useState(true);
   const [postsError, setPostsError] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [hasMorePosts, setHasMorePosts] = useState(false);
   const [totalPages, setTotalPages] = useState(1);
   const [searchQuery, setSearchQuery] = useState("");
+  const [hoveredExpertiseIndex, setHoveredExpertiseIndex] = useState<number | null>(null);
+
+  const expertiseSectionRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -376,59 +541,89 @@ export default function Page() {
         </section>
 
         {/* Offerings Section */}
-        <section id="offerings" className="py-48 section-padding">
-          <div className="max-w-6xl mx-auto">
+        <section id="offerings" className="py-48 section-padding relative">
+          <div className="max-w-6xl mx-auto relative z-10">
             <h2 className="mobile-heading md:text-5xl font-light mb-16 text-center text-white">OUR EXPERTISE</h2>
-            <div className="grid md:grid-cols-3 gap-8">
-              <Card className="unified-card expertise-card-variant mobile-card rounded-lg">
-                <CardContent className="p-8">
-                  <h3 className="text-xl font-light mb-4 text-transparent bg-clip-text bg-gradient-to-r from-sage-400 via-mist-400 to-mint-400 group-hover:from-mint-400 group-hover:via-mist-400 group-hover:to-sage-400 transition-all duration-300">FUTURE-PROOF SOFTWARE</h3>
-                  <p className="mobile-text text-base text-gray-400 mb-6">
-                    We craft intelligent, secure applications that evolve with your business. Our development philosophy
-                    combines cutting-edge technology with battle-tested security principles.
-                  </p>
-                  <ul className="text-base text-gray-400 space-y-2">
-                    <li>• Next-Gen Web & Mobile Apps</li>
-                    <li>• Secure API Ecosystems</li>
-                    <li>• Cloud-Native Architecture</li>
-                    <li>• AI-Enhanced Solutions</li>
-                  </ul>
-                </CardContent>
-              </Card>
+            <div className="grid md:grid-cols-3 gap-8 relative">
+              {/* Spotlight Overlay */}
+              <SpotlightOverlay containerRef={expertiseSectionRef} hoveredExpertiseIndex={hoveredExpertiseIndex} />
 
-              <Card className="unified-card expertise-card-variant mobile-card rounded-lg">
-                <CardContent className="p-8">
-                  <h3 className="text-xl font-light mb-4 text-transparent bg-clip-text bg-gradient-to-r from-sage-400 via-mist-400 to-mint-400 group-hover:from-mint-400 group-hover:via-mist-400 group-hover:to-sage-400 transition-all duration-300">SECURITY INTELLIGENCE</h3>
-                  <p className="mobile-text text-base text-gray-400 mb-6">
-                    Our security experts don't just find vulnerabilities—we architect comprehensive defense strategies
-                    that anticipate and neutralize emerging threats.
-                  </p>
-                  <ul className="text-base text-gray-400 space-y-2">
-                    <li>• Advanced Threat Assessment</li>
-                    <li>• Zero-Trust Implementation</li>
-                    <li>• Compliance & Governance</li>
-                    <li>• Security Culture Development</li>
-                  </ul>
-                </CardContent>
-              </Card>
+              {/* Ethereal Pillars Display Container */}
+              <div ref={expertiseSectionRef} className="col-span-3 grid md:grid-cols-3 gap-8 relative z-10 h-[650px] items-start px-4 pt-16">
+                {expertiseData.map((pillar, index) => (
+                  <motion.div
+                    key={index}
+                    className={cn(
+                      "relative h-full flex flex-col items-center p-4 text-center cursor-pointer transition-all duration-300 ease-out",
+                      hoveredExpertiseIndex === index ? "opacity-100" : "opacity-70",
+                      "group expertise-card-item focus:outline-none focus:ring-2 focus:ring-mint-400/50",
+                      "hover:scale-[1.01]",
+                    )}
+                    onMouseEnter={() => setHoveredExpertiseIndex(index)}
+                    onMouseLeave={() => setHoveredExpertiseIndex(null)}
+                    tabIndex={0}
+                  >
+                     {/* Core Visual Element (Ethereal Icon/Symbol) & Title - Always Visible */}
+                    <div className="flex flex-col items-center relative z-20 mb-6">
+                        <motion.div
+                            className="w-32 h-32 flex items-center justify-center mb-4"
+                            animate={{ 
+                              scale: hoveredExpertiseIndex === index ? 1.1 : 1,
+                              opacity: hoveredExpertiseIndex === index ? 1 : 0.9
+                            }}
+                            transition={{ duration: 0.3, ease: "easeOut" }}
+                        >
+                             {pillar.title === "FUTURE-PROOF SOFTWARE" && <EtherealSoftwareIcon isActive={hoveredExpertiseIndex === index} />}
+                             {pillar.title === "SECURITY INTELLIGENCE" && <EtherealSecurityIcon isActive={hoveredExpertiseIndex === index} />}
+                             {pillar.title === "DIGITAL TRANSFORMATION" && <EtherealTransformationIcon isActive={hoveredExpertiseIndex === index} />}
+                        </motion.div>
+                        <h3 className="text-2xl md:text-3xl font-light text-transparent bg-clip-text bg-gradient-to-r from-mist-400 to-mint-400 group-hover:to-sage-400 transition-all duration-300">
+                          {pillar.title}
+                        </h3>
+                    </div>
 
-              <Card className="unified-card expertise-card-variant mobile-card rounded-lg">
-                <CardContent className="p-8">
-                  <h3 className="text-xl font-light mb-4 text-transparent bg-clip-text bg-gradient-to-r from-sage-400 via-mist-400 to-mint-400 group-hover:from-mint-400 group-hover:via-mist-400 group-hover:to-sage-400 transition-all duration-300">DIGITAL TRANSFORMATION</h3>
-                  <p className="mobile-text text-base text-gray-400 mb-6">
-                    Complete ecosystem transformation that doesn't just digitize—it revolutionizes. We reimagine business
-                    processes through the lens of security and innovation.
-                  </p>
-                  <ul className="text-base text-gray-400 space-y-2">
-                    <li>• Strategic Digital Planning</li>
-                    <li>• Infrastructure Modernization</li>
-                    <li>• Automated Security Operations</li>
-                    <li>• Continuous Innovation Support</li>
-                  </ul>
-                </CardContent>
-              </Card>
+                     {/* Microcopy and Description Container - Appears on Hover */}
+                     <motion.div
+                       className="px-4 text-center z-10 overflow-hidden"
+                       initial={{ opacity: 0, height: 0, y: 10 }}
+                       animate={hoveredExpertiseIndex === index ? { opacity: 1, height: 'auto', y: 0, padding: '0 1rem' } : { opacity: 0, height: 0, y: 10, padding: '0 1rem' }}
+                       transition={{ duration: 0.5, ease: "easeOut" }}
+                     >
+                        {/* Microcopy */}
+                       <motion.span
+                         className="inline-block mb-3 font-mono text-sm text-mint-400 leading-relaxed"
+                         initial={{ opacity: 0, y: 5 }}
+                         animate={hoveredExpertiseIndex === index ? { opacity: 1, y: 0 } : { opacity: 0, y: 5 }}
+                         transition={{ duration: 0.4, delay: hoveredExpertiseIndex === index ? 0.1 : 0, ease: "easeOut" }}
+                       >
+                         {pillar.microcopy}
+                       </motion.span>
+                        {/* Description */}
+                       <motion.p
+                         className="mobile-text text-base text-gray-300 leading-relaxed"
+                         initial={{ opacity: 0, y: 5 }}
+                         animate={hoveredExpertiseIndex === index ? { opacity: 1, y: 0 } : { opacity: 0, y: 5 }}
+                         transition={{ duration: 0.4, delay: hoveredExpertiseIndex === index ? 0.2 : 0, ease: "easeOut" }}
+                       >
+                         {pillar.description}
+                       </motion.p>
+                     </motion.div>
+
+                     {/* SVG/Canvas animation area */}
+                    <motion.div 
+                      className="absolute inset-0 flex items-center justify-center opacity-0 pointer-events-none z-0"
+                      animate={{ opacity: hoveredExpertiseIndex === index ? 1 : 0 }}
+                      transition={{ duration: 0.5, delay: 0.3 }}
+                    >
+                         {hoveredExpertiseIndex === index && renderAnimation(pillar.animationType)}
+                    </motion.div>
+                  </motion.div>
+                ))}
+              </div>
             </div>
           </div>
+           {/* Interactive Background Particles/Lines will go here */}
+           {/* <AnimatedBackground /> */}
         </section>
 
         {/* Thinking Section */}
@@ -493,7 +688,7 @@ export default function Page() {
                     onSearch={handleSearch}
                     hideSearch={true}
                   />
-                </div>
+                  </div>
               </>
             )}
             {!loadingPosts && !postsError && filteredPosts.length === 0 && (
