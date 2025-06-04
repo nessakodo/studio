@@ -7,13 +7,14 @@ import { Textarea } from "@/components/ui/textarea"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Card, CardContent } from "@/components/ui/card"
 import { useState, useEffect } from "react"
-import { ExternalLink, ArrowRight, ChevronUp, Mail, Calendar } from "lucide-react"
+import { ExternalLink, ArrowRight, ChevronUp, Mail, Calendar, Search } from "lucide-react"
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import emailjs from '@emailjs/browser';
 import { EMAILJS_CONFIG } from './config/emailjs';
 import ThinkingUniverse from "./components/ThinkingUniverse"
+import BlogPagination from "./components/BlogPagination"
 
 // Form validation schema
 const formSchema = z.object({
@@ -29,7 +30,7 @@ type FormData = z.infer<typeof formSchema>;
 const WEB3FORMS_ACCESS_KEY = process.env.NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY || process.env.WEB3FORMS_ACCESS_KEY;
 
 // Define posts per page for the thinking section
-const POSTS_PER_PAGE = 9;
+const POSTS_PER_PAGE = 3;
 
 export default function Page() {
   const [scrollY, setScrollY] = useState(0)
@@ -37,11 +38,13 @@ export default function Page() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [error, setError] = useState<string | null>(null);
   const [blogPosts, setBlogPosts] = useState([]);
+  const [filteredPosts, setFilteredPosts] = useState([]);
   const [loadingPosts, setLoadingPosts] = useState(true);
   const [postsError, setPostsError] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [hasMorePosts, setHasMorePosts] = useState(false);
   const [totalPages, setTotalPages] = useState(1);
+  const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
     const handleScroll = () => {
@@ -70,18 +73,16 @@ export default function Page() {
     const fetchBlogPosts = async () => {
       try {
         setLoadingPosts(true);
-        const response = await fetch(`https://dev.to/api/articles?username=nessakodo&per_page=${POSTS_PER_PAGE}&page=${currentPage}`);
+        const response = await fetch(`https://dev.to/api/articles?username=nessakodo&per_page=100`);
         if (!response.ok) {
           throw new Error(`Error fetching posts: ${response.statusText}`);
         }
         const data = await response.json();
         const filteredData = data.filter((post: any) => post.cover_image !== null);
         setBlogPosts(filteredData);
-        // Calculate total pages based on the total count from headers
-        const totalCount = parseInt(response.headers.get('total-count') || '0');
-        const calculatedTotalPages = Math.ceil(totalCount / POSTS_PER_PAGE);
-        setTotalPages(calculatedTotalPages);
-        setHasMorePosts(currentPage < calculatedTotalPages);
+        setFilteredPosts(filteredData);
+        setTotalPages(Math.ceil(filteredData.length / POSTS_PER_PAGE));
+        setHasMorePosts(currentPage < Math.ceil(filteredData.length / POSTS_PER_PAGE));
       } catch (err) {
         console.error("Failed to fetch blog posts:", err);
         setPostsError(err instanceof Error ? err.message : 'An unexpected error occurred while fetching posts.');
@@ -91,7 +92,29 @@ export default function Page() {
     };
 
     fetchBlogPosts();
-  }, [currentPage]);
+  }, []);
+
+  const handleSearch = (query: string) => {
+    setSearchQuery(query);
+    const filtered = blogPosts.filter((post: any) => 
+      post.title.toLowerCase().includes(query.toLowerCase()) ||
+      post.description.toLowerCase().includes(query.toLowerCase())
+    );
+    setFilteredPosts(filtered);
+    setTotalPages(Math.ceil(filtered.length / POSTS_PER_PAGE));
+    setCurrentPage(1);
+  };
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  };
+
+  // Get current posts
+  const getCurrentPosts = () => {
+    const startIndex = (currentPage - 1) * POSTS_PER_PAGE;
+    const endIndex = startIndex + POSTS_PER_PAGE;
+    return filteredPosts.slice(startIndex, endIndex);
+  };
 
   const scrollToSection = (id: string) => {
     const element = document.getElementById(id)
@@ -144,18 +167,6 @@ export default function Page() {
     resolver: zodResolver(formSchema)
   });
   const [isSuccess, setIsSuccess] = useState(false);
-
-  const handlePreviousPage = () => {
-    if (currentPage > 1) {
-      setCurrentPage(currentPage - 1);
-    }
-  };
-
-  const handleNextPage = () => {
-    if (hasMorePosts) {
-      setCurrentPage(currentPage + 1);
-    }
-  };
 
   const onSubmit = async (data: FormData) => {
     try {
@@ -426,18 +437,33 @@ export default function Page() {
             <h2 className="mobile-heading md:text-5xl font-light mb-16 text-white text-center">THINKING</h2>
             {loadingPosts && <p className="text-center text-gray-400">Loading posts...</p>}
             {postsError && <p className="text-center text-red-400">Error loading posts: {postsError}</p>}
-            {!loadingPosts && !postsError && blogPosts.length > 0 && (
+            {!loadingPosts && !postsError && filteredPosts.length > 0 && (
               <>
+                {/* Search Bar */}
+                <div className="mb-8">
+                  <div className="relative group">
+                    <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400 group-hover:text-mint-400 transition-colors z-10" />
+                    <Input
+                      type="text"
+                      placeholder="Search posts..."
+                      value={searchQuery}
+                      onChange={(e) => handleSearch(e.target.value)}
+                      className="w-full pl-10 pr-4 py-4 bg-black/20 border border-white/5 rounded-lg backdrop-blur-md text-gray-200 placeholder-gray-400 focus:border-mint-400/30 focus:ring-1 focus:ring-mint-400/20 transition-all duration-300 hover:border-white/10 focus:bg-black/20 hover:bg-black/20"
+                    />
+                  </div>
+                </div>
+
+                {/* Articles Grid */}
                 <div className="grid md:grid-cols-3 gap-8">
-                  {blogPosts.map((post: any) => (
-                    <Card key={post.id} className="mobile-card unified-card h-full rounded-lg group backdrop-blur-md bg-black/10 border border-white/5 hover:border-white/10 transition-all duration-300">
+                  {getCurrentPosts().map((post: any) => (
+                    <Card key={post.id} className="mobile-card unified-card h-[420px] rounded-lg group backdrop-blur-md bg-black/10 border border-white/5 hover:border-white/10 transition-all duration-300">
                       <CardContent className="p-8 flex flex-col h-full">
-                        <div className="flex-1">
+                        <div className="flex-1 min-h-0">
                           {post.tag_list && post.tag_list.length > 0 && (
                             <span className="thinking-category">{post.tag_list[0]}</span>
                           )}
-                          <h3 className="text-xl font-light mb-4 text-white group-hover:text-white/90 transition-all duration-300">{post.title}</h3>
-                          <p className="mobile-text text-base text-gray-300 mb-4">{post.description}</p>
+                          <h3 className="text-xl font-light mb-4 text-white group-hover:text-white/90 transition-all duration-300 line-clamp-2">{post.title}</h3>
+                          <p className="mobile-text text-base text-gray-300 mb-4 line-clamp-3">{post.description}</p>
                         </div>
                         <div className="mt-auto">
                           <div className="flex justify-between text-base text-gray-400 mb-4">
@@ -456,22 +482,21 @@ export default function Page() {
                     </Card>
                   ))}
                 </div>
-                {/* Pagination Dots */}
-                {totalPages > 1 && (
-                  <div className="pagination-dots mt-8">
-                    {Array.from({ length: totalPages }, (_, i) => i + 1).map((pageNum) => (
-                      <button
-                        key={pageNum}
-                        className={`pagination-dot ${currentPage === pageNum ? 'active' : ''}`}
-                        onClick={() => setCurrentPage(pageNum)}
-                        aria-label={`Go to page ${pageNum}`}
-                      />
-                    ))}
-                  </div>
-                )}
+
+                {/* Pagination Controls */}
+                <div className="mt-12">
+                  <BlogPagination
+                    totalPosts={filteredPosts.length}
+                    postsPerPage={POSTS_PER_PAGE}
+                    currentPage={currentPage}
+                    onPageChange={handlePageChange}
+                    onSearch={handleSearch}
+                    hideSearch={true}
+                  />
+                </div>
               </>
             )}
-            {!loadingPosts && !postsError && blogPosts.length === 0 && (
+            {!loadingPosts && !postsError && filteredPosts.length === 0 && (
               <p className="text-center text-gray-400">No blog posts found.</p>
             )}
           </div>
