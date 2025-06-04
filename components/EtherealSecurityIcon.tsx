@@ -5,10 +5,12 @@ import React from 'react';
 
 interface EtherealIconProps {
   isActive: boolean;
+  className?: string;
 }
 
 const EtherealSecurityIcon: React.FC<EtherealIconProps> = ({
-  isActive
+  isActive,
+  className
 }) => {
   return (
     <motion.svg
@@ -19,7 +21,7 @@ const EtherealSecurityIcon: React.FC<EtherealIconProps> = ({
       strokeWidth="3"
       strokeLinecap="round"
       strokeLinejoin="round"
-      className="w-32 h-32 text-mint-400 drop-shadow-[0_0_8px_rgba(108,200,170,0.6)]"
+      className={className || "w-32 h-32 text-mint-400 drop-shadow-[0_0_8px_rgba(108,200,170,0.6)]"}
       animate={{ scale: isActive ? 1.2 : 1, opacity: isActive ? 1 : 0.8 }}
       transition={{ duration: 0.5, ease: "easeOut" }}
     >

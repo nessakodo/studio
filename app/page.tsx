@@ -549,16 +549,16 @@ export default function Page() {
                      {/* Core Visual Element (Ethereal Icon/Symbol) & Title - Always Visible */}
                     <div className="flex flex-col items-center relative z-20 mb-6">
                         <motion.div
-                            className="w-32 h-32 flex items-center justify-center mb-4"
+                            className="w-32 h-32 flex items-center justify-center mb-4 max-h-32"
                             animate={{ 
                               scale: hoveredExpertiseIndex === index ? 1.1 : 1,
                               opacity: hoveredExpertiseIndex === index ? 1 : 0.9
                             }}
                             transition={{ duration: 0.3, ease: "easeOut" }}
                         >
-                             {pillar.title === "FUTURE-PROOF SOFTWARE" && <EtherealSoftwareIcon isActive={hoveredExpertiseIndex === index} />}
-                             {pillar.title === "SECURITY INTELLIGENCE" && <EtherealSecurityIcon isActive={hoveredExpertiseIndex === index} />}
-                             {pillar.title === "DIGITAL TRANSFORMATION" && <EtherealTransformationIcon isActive={hoveredExpertiseIndex === index} />}
+                             {pillar.title === "FUTURE-PROOF SOFTWARE" && <EtherealSoftwareIcon isActive={hoveredExpertiseIndex === index} className="w-32 h-32" />}
+                             {pillar.title === "SECURITY INTELLIGENCE" && <EtherealSecurityIcon isActive={hoveredExpertiseIndex === index} className="w-28 h-28" />}
+                             {pillar.title === "DIGITAL TRANSFORMATION" && <EtherealTransformationIcon isActive={hoveredExpertiseIndex === index} className="w-32 h-32" />}
                         </motion.div>
                         <h3 className="text-2xl md:text-3xl font-light text-transparent bg-clip-text bg-gradient-to-r from-mist-400 to-mint-400 group-hover:to-sage-400 transition-all duration-300">
                           {pillar.title}
