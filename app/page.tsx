@@ -151,25 +151,11 @@ const NodesAnimation = () => (
   </div>
 );
 
-const renderAnimation = (animationType: 'code' | 'shield' | 'nodes' | undefined) => {
-  switch (animationType) {
-    case 'shield':
-      return <ShieldAnimation />;
-    case 'code':
-      return <CodeAnimation />;
-    case 'nodes':
-      return <NodesAnimation />;
-    default:
-      return null;
-  }
-};
-
 // Define type for Expertise Pillar data
 interface ExpertisePillar {
   title: string;
   description: string;
   microcopy: string;
-  animationType?: 'code' | 'shield' | 'nodes';
 }
 
 // Define data for Expertise section
@@ -178,19 +164,16 @@ const expertiseData: ExpertisePillar[] = [
     title: "FUTURE-PROOF SOFTWARE",
     description: "We craft intelligent, secure applications that evolve with your business. Our development philosophy combines cutting-edge technology with battle-tested security principles.",
     microcopy: "Intelligent Code. Adaptive Security. Engineered for the Horizon.",
-    animationType: 'code'
   },
   {
     title: "SECURITY INTELLIGENCE",
     description: "Our security experts don't just find vulnerabilities—we architect comprehensive defense strategies that anticipate and neutralize emerging threats.",
     microcopy: "Proactive Defense. Engineered Resilience. Anticipate and Neutralize.",
-    animationType: 'shield'
   },
   {
     title: "DIGITAL TRANSFORMATION",
     description: "Complete ecosystem transformation that doesn't just digitize—it revolutionizes. We reimagine business processes through the lens of security and innovation.",
     microcopy: "Strategic Evolution. Seamless Integration. Revolutionizing Digital Ecosystems.",
-    animationType: 'nodes'
   },
 ];
 
@@ -591,7 +574,7 @@ export default function Page() {
                      >
                         {/* Microcopy */}
                        <motion.span
-                         className="inline-block mb-3 font-mono text-sm text-mint-400 leading-relaxed"
+                         className="inline-block mb-3 text-sm text-mint-400 leading-relaxed"
                          initial={{ opacity: 0, y: 5 }}
                          animate={hoveredExpertiseIndex === index ? { opacity: 1, y: 0 } : { opacity: 0, y: 5 }}
                          transition={{ duration: 0.4, delay: hoveredExpertiseIndex === index ? 0.1 : 0, ease: "easeOut" }}
@@ -608,15 +591,6 @@ export default function Page() {
                          {pillar.description}
                        </motion.p>
                      </motion.div>
-
-                     {/* SVG/Canvas animation area */}
-                    <motion.div 
-                      className="absolute inset-0 flex items-center justify-center opacity-0 pointer-events-none z-0"
-                      animate={{ opacity: hoveredExpertiseIndex === index ? 1 : 0 }}
-                      transition={{ duration: 0.5, delay: 0.3 }}
-                    >
-                         {hoveredExpertiseIndex === index && renderAnimation(pillar.animationType)}
-                    </motion.div>
                   </motion.div>
                 ))}
               </div>
