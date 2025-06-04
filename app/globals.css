@@ -359,7 +359,7 @@ body {
   }
 
   .card-description {
-    font-size: 0.9rem;
+  font-size: 0.9rem;
   }
 
   .form-field-hover {
@@ -1276,29 +1276,17 @@ html {
   );
 }
 
-/* Button Icons */
-.button-icon {
-  width: 1rem;
-  height: 1rem;
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  transform-origin: center;
-  color: rgba(180,255,255,0.7);
-  z-index: 1;
+/* Success Animation for Button */
+@keyframes buttonCosmicBurst {
+  0% { box-shadow: none; background: transparent; }
+  20% { box-shadow: 0 0 30px rgba(88, 200, 150, 0.4), 0 0 60px rgba(120, 180, 200, 0.3); background: rgba(88, 200, 150, 0.1); }
+  80% { box-shadow: 0 0 30px rgba(88, 200, 150, 0), 0 0 60px rgba(120, 180, 200, 0); background: transparent; }
+  100% { box-shadow: none; background: transparent; }
 }
 
-.unified-button:hover .button-icon {
-  transform: scale(1.1);
-  color: rgba(180,255,255,1);
-}
-
-/* Disabled State */
-.unified-button:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-  background: rgba(10,10,15,0.1);
-  border-color: rgba(180,255,255,0.05);
-  box-shadow: none;
-  transform: none;
+.unified-button[data-success="true"] {
+  animation: buttonCosmicBurst 1s ease-out forwards;
+  pointer-events: auto;
 }
 
 /* Loading State */
@@ -1320,17 +1308,7 @@ html {
   }
 }
 
-/* Success State */
-.unified-button[data-success="true"] {
-  background: rgba(88,200,150,0.1);
-  border-color: rgba(88,200,150,0.2);
-  box-shadow: 
-    0 0 20px rgba(88,200,150,0.08),
-    0 0 30px rgba(120,180,200,0.06);
-  color: rgba(180,255,255,1);
-}
-
-/* Mobile Responsiveness */
+/* Mobile Optimizations */
 @media (max-width: 768px) {
   .unified-button {
     font-size: 0.75rem;
@@ -1961,16 +1939,16 @@ html {
   outline: none;
 }
 
-/* Connect Submit Button - Full Width, Unified Style with Arrow to Checkmark Animation */
+/* Connect Submit Button - Full Width, Unified Style (Revised) with Electric Success Animation */
 .connect-form .unified-button {
   width: 100%; /* Full width */
   min-height: 3rem;
   padding: 0.85rem 1.5rem;
   font-size: 1rem;
   letter-spacing: 0.05em;
-  background: transparent; /* Transparent default as requested */
-  border: 1.5px solid rgba(180, 255, 255, 0.08); /* Subtle border matching other unified buttons */
-  box-shadow: none; /* Explicitly removed default shadow/glow */
+  background: transparent; /* Transparent default */
+  border: 1px solid rgba(180, 255, 255, 0.05); /* Reduced subtle border */
+  box-shadow: none; /* No default shadow/glow */
   backdrop-filter: blur(8px) saturate(180%);
   display: flex;
   justify-content: center;
@@ -2014,27 +1992,21 @@ html {
   opacity: 1; /* Show gradient on hover */
 }
 
-/* Button Icon for Send Message (Arrow/Checkmark) */
-.connect-form .unified-button .button-icon {
-  width: 1.3rem;
-  height: 1.3rem;
-  margin-right: 0.75rem;
-  fill: rgba(255, 255, 255, 0.8); /* Default icon color (near white) */
-  transition: transform 0.3s ease-out, opacity 0.3s ease-out, fill 0.3s ease-out; /* Smooth transition for icon properties */
-  transform-origin: center;
+/* Button Icon for Send Message (Removed) */
+/* .connect-form .unified-button .button-icon { ... } */
+
+/* Cosmic Success Animation for Button */
+@keyframes buttonCosmicBurst {
+  0% { box-shadow: none; background: transparent; }
+  20% { box-shadow: 0 0 30px rgba(88, 200, 150, 0.4), 0 0 60px rgba(120, 180, 200, 0.3); background: rgba(88, 200, 150, 0.1); }
+  80% { box-shadow: 0 0 30px rgba(88, 200, 150, 0), 0 0 60px rgba(120, 180, 200, 0); background: transparent; }
+  100% { box-shadow: none; background: transparent; }
 }
 
-/* Icon Success Animation (Sleek Arrow to Checkmark) */
-@keyframes iconMorphSuccessSleek {
-  0% { transform: scale(1) rotate(0deg); opacity: 1; fill: rgba(255, 255, 255, 0.8); } /* Start as Arrow, visible, default color */
-  49% { transform: scale(0.8) rotate(45deg); opacity: 0; } /* Arrow shrinks, rotates, fades out */
-  50% { transform: scale(0.8) rotate(45deg); opacity: 0; fill: rgba(88, 200, 150, 0); } /* Hold hidden, switch fill color transparent */
-  51% { transform: scale(0.8) rotate(180deg); opacity: 0; fill: rgba(88, 200, 150, 1); } /* Rotate to checkmark orientation, fill color green, still hidden */
-  100% { transform: scale(1) rotate(360deg); opacity: 1; fill: rgba(88, 200, 150, 1); } /* Checkmark scales up, rotates, fades in with green fill */
-}
-
-.connect-form .unified-button[data-success="true"] .button-icon {
-  animation: iconMorphSuccessSleek 0.7s ease-in-out forwards; /* Apply animation on success */
+.connect-form .unified-button[data-success="true"] {
+  animation: buttonCosmicBurst 1s ease-out forwards; /* Apply animation on success */
+  /* Ensure button remains interactive after animation if needed */
+  pointer-events: auto;
 }
 
 /* Mobile Optimizations */
@@ -2052,11 +2024,5 @@ html {
     min-height: 2.75rem;
     padding: 0.6rem 1.2rem;
     font-size: 0.9rem;
-  }
-
-  .connect-form .unified-button .button-icon {
-    width: 1.1rem;
-    height: 1.1rem;
-    margin-right: 0.5rem;
   }
 }

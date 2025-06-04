@@ -621,19 +621,9 @@ export default function Page() {
                           <span>Sending...</span>
                         </>
                       ) : isSuccess ? (
-                        <>
-                          <svg className="success-icon" viewBox="0 0 24 24">
-                            <path d="M20 6L9 17L4 12" />
-                          </svg>
-                          <span>Message Sent</span>
-                        </>
+                        <span>Message Sent</span>
                       ) : (
-                        <>
-                          <svg className="button-icon" viewBox="0 0 24 24">
-                            <path d="M22 2L11 13M22 2L15 22L11 13L2 9L22 2Z" stroke="currentColor"/>
-                          </svg>
-                          <span>SEND MESSAGE</span>
-                        </>
+                        <span>SEND MESSAGE</span>
                       )}
                     </div>
                   </button>
