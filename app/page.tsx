@@ -539,7 +539,7 @@ export default function Page() {
                     className={cn(
                       "relative h-full flex flex-col items-center p-4 text-center cursor-pointer transition-all duration-300 ease-out",
                       hoveredExpertiseIndex === index ? "opacity-100" : "opacity-70",
-                      "group expertise-card-item focus:outline-none focus:ring-2 focus:ring-mint-400/50",
+                      "group expertise-card-item focus:outline-none",
                       "hover:scale-[1.01]",
                     )}
                     onMouseEnter={() => setHoveredExpertiseIndex(index)}
