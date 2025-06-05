@@ -22,6 +22,9 @@ import { motion } from "framer-motion"
 import EtherealSoftwareIcon from "@/components/EtherealSoftwareIcon";
 import EtherealSecurityIcon from "@/components/EtherealSecurityIcon";
 import EtherealTransformationIcon from "@/components/EtherealTransformationIcon";
+import StarBeltShowcase from "./components/StarBeltShowcase";
+import AstralStreamBackground from "./components/AstralStreamBackground";
+import ProjectModal from "./components/ProjectModal";
 
 // Form validation schema
 const formSchema = z.object({
@@ -191,6 +194,8 @@ export default function Page() {
   const [totalPages, setTotalPages] = useState(1);
   const [searchQuery, setSearchQuery] = useState("");
   const [hoveredExpertiseIndex, setHoveredExpertiseIndex] = useState<number | null>(null);
+  const [selectedProject, setSelectedProject] = useState<any | null>(null);
+  const [isProjectModalOpen, setIsProjectModalOpen] = useState(false);
 
   const expertiseSectionRef = useRef<HTMLDivElement>(null);
 
@@ -281,26 +286,135 @@ export default function Page() {
 
   const projects = [
     {
-      title: "FinTech Security Platform",
-      description: "End-to-end security solution for financial institutions with real-time threat detection.",
+      title: "PhishKiller – Real-Time Phishing Detection",
+      description: "AI-powered threat detection platform trusted by cybersecurity teams for identifying and neutralizing phishing attacks across email and web.",
       image: "/placeholder.svg?height=300&width=400",
       demo: "#",
       caseStudy: "#",
+      github: undefined,
+      features: [
+        "Post-quantum encryption",
+        "Audited codebase",
+        "End-to-end encryption",
+        "Decentralized architecture",
+        "Secure key exchange",
+        "Metadata protection"
+      ],
+      buttonCopy: { demo: "Live Demo", caseStudy: "Read Case Study" }
     },
     {
-      title: "Healthcare Data Management",
-      description: "HIPAA-compliant platform for secure patient data management and analytics.",
+      title: "Cryptiq Messenger – Quantum-Safe Secure Messaging",
+      description: "Post-quantum encrypted chat built on NIST-approved algorithms—future-proofing privacy for the next era of communications.",
       image: "/placeholder.svg?height=300&width=400",
       demo: "#",
       caseStudy: "#",
+      github: undefined,
+      features: [
+        "Ethical AI integration",
+        "Cross-platform compatibility",
+        "Personalized insights",
+        "Secure data storage",
+        "Habit tracking",
+        "Mindfulness prompts"
+      ],
+      buttonCopy: { demo: "Try Live", caseStudy: "See Whitepaper" }
     },
     {
-      title: "E-commerce Automation Suite",
-      description: "Complete automation solution for inventory, orders, and customer management.",
+      title: "KODEX World – Cyber Zen Learning Platform",
+      description: "Interactive, XP-gamified cybersecurity and AI learning portal with labs, creative projects, and a thriving tech community.",
       image: "/placeholder.svg?height=300&width=400",
       demo: "#",
       caseStudy: "#",
+      github: undefined,
+      features: [
+        "Intuitive UX",
+        "Real-time analytics",
+        "High-level security",
+        "Open-source audit logs",
+        "Modular APIs",
+        "Multi-asset support"
+      ],
+      buttonCopy: { demo: "Explore Platform", caseStudy: "Community Details" }
     },
+    {
+      title: "Command Canvas – Interactive Shell Trainer",
+      description: "Simulated command-line environment for safe hands-on learning of Unix, Git, and workflow automation—perfect for upskilling teams.",
+      image: "/placeholder.svg?height=300&width=400",
+      demo: "#",
+      caseStudy: "#",
+      github: undefined,
+      features: [
+        "IoT device management",
+        "Real-time monitoring",
+        "Role-based access control",
+        "Threat detection",
+        "Dynamic visualization",
+        "Data analytics"
+      ],
+      buttonCopy: { demo: "Try Now", caseStudy: "How It Works" }
+    },
+    {
+      title: "SonifyAI – Data-Driven Audio Storytelling",
+      description: "Transforms live data streams into immersive, generative soundscapes—merging analytics, art, and technology in real time.",
+      image: "/placeholder.svg?height=300&width=400",
+      demo: "#",
+      caseStudy: "#",
+      github: undefined,
+      features: [
+        "Blockchain integration",
+        "Tamper-proof tracking",
+        "Encrypted audit trails",
+        "Supplier management",
+        "Real-time updates",
+        "User-friendly dashboard"
+      ],
+      buttonCopy: { demo: "Experience Demo", caseStudy: "View Project" }
+    },
+    {
+      title: "Sanctuary Cloud – Zero-Knowledge Personal Storage",
+      description: "Private, encrypted file storage where you control the keys—digital sovereignty, secured by next-gen cryptography.",
+      image: "/placeholder.svg?height=300&width=400",
+      demo: "#",
+      caseStudy: "#",
+      github: undefined,
+      features: [
+        "Workflow automation",
+        "Secure user data",
+        "Granular access control",
+        "Generative AI integration",
+        "Collaborative features",
+        "Documentation generation"
+      ],
+      buttonCopy: { demo: "Live Demo", caseStudy: "Security Overview" }
+    },
+    {
+      title: "BioPulse Tracker – Somatic Tech for Wellbeing",
+      description: "Wearable-ready dashboard providing real-time biofeedback and personalized insights for holistic digital wellness.",
+      image: "/placeholder.svg?height=300&width=400",
+      demo: "#",
+      caseStudy: "#",
+      github: undefined,
+      features: [
+        "Feature 1",
+        "Feature 2",
+        "Feature 3"
+      ],
+      buttonCopy: { demo: "See Prototype", caseStudy: "Request Beta" }
+    },
+    {
+      title: "TouchDesigner AV Works – Generative Artistry",
+      description: "Custom interactive visuals and audio-reactive installations built with TouchDesigner for events, brands, and digital experiences.",
+      image: "/placeholder.svg?height=300&width=400",
+      demo: "#",
+      caseStudy: "#",
+      github: undefined,
+      features: [
+        "Feature 1",
+        "Feature 2",
+        "Feature 3"
+      ],
+      buttonCopy: { demo: "View Gallery", caseStudy: "Live Showcase" }
+    }
   ]
 
   const navLinks = [
@@ -358,6 +472,11 @@ export default function Page() {
       console.error("Error sending email:", error);
       setError(error instanceof Error ? error.message : 'Failed to send message. Please try again later.');
     }
+  };
+
+  const handleProjectClick = (project: any) => {
+    setSelectedProject(project);
+    setIsProjectModalOpen(true);
   };
 
   return (
@@ -672,43 +791,12 @@ export default function Page() {
         </section>
 
         {/* Showcase Section */}
-        <section id="showcase" className="py-48 section-padding">
-          <div className="max-w-6xl mx-auto">
-            <h2 className="mobile-heading md:text-5xl font-light mb-16 text-center text-white">PROJECT SHOWCASE</h2>
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {projects.map((project, index) => (
-                <Card
-                  key={index}
-                  className="unified-card mobile-card h-full group rounded-lg showcase-card-variant"
-                >
-                  <CardContent className="p-8 flex flex-col h-full">
-                    <div className="aspect-video bg-gray-800 overflow-hidden rounded-lg mb-6">
-                      <img
-                        src={project.image || "/placeholder.svg"}
-                        alt={project.title}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                      />
-                    </div>
-                    <div className="flex-1 flex flex-col">
-                      <h3 className="showcase-title text-transparent bg-clip-text bg-gradient-to-r from-sage-400 via-mist-400 to-mint-400 group-hover:from-mint-400 group-hover:via-mist-400 group-hover:to-sage-400 transition-all duration-300">{project.title}</h3>
-                      <p className="showcase-desc">{project.description}</p>
-                    </div>
-                    <div className="mt-auto flex flex-row gap-4">
-                      <Button className="unified-button showcase-button">
-                        <span className="button-content">
-                          LIVE DEMO
-                        </span>
-                      </Button>
-                      <Button className="unified-button showcase-button">
-                        <span className="button-content">
-                          CASE STUDY
-                        </span>
-                      </Button>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
+        <section id="showcase" className="py-24 relative min-h-screen w-full overflow-hidden">
+          <AstralStreamBackground />
+
+          <div className="relative z-10 w-full h-full">
+            <h2 className="mobile-heading md:text-5xl font-light mb-24 text-center text-white">PROJECT SHOWCASE</h2>
+            <StarBeltShowcase projects={projects} onProjectClick={handleProjectClick} />
           </div>
         </section>
 
@@ -842,6 +930,15 @@ export default function Page() {
           </div>
         </div>
       </footer>
+
+      {/* Project Modal */}
+      {selectedProject && (
+        <ProjectModal
+          project={selectedProject}
+          isOpen={isProjectModalOpen}
+          onClose={() => setIsProjectModalOpen(false)}
+        />
+      )}
     </div>
   )
 }
