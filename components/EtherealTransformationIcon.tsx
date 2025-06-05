@@ -66,11 +66,54 @@ const EtherealTransformationIcon: React.FC<EtherealIconProps> = ({
           transition={{ duration: 0.4 }}
         />
 
-        {/* Simple Nodes */}
-        <motion.circle cx="30" cy="30" r="4" />
-        <motion.circle cx="70" cy="30" r="4" />
-        <motion.circle cx="30" cy="70" r="4" />
-        <motion.circle cx="70" cy="70" r="4" />
+        {/* Simple Nodes (pulsating on default) */}
+        <motion.circle cx="30" cy="30" r="4"
+           animate={{
+             opacity: [0.8, 0.9, 0.8],
+             scale: [1, 1.05, 1]
+           }}
+           transition={{
+             duration: 2,
+             repeat: Infinity,
+             ease: "easeInOut"
+           }}
+        />
+        <motion.circle cx="70" cy="30" r="4"
+           animate={{
+             opacity: [0.8, 0.9, 0.8],
+             scale: [1, 1.05, 1]
+           }}
+           transition={{
+             duration: 2,
+             repeat: Infinity,
+             ease: "easeInOut",
+             delay: 0.3
+           }}
+        />
+        <motion.circle cx="30" cy="70" r="4"
+           animate={{
+             opacity: [0.8, 0.9, 0.8],
+             scale: [1, 1.05, 1]
+           }}
+           transition={{
+             duration: 2,
+             repeat: Infinity,
+             ease: "easeInOut",
+             delay: 0.6
+           }}
+        />
+        <motion.circle cx="70" cy="70" r="4"
+           animate={{
+             opacity: [0.8, 0.9, 0.8],
+             scale: [1, 1.05, 1]
+           }}
+           transition={{
+             duration: 2,
+             repeat: Infinity,
+             ease: "easeInOut",
+             delay: 0.9
+           }}
+        />
       </motion.g>
 
       {/* Transformed State: Enhanced Network */}

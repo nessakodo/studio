@@ -36,11 +36,25 @@ const EtherealSecurityIcon: React.FC<EtherealIconProps> = ({
         style={{ transformOrigin: 'center'}}
       />
 
-      {/* Central pulsing node (animates on hover) */}
+      {/* Central pulsing node (animates on hover and pulsates gently on default) */}
       <motion.circle cx="50" cy="50" r="8"
-         initial={{ opacity: 0, scale: 0.5 }}
-         animate={{ opacity: isActive ? 1 : 0, scale: isActive ? 1.5 : 0.5, transition: { repeat: Infinity, duration: 1, ease: "easeInOut" } }}
-         transition={{ duration: 0.6, delay: isActive ? 0.2 : 0 }}
+         initial={{ opacity: 0.5, scale: 1 }}
+         animate={isActive ? { 
+           opacity: [1, 0.8, 1],
+           scale: [1.5, 1.2, 1.5]
+         } : {
+           opacity: [0.5, 0.6, 0.5],
+           scale: [1, 1.05, 1]
+         }}
+         transition={isActive ? { 
+           duration: 1,
+           repeat: Infinity,
+           ease: "easeInOut"
+         } : { 
+           duration: 2,
+           repeat: Infinity,
+           ease: "easeInOut"
+         }}
        />
 
        {/* Scanning/Data lines (appear and animate on hover) */}

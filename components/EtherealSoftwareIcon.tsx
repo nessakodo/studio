@@ -27,7 +27,7 @@ const EtherealSoftwareIcon: React.FC<EtherealIconProps> = ({
     >
       {/* Future-Proof Software: Modern Stack with Dynamic Processing */}
 
-      {/* Base Layer (always visible) */}
+      {/* Base Layer (always visible and pulsing) */}
       <motion.rect
         x="20"
         y="60"
@@ -42,7 +42,7 @@ const EtherealSoftwareIcon: React.FC<EtherealIconProps> = ({
         transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
       />
 
-      {/* Stack Layers */}
+      {/* Stack Layers (cascading fade in default) */}
       <motion.g
         initial={{ opacity: 1, y: 0 }}
         animate={{ opacity: isActive ? 0.3 : 1, y: isActive ? -10 : 0 }}
@@ -58,7 +58,9 @@ const EtherealSoftwareIcon: React.FC<EtherealIconProps> = ({
           ry="2"
           fill="none"
           strokeWidth="2"
-          transition={{ duration: 0.3 }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1.5, delay: 0.1, ease: "easeOut" }}
         />
         
         {/* Layer 2 */}
@@ -71,7 +73,9 @@ const EtherealSoftwareIcon: React.FC<EtherealIconProps> = ({
           ry="2"
           fill="none"
           strokeWidth="2"
-          transition={{ duration: 0.3, delay: 0.1 }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1.5, delay: 0.2, ease: "easeOut" }}
         />
 
         {/* Layer 3 */}
@@ -84,111 +88,111 @@ const EtherealSoftwareIcon: React.FC<EtherealIconProps> = ({
           ry="2"
           fill="none"
           strokeWidth="2"
-          transition={{ duration: 0.3, delay: 0.2 }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1.5, delay: 0.3, ease: "easeOut" }}
         />
       </motion.g>
 
-      {/* Processing Elements (visible on hover) */}
+      {/* Processing Elements (visible and animated on hover) */}
       <motion.g
-        initial={{ opacity: 0 }}
-        animate={{ opacity: isActive ? 1 : 0 }}
-        transition={{ duration: 0.4 }}
+        initial={{ opacity: 0, scale: 0.9 }}
+        animate={{ opacity: isActive ? 1 : 0, scale: isActive ? 1 : 0.9 }}
+        transition={{ duration: 0.4, ease: "easeOut" }}
       >
-        {/* Processing Container */}
+        {/* Main Processing Block */}
         <motion.rect
-          x="25"
-          y="25"
-          width="50"
-          height="50"
-          rx="4"
-          ry="4"
+          x="20"
+          y="20"
+          width="60"
+          height="60"
+          rx="6"
+          ry="6"
           fill="none"
           strokeWidth="2"
           initial={{ pathLength: 0 }}
           animate={{ pathLength: isActive ? 1 : 0 }}
-          transition={{ duration: 0.6 }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
         />
 
-        {/* Processing Lines */}
-        <motion.path
-          d="M 30 35 L 70 35 M 30 45 L 70 45 M 30 55 L 70 55"
-          initial={{ pathLength: 0 }}
-          animate={{ pathLength: isActive ? 1 : 0 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-        />
+        {/* Internal Data Flow / Connections */}
+        <motion.g
+          initial={{ opacity: 0 }}
+          animate={{ opacity: isActive ? 1 : 0 }}
+          transition={{ duration: 0.5, delay: 0.5 }}
+        >
+          <motion.line x1="30" y1="30" x2="70" y2="70" strokeWidth="1.5" />
+          <motion.line x1="70" y1="30" x2="30" y2="70" strokeWidth="1.5" />
+          <motion.circle cx="50" cy="50" r="4" strokeWidth="1.5"/>
+        </motion.g>
 
-        {/* Processing Indicators */}
+        {/* Pulsing Nodes (on hover) */}
         <motion.g>
           <motion.circle
-            cx="35"
-            cy="35"
-            r="2"
-            initial={{ opacity: 0, scale: 0 }}
-            animate={{ 
-              opacity: isActive ? [0.6, 0.8, 0.6] : 0,
-              scale: isActive ? [1, 1.2, 1] : 0
-            }}
-            transition={{ 
-              duration: 2,
-              repeat: isActive ? Infinity : 0,
+            cx="30"
+            cy="30"
+            r="3"
+            initial={{ opacity: 0, scale: 0.5 }}
+            animate={isActive ? { 
+              opacity: [0.6, 0.9, 0.6],
+              scale: [1, 1.2, 1]
+            } : { opacity: 0, scale: 0.5 }}
+            transition={isActive ? { 
+              duration: 1.5,
+              repeat: Infinity,
               ease: "easeInOut"
-            }}
+            } : { duration: 0.3 }}
           />
-          <motion.circle
-            cx="50"
-            cy="35"
-            r="2"
-            initial={{ opacity: 0, scale: 0 }}
-            animate={{ 
-              opacity: isActive ? [0.6, 0.8, 0.6] : 0,
-              scale: isActive ? [1, 1.2, 1] : 0
-            }}
-            transition={{ 
-              duration: 2,
-              repeat: isActive ? Infinity : 0,
+           <motion.circle
+            cx="70"
+            cy="30"
+            r="3"
+            initial={{ opacity: 0, scale: 0.5 }}
+            animate={isActive ? { 
+              opacity: [0.6, 0.9, 0.6],
+              scale: [1, 1.2, 1]
+            } : { opacity: 0, scale: 0.5 }}
+            transition={isActive ? { 
+              duration: 1.5,
+              repeat: Infinity,
               ease: "easeInOut",
-              delay: 0.5
-            }}
+              delay: 0.2
+            } : { duration: 0.3 }}
           />
-          <motion.circle
-            cx="65"
-            cy="35"
-            r="2"
-            initial={{ opacity: 0, scale: 0 }}
-            animate={{ 
-              opacity: isActive ? [0.6, 0.8, 0.6] : 0,
-              scale: isActive ? [1, 1.2, 1] : 0
-            }}
-            transition={{ 
-              duration: 2,
-              repeat: isActive ? Infinity : 0,
+           <motion.circle
+            cx="30"
+            cy="70"
+            r="3"
+            initial={{ opacity: 0, scale: 0.5 }}
+            animate={isActive ? { 
+              opacity: [0.6, 0.9, 0.6],
+              scale: [1, 1.2, 1]
+            } : { opacity: 0, scale: 0.5 }}
+            transition={isActive ? { 
+              duration: 1.5,
+              repeat: Infinity,
               ease: "easeInOut",
-              delay: 1.0
-            }}
+              delay: 0.4
+            } : { duration: 0.3 }}
+          />
+           <motion.circle
+            cx="70"
+            cy="70"
+            r="3"
+            initial={{ opacity: 0, scale: 0.5 }}
+            animate={isActive ? { 
+              opacity: [0.6, 0.9, 0.6],
+              scale: [1, 1.2, 1]
+            } : { opacity: 0, scale: 0.5 }}
+            transition={isActive ? { 
+              duration: 1.5,
+              repeat: Infinity,
+              ease: "easeInOut",
+              delay: 0.6
+            } : { duration: 0.3 }}
           />
         </motion.g>
 
-        {/* Code Indicators */}
-        <motion.g>
-          <motion.line
-            x1="30"
-            y1="45"
-            x2="40"
-            y2="45"
-            initial={{ pathLength: 0 }}
-            animate={{ pathLength: isActive ? 1 : 0 }}
-            transition={{ duration: 0.4, delay: 0.6 }}
-          />
-          <motion.line
-            x1="30"
-            y1="55"
-            x2="40"
-            y2="55"
-            initial={{ pathLength: 0 }}
-            animate={{ pathLength: isActive ? 1 : 0 }}
-            transition={{ duration: 0.4, delay: 0.7 }}
-          />
-        </motion.g>
       </motion.g>
 
     </motion.svg>
