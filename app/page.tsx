@@ -532,7 +532,7 @@ export default function Page() {
               <SpotlightOverlay containerRef={expertiseSectionRef} hoveredExpertiseIndex={hoveredExpertiseIndex} />
 
               {/* Ethereal Pillars Display Container */}
-              <div ref={expertiseSectionRef} className="col-span-3 grid md:grid-cols-3 gap-8 relative z-10 h-[650px] items-start px-4 pt-16">
+              <div ref={expertiseSectionRef} className="col-span-3 grid md:grid-cols-3 gap-8 relative z-10 h-[650px] items-start px-4 pt-16 text-mint-400">
                 {expertiseData.map((pillar, index) => (
                   <motion.div
                     key={index}
@@ -556,9 +556,9 @@ export default function Page() {
                             }}
                             transition={{ duration: 0.3, ease: "easeOut" }}
                         >
-                             {pillar.title === "FUTURE-PROOF SOFTWARE" && <EtherealSoftwareIcon isActive={hoveredExpertiseIndex === index} className="w-32 h-32" />}
-                             {pillar.title === "SECURITY INTELLIGENCE" && <EtherealSecurityIcon isActive={hoveredExpertiseIndex === index} className="w-28 h-28" />}
-                             {pillar.title === "DIGITAL TRANSFORMATION" && <EtherealTransformationIcon isActive={hoveredExpertiseIndex === index} className="w-32 h-32" />}
+                             {pillar.title === "FUTURE-PROOF SOFTWARE" && <EtherealSoftwareIcon isActive={hoveredExpertiseIndex === index} className="w-full h-full" />}
+                             {pillar.title === "SECURITY INTELLIGENCE" && <EtherealSecurityIcon isActive={hoveredExpertiseIndex === index} className="w-full h-full" />}
+                             {pillar.title === "DIGITAL TRANSFORMATION" && <EtherealTransformationIcon isActive={hoveredExpertiseIndex === index} className="w-full h-full" />}
                         </motion.div>
                         <h3 className="text-2xl md:text-3xl font-light text-transparent bg-clip-text bg-gradient-to-r from-mist-400 to-mint-400 group-hover:to-sage-400 transition-all duration-300">
                           {pillar.title}
