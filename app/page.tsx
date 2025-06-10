@@ -47,12 +47,12 @@ const POSTS_PER_PAGE = 3;
 
 // Add these animation variants at the top of the file after imports
 const sectionVariants = {
-  hidden: { opacity: 0, y: 50 },
+  hidden: { opacity: 0, y: 80 },
   visible: { 
     opacity: 1, 
     y: 0,
     transition: {
-      duration: 0.8,
+      duration: 1,
       ease: [0.6, -0.05, 0.01, 0.99]
     }
   }
@@ -805,7 +805,7 @@ export default function Page() {
         <motion.section 
           ref={sectionRefs.thinking}
           id="thinking" 
-          className="relative py-48 section-padding text-center"
+          className="relative py-32 section-padding text-center"
           initial="hidden"
           animate={useSectionVisibility(sectionRefs.thinking) ? "visible" : "hidden"}
           variants={sectionVariants}
@@ -928,7 +928,7 @@ export default function Page() {
         <motion.section 
           ref={sectionRefs.connect}
           id="connect"
-          className="relative py-48"
+          className="relative py-32"
           initial="hidden"
           animate={useSectionVisibility(sectionRefs.connect) ? "visible" : "hidden"}
           variants={sectionVariants}
@@ -937,7 +937,7 @@ export default function Page() {
             title="CONNECT"
             subtitle="Ready to transform your digital landscape? Let's discuss how we can help secure and elevate your vision."
             scrollYProgress={connectScrollYProgress}
-            marginBottomClass="mb-0"
+            marginBottomClass="mb-8"
           />
           <motion.div 
             className="relative z-10"

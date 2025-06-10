@@ -85,7 +85,7 @@ export default function ConnectSection() {
   }
 
   return (
-    <section id="connect" className="py-48 section-padding">
+    <section id="connect" className="">
       <div className="max-w-5xl mx-auto">
         {/* <div className="text-center mb-16">
           <h2 className="mobile-heading md:text-5xl font-light mb-8 text-white">LET'S CONNECT</h2>
@@ -95,7 +95,7 @@ export default function ConnectSection() {
           </p>
         </div> */}
 
-        <div className="flex justify-center space-x-8 mb-12">
+        <div className="flex justify-center space-x-8 mb-8">
           <a 
             href="mailto:kodexstudio@gmail.com"
             className="flex items-center space-x-2 text-gray-400 hover:text-white transition-colors group"
