@@ -1,4 +1,4 @@
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
 import { useRef, useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
 import { ExternalLink, Github, BookText, ChevronDown, Shield, Brain, Database, Code, ArrowRight, Star, Key, Sparkles, Server } from "lucide-react";
@@ -50,6 +50,14 @@ export default function ProjectPlayer({ projects }: ProjectPlayerProps) {
   const [isHovered, setIsHovered] = useState<string | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start end", "end start"]
+  });
+
+  const headerY = useTransform(scrollYProgress, [0, 1], [-100, 100]);
+  const headerOpacity = useTransform(scrollYProgress, [0, 0.5, 0.8, 1], [0, 1, 1, 0]);
+
   // Filter projects based on active category
   const filteredProjects = activeCategory === "all" 
     ? projects 
@@ -84,30 +92,10 @@ export default function ProjectPlayer({ projects }: ProjectPlayerProps) {
   };
 
   return (
-    <div ref={containerRef} className="relative w-full py-24 section-padding">
-      {/* Section Header */}
-      <div className="max-w-6xl mx-auto mb-24 text-center">
-        <motion.h2 
-          className="text-4xl md:text-6xl font-light mb-6 text-white"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-        >
-          FEATURED PROJECTS
-        </motion.h2>
-        <motion.p 
-          className="text-xl text-gray-400 max-w-2xl mx-auto"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.2 }}
-        >
-          Explore Kodex Studio's signature projects. Each solution comes alive—see it in motion, understand its impact, and dive deeper with live demos or code.
-        </motion.p>
-      </div>
-
+    <div ref={containerRef} className="relative w-full py-16 section-padding">
       <div className="max-w-6xl mx-auto">
         {/* Category Filter */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 md:gap-4 mb-16">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 md:gap-4 mb-12">
           {categories.map((category) => (
             <motion.button
               key={category.id}
@@ -115,21 +103,21 @@ export default function ProjectPlayer({ projects }: ProjectPlayerProps) {
               onHoverStart={() => setIsHovered(category.id)}
               onHoverEnd={() => setIsHovered(null)}
               className={cn(
-                "w-full px-4 py-2 rounded-full md:rounded-lg md:px-6 md:py-4",
-                "bg-black/30 backdrop-blur-sm border transition-all duration-300",
+                "relative w-full h-10 md:h-12 flex items-center justify-center",
+                "px-3 py-2 rounded-full border transition-all duration-300 overflow-hidden",
                 activeCategory === category.id
-                  ? "border-mint-400/30"
-                  : "border-white/5 hover:border-white/10"
+                  ? "border-mint-400/30 bg-gradient-to-br from-mist-500/10 to-mint-500/10"
+                  : "border-white/5 hover:border-white/10 hover:bg-gradient-to-br hover:from-mist-500/5 hover:to-mint-500/5"
               )}
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
             >
-              <div className="relative z-10 flex items-center justify-center gap-2 md:gap-3">
+              <div className="relative z-10 flex items-center gap-2 md:gap-3">
                 <motion.div
                   className={cn(
-                    "w-4 h-4 md:w-8 md:h-8 rounded-full md:rounded-lg flex items-center justify-center",
-                    "bg-gradient-to-br from-mist-500/20 to-mint-500/20", // Consistent background
-                    "transition-all duration-300"
+                    "w-4 h-4 md:w-5 md:h-5 flex items-center justify-center rounded-full",
+                    "transition-all duration-300",
+                    activeCategory === category.id || isHovered === category.id ? "text-mint-400" : "text-gray-400"
                   )}
                   initial={{ scale: 1 }}
                   animate={{ scale: activeCategory === category.id || isHovered === category.id ? 1.2 : 1 }}
@@ -137,18 +125,8 @@ export default function ProjectPlayer({ projects }: ProjectPlayerProps) {
                 >
                   {category.icon}
                 </motion.div>
-                <div>
-                  <span className="text-sm font-medium text-white block text-center">{category.label}</span>
-                </div>
+                <span className="text-sm md:text-base font-medium text-white">{category.label}</span>
               </div>
-              <motion.div
-                className="absolute inset-0 rounded-full md:rounded-lg bg-gradient-to-r from-mint-400/5 to-sage-400/5 opacity-0"
-                initial={false}
-                animate={{ 
-                  opacity: activeCategory === category.id ? 1 : isHovered === category.id ? 0.5 : 0 
-                }}
-                transition={{ duration: 0.3 }}
-              />
             </motion.button>
           ))}
         </div>
@@ -159,7 +137,7 @@ export default function ProjectPlayer({ projects }: ProjectPlayerProps) {
             {activeProject && (filteredProjects.length > 0) ? (
               <motion.div
                 key={activeProject.id}
-                className="relative"
+                className="relative grid md:grid-cols-2 gap-8 items-center"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -20 }}
@@ -167,7 +145,7 @@ export default function ProjectPlayer({ projects }: ProjectPlayerProps) {
               >
                 {/* Project Preview */}
                 <motion.div
-                  className="relative aspect-[16/9] rounded-lg overflow-hidden bg-black/30 border border-white/10 mb-8"
+                  className="relative aspect-[16/9] rounded-lg overflow-hidden bg-black/30 border border-white/10"
                   initial={{ scale: 0.98, opacity: 0 }}
                   animate={{ scale: 1, opacity: 1 }}
                   transition={{ duration: 0.5, delay: 0.2 }}
@@ -181,8 +159,8 @@ export default function ProjectPlayer({ projects }: ProjectPlayerProps) {
                   )}
                   {/* Category Chip */}
                   <div className={cn(
-                    "absolute top-4 left-4 px-3 py-1 rounded-full",
-                    "bg-gradient-to-r from-mist-500/20 to-mint-500/20 backdrop-blur-sm border border-white/10", // Consistent background
+                    "absolute top-4 left-4 px-3 py-1.5 rounded-full",
+                    "bg-gradient-to-r from-mist-500/20 to-mint-500/20 backdrop-blur-sm border border-white/10",
                     "flex items-center gap-2"
                   )}>
                     <motion.div
@@ -193,7 +171,7 @@ export default function ProjectPlayer({ projects }: ProjectPlayerProps) {
                     >
                       {categories.find(c => c.id === activeProject.category)?.icon}
                     </motion.div>
-                    <span className="text-xs font-medium text-white">
+                    <span className="text-sm font-medium text-white">
                       {categories.find(c => c.id === activeProject.category)?.label}
                     </span>
                   </div>
@@ -206,16 +184,16 @@ export default function ProjectPlayer({ projects }: ProjectPlayerProps) {
                   animate={{ x: 0, opacity: 1 }}
                   transition={{ duration: 0.5, delay: 0.3 }}
                 >
-                  <h3 className="text-4xl md:text-5xl font-light mb-4">{activeProject.title}</h3>
-                  <p className="text-xl text-gray-400 mb-8">{activeProject.summary}</p>
+                  <h3 className="text-3xl md:text-4xl font-light mb-4">{activeProject.title}</h3>
+                  <p className="text-lg md:text-xl text-gray-400 mb-6">{activeProject.summary}</p>
                   
                   {/* Tech Stack Tags */}
                   {activeProject.techStack && (
-                    <div className="flex flex-wrap gap-2 mb-8">
+                    <div className="flex flex-wrap gap-2 mb-6">
                       {activeProject.techStack.map((tech, i) => (
                         <motion.span
                           key={i}
-                          className="px-3 py-1 rounded-full bg-gradient-to-br from-mist-500/10 to-sage-500/10 text-xs text-gray-300 border border-white/10 hover:border-mint-400/30 transition-all duration-300"
+                          className="px-3 py-1.5 rounded-full bg-gradient-to-br from-mist-500/10 to-sage-500/10 text-sm text-gray-300 border border-white/10 hover:border-mint-400/30 transition-all duration-300"
                           initial={{ opacity: 0, scale: 0.8 }}
                           animate={{ opacity: 1, scale: 1 }}
                           transition={{ duration: 0.3, delay: 0.4 + i * 0.05 }}
@@ -235,7 +213,7 @@ export default function ProjectPlayer({ projects }: ProjectPlayerProps) {
                   >
                     {activeProject.liveUrl && (
                       <Button
-                        className="unified-button primary group"
+                        className="unified-button group text-sm md:text-base"
                         onClick={() => window.open(activeProject.liveUrl, "_blank")}
                       >
                         <span className="button-content">
@@ -245,7 +223,7 @@ export default function ProjectPlayer({ projects }: ProjectPlayerProps) {
                     )}
                     {activeProject.repoUrl && (
                       <Button
-                        className="unified-button group"
+                        className="unified-button group text-sm md:text-base"
                         onClick={() => window.open(activeProject.repoUrl, "_blank")}
                       >
                         <span className="button-content">
@@ -255,7 +233,7 @@ export default function ProjectPlayer({ projects }: ProjectPlayerProps) {
                     )}
                     {activeProject.caseStudyUrl && (
                       <Button
-                        className="unified-button group"
+                        className="unified-button group text-sm md:text-base"
                         onClick={() => window.open(activeProject.caseStudyUrl, "_blank")}
                       >
                         <span className="button-content">
@@ -271,11 +249,11 @@ export default function ProjectPlayer({ projects }: ProjectPlayerProps) {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.5 }}
-                className="text-center text-gray-400 py-24"
+                className="text-center text-gray-400 py-16"
               >
-                <p>No projects found for this category.</p>
+                <p className="text-lg">No projects found for this category.</p>
                 <Button
-                  className="unified-button mt-8"
+                  className="unified-button mt-8 text-sm md:text-base"
                   onClick={() => handleCategoryChange("all")}
                 >
                   View All Projects
@@ -284,7 +262,7 @@ export default function ProjectPlayer({ projects }: ProjectPlayerProps) {
             )}
           </AnimatePresence>
           {/* Navigation Arrows */}
-          <div className="flex items-center justify-between mt-12 pt-8 border-t border-white/10">
+          <div className="flex items-center justify-between mt-8 pt-6 border-t border-white/10">
             <div className="flex items-center gap-4">
               <motion.button
                 className="p-2 rounded-full bg-black/30 backdrop-blur-sm border border-white/10 hover:border-white/20 transition-all"
@@ -295,7 +273,7 @@ export default function ProjectPlayer({ projects }: ProjectPlayerProps) {
               >
                 <ArrowRight className="w-6 h-6 rotate-180 text-white" />
               </motion.button>
-              <span className="text-sm text-gray-400">
+              <span className="text-sm md:text-base text-gray-400">
                 {activeProjectIndex + 1} / {filteredProjects.length}
               </span>
               <motion.button
@@ -310,7 +288,7 @@ export default function ProjectPlayer({ projects }: ProjectPlayerProps) {
             </div>
             <div className="flex items-center gap-2">
               <Star className="w-4 h-4 text-mint-400" />
-              <span className="text-sm text-gray-400">
+              <span className="text-sm md:text-base text-gray-400">
                 {filteredProjects.length} {activeCategory === "all" ? "Total Projects" : `${activeCategory.toUpperCase()} Projects`}
               </span>
             </div>

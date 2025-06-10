@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 import { useState, useEffect, useRef } from "react"
-import { motion } from "framer-motion"
+import { motion, useTransform, useScroll } from "framer-motion"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import dynamic from 'next/dynamic'
@@ -44,6 +44,32 @@ import emailjs from '@emailjs/browser'
 // Constants
 const WEB3FORMS_ACCESS_KEY = process.env.NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY || process.env.WEB3FORMS_ACCESS_KEY;
 const POSTS_PER_PAGE = 3;
+
+// Add these animation variants at the top of the file after imports
+const sectionVariants = {
+  hidden: { opacity: 0, y: 50 },
+  visible: { 
+    opacity: 1, 
+    y: 0,
+    transition: {
+      duration: 0.8,
+      ease: [0.6, -0.05, 0.01, 0.99]
+    }
+  }
+};
+
+const dividerVariants = {
+  hidden: { scaleX: 0, opacity: 0 },
+  visible: { 
+    scaleX: 1, 
+    opacity: 1,
+    transition: {
+      duration: 0.8,
+      ease: [0.6, -0.05, 0.01, 0.99],
+      delay: 0.2
+    }
+  }
+};
 
 // Sample SVG Animation Component (Shield) - Enhanced
 const ShieldAnimation = () => (
@@ -287,6 +313,55 @@ const projects: Project[] = [
 
 const DynamicConnectSection = dynamic(() => import('./components/ConnectSection'), { ssr: false });
 
+// Add this new component after the imports
+const BinaryDivider = () => {
+  const [binaryStream, setBinaryStream] = useState<string[]>([]);
+  
+  useEffect(() => {
+    const generateBinary = () => {
+      const length = 20;
+      const stream = Array.from({ length }, () => Math.random() > 0.5 ? '1' : '0');
+      setBinaryStream(stream);
+    };
+
+    generateBinary();
+    const interval = setInterval(generateBinary, 2000);
+    return () => clearInterval(interval);
+  }, []);
+
+  return (
+    <motion.div
+      className="relative h-px w-full overflow-hidden"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.5 }}
+    >
+      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-mint-400/30 to-transparent" />
+      <motion.div
+        className="absolute inset-0 flex items-center justify-center space-x-1 text-[8px] text-mint-400/50 font-mono"
+        initial={{ x: '-100%' }}
+        animate={{ x: '100%' }}
+        transition={{
+          duration: 3,
+          repeat: Infinity,
+          ease: "linear"
+        }}
+      >
+        {binaryStream.map((bit, index) => (
+          <motion.span
+            key={index}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.2, delay: index * 0.1 }}
+          >
+            {bit}
+          </motion.span>
+        ))}
+      </motion.div>
+    </motion.div>
+  );
+};
+
 export default function Page() {
   const [scrollY, setScrollY] = useState(0)
   const [showScrollTop, setShowScrollTop] = useState(false)
@@ -304,6 +379,51 @@ export default function Page() {
   const [isShowcaseHovered, setIsShowcaseHovered] = useState(false);
 
   const expertiseSectionRef = useRef<HTMLDivElement>(null);
+  const heroRef = useRef<HTMLDivElement>(null);
+  const whoWeAreRef = useRef<HTMLDivElement>(null);
+  const offeringsRef = useRef<HTMLDivElement>(null);
+  const thinkingRef = useRef<HTMLDivElement>(null);
+  const showcaseRef = useRef<HTMLDivElement>(null);
+  const connectRef = useRef<HTMLDivElement>(null);
+  const footerRef = useRef<HTMLDivElement>(null);
+
+  // Update the sectionRefs definition with proper typing
+  const sectionRefs = {
+    hero: useRef<HTMLElement>(null),
+    whoWeAre: useRef<HTMLElement>(null),
+    offerings: useRef<HTMLElement>(null),
+    thinking: useRef<HTMLElement>(null),
+    showcase: useRef<HTMLElement>(null),
+    connect: useRef<HTMLElement>(null)
+  };
+
+  // Update the useSectionVisibility hook to handle null refs
+  const useSectionVisibility = (ref: React.RefObject<HTMLElement | null>) => {
+    const [isVisible, setIsVisible] = useState(false);
+    
+    useEffect(() => {
+      const observer = new IntersectionObserver(
+        ([entry]) => {
+          if (entry.isIntersecting) {
+            setIsVisible(true);
+          }
+        },
+        { threshold: 0.1 }
+      );
+
+      if (ref.current) {
+        observer.observe(ref.current);
+      }
+
+      return () => {
+        if (ref.current) {
+          observer.unobserve(ref.current);
+        }
+      };
+    }, [ref]);
+
+    return isVisible;
+  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -393,27 +513,81 @@ export default function Page() {
     { id: 'connect', label: 'CONNECT' }
   ];
 
+  // Section Header Component for consistent styling and parallax
+  const SectionHeader = ({ title, subtitle, scrollYProgress, marginBottomClass = "mb-16" }: { title: string; subtitle: string; scrollYProgress?: any; marginBottomClass?: string }) => {
+    const headerOpacity = useTransform(scrollYProgress, [0, 0.15, 0.85, 1], [0, 1, 1, 0]);
+    const headerY = useTransform(scrollYProgress, [0, 0.15, 0.85, 1], [50, 0, 0, -50]);
+
+    return (
+      <motion.div
+        className={`max-w-6xl mx-auto text-center ${marginBottomClass}`}
+        style={{ opacity: headerOpacity, y: headerY }}
+      >
+        <motion.h2 
+          className="text-4xl md:text-6xl font-light mb-8 text-white"
+        >
+          {title}
+        </motion.h2>
+        <div className="h-px w-24 bg-gradient-to-r from-mist-400 to-mint-400 mx-auto mb-8"></div>
+        <motion.p 
+          className="text-lg md:text-xl text-gray-400 leading-relaxed max-w-2xl mx-auto"
+        >
+          {subtitle}
+        </motion.p>
+      </motion.div>
+    );
+  };
+
+  // Scroll progress for each section
+  const { scrollYProgress: heroScrollYProgress } = useScroll({ target: heroRef, offset: ["start end", "end start"] });
+  const { scrollYProgress: whoWeAreScrollYProgress } = useScroll({ target: whoWeAreRef, offset: ["start end", "end start"] });
+  const { scrollYProgress: offeringsScrollYProgress } = useScroll({ target: offeringsRef, offset: ["start end", "end start"] });
+  const { scrollYProgress: thinkingScrollYProgress } = useScroll({ target: thinkingRef, offset: ["start end", "end start"] });
+  const { scrollYProgress: showcaseScrollYProgress } = useScroll({ target: showcaseRef, offset: ["start end", "end start"] });
+  const { scrollYProgress: connectScrollYProgress } = useScroll({ target: connectRef, offset: ["start end", "end start"] });
+  const { scrollYProgress: footerScrollYProgress } = useScroll({ target: footerRef, offset: ["start end", "end start"] });
+
+  // Content animations (opacity and Y-position based on scroll)
+  const heroContentOpacity = useTransform(heroScrollYProgress, [0, 0.15, 0.85, 1], [0, 1, 1, 0]);
+  const heroContentY = useTransform(heroScrollYProgress, [0, 0.15, 0.85, 1], [50, 0, 0, -50]);
+
+  const whoWeAreContentOpacity = useTransform(whoWeAreScrollYProgress, [0, 0.15, 0.85, 1], [0, 1, 1, 0]);
+  const whoWeAreContentY = useTransform(whoWeAreScrollYProgress, [0, 0.15, 0.85, 1], [50, 0, 0, -50]);
+
+  const offeringsContentOpacity = useTransform(offeringsScrollYProgress, [0, 0.15, 0.85, 1], [0, 1, 1, 0]);
+  const offeringsContentY = useTransform(offeringsScrollYProgress, [0, 0.15, 0.85, 1], [50, 0, 0, -50]);
+
+  const thinkingContentOpacity = useTransform(thinkingScrollYProgress, [0, 0.15, 0.85, 1], [0, 1, 1, 0]);
+  const thinkingContentY = useTransform(thinkingScrollYProgress, [0, 0.15, 0.85, 1], [50, 0, 0, -50]);
+
+  const showcaseContentOpacity = useTransform(showcaseScrollYProgress, [0, 0.15, 0.85, 1], [0, 1, 1, 0]);
+  const showcaseContentY = useTransform(showcaseScrollYProgress, [0, 0.15, 0.85, 1], [50, 0, 0, -50]);
+
+  const connectContentOpacity = useTransform(connectScrollYProgress, [0, 0.15, 0.85, 1], [0, 1, 1, 0]);
+  const connectContentY = useTransform(connectScrollYProgress, [0, 0.15, 0.85, 1], [50, 0, 0, -50]);
+
+  const footerContentOpacity = useTransform(footerScrollYProgress, [0, 0.15, 0.85, 1], [0, 1, 1, 0]);
+  const footerContentY = useTransform(footerScrollYProgress, [0, 0.15, 0.85, 1], [50, 0, 0, -50]);
+
   return (
     <div className="min-h-screen bg-black text-white overflow-x-hidden">
       {/* Header */}
       <header className={`fixed top-0 z-50 w-full navbar ${scrollY > 50 ? 'scrolled' : ''}`}>
         <div className="flex items-center justify-between content-padding py-6">
           <Link href="/" className="text-xl font-light">
-            <img src="/assets/logo.png" alt="Kodex Studio Logo" className="h-8" />
+            <img src='assets/logo.png' alt="Kodex Studio" className="h-8" />
           </Link>
-          {/* Desktop Navigation */}
-          <nav className="hidden md:flex space-x-4">
+          <nav className="hidden md:flex space-x-6">
             {navLinks.map((link) => (
               <button
                 key={link.id}
                 onClick={() => scrollToSection(link.id)}
-                className="navbar-link"
+                className="navbar-link text-sm font-medium hover:text-mint-400 transition-colors duration-300"
               >
                 {link.label}
               </button>
             ))}
           </nav>
-          {/* Mobile Hamburger Menu */}
           <button
             className="md:hidden hamburger-menu"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -427,10 +601,9 @@ export default function Page() {
         </div>
       </header>
 
-      {/* Mobile Menu Modal */}
+      {/* Mobile Menu */}
       <div className={`mobile-menu ${isMobileMenuOpen ? '' : 'hidden'}`}>
         <div className="mobile-menu-content">
-          {/* Close button */}
           <button onClick={() => setIsMobileMenuOpen(false)} className="absolute top-4 right-4 close-menu-btn text-white text-3xl">&times;</button>
           {navLinks.map((link) => (
             <button
@@ -444,17 +617,17 @@ export default function Page() {
         </div>
       </div>
 
-      {/* Scroll to Top Button - Initially hidden */}
+      {/* Scroll to Top Button */}
       <button 
         className={`unified-button no-default-border ${showScrollTop ? 'visible' : ''}`}
         onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
       >
         <span className="button-content">
-            <ChevronUp className="button-icon" />
+          <ChevronUp className="button-icon" />
         </span>
       </button>
 
-      {/* Gradient overlay that flows through sections */}
+      {/* Gradient overlay */}
       <div className="fixed inset-0 pointer-events-none z-0">
         <div
           className="absolute right-0 top-0 h-[400px] w-[400px] rounded-full bg-gradient-to-br from-sage-600 via-mist-500 to-mint-400 opacity-20 blur-3xl animate-[pulse_6s_ease-in-out_infinite]"
@@ -481,9 +654,20 @@ export default function Page() {
       {/* Main Content */}
       <div className="relative z-10">
         {/* Hero Section */}
-        <main className="relative pt-24 section-padding">
-          <div className="relative min-h-screen flex flex-col justify-center">
-            <h1 className="max-w-3xl text-4xl md:text-7xl font-light leading-tight tracking-tight">
+        <motion.main 
+          ref={sectionRefs.hero}
+          className="relative py-48 section-padding"
+          initial="hidden"
+          animate={useSectionVisibility(sectionRefs.hero) ? "visible" : "hidden"}
+          variants={sectionVariants}
+        >
+          <motion.div 
+            className="relative min-h-[80vh] flex flex-col justify-center"
+            style={{ opacity: heroContentOpacity, y: heroContentY }}
+          >
+            <motion.h1 
+              className="max-w-3xl text-5xl md:text-8xl font-light leading-tight tracking-tight mb-8"
+            >
               KODEX STUDIO
               <br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-sage-400 via-mist-400 to-mint-400">
@@ -491,9 +675,27 @@ export default function Page() {
               </span>
               <br />
               INNOVATION.
-            </h1>
+            </motion.h1>
+            <motion.div 
+              className="h-px w-24 bg-gradient-to-r from-mist-400 to-mint-400 mb-8"
+              style={{ x: useTransform(heroScrollYProgress, [0, 0.15, 0.85, 1], [0, 0, 0, 50]), width: useTransform(heroScrollYProgress, [0, 0.15], [0, 96]) }}
+            />
+            <motion.p 
+              className="text-lg md:text-xl text-gray-400 leading-relaxed max-w-2xl mb-8"
+            >
+              PIONEERING SECURE SOLUTIONS FOR THE DIGITAL FUTURE.
+            </motion.p>
+            <motion.p 
+              className="text-base md:text-lg leading-relaxed text-gray-400 max-w-xl"
+            >
+              At Kodex Studio, we architect the future of digital security. Our innovative solutions blend cutting-edge
+              technology with uncompromising protection, creating systems that don't just meet today's needs—they
+              anticipate tomorrow's challenges.
+            </motion.p>
 
-            <div className="mt-16 md:mt-24 flex flex-col md:flex-row justify-between items-start md:items-end space-y-8 md:space-y-0">
+            <motion.div 
+              className="mt-16 md:mt-24 flex flex-col md:flex-row justify-between items-start md:items-end space-y-8 md:space-y-0"
+            >
               <div className="max-w-md">
                 <Button
                   className="unified-button primary full-width rounded-lg backdrop-blur-md bg-black/30 border border-white/10 hover:border-white/20 transition-all duration-300 hover:bg-black/40"
@@ -501,47 +703,52 @@ export default function Page() {
                 >
                   <span className="button-content">DISCUSS YOUR PROJECT</span>
                 </Button>
-                <p className="mt-6 md:mt-8 text-base leading-relaxed text-gray-400">
-                  PIONEERING SECURE SOLUTIONS FOR
-                  <br />
-                  THE DIGITAL FUTURE.
-                </p>
               </div>
 
-              {/* Moved scroll indicator here */}
+              {/* Scroll indicator */}
               <div className="scroll-indicator">
                 <span className="text-sm md:text-base">SCROLL TO EXPLORE</span>
                 <span className="h-px bg-white w-12"></span>
               </div>
-            </div>
-
-            <p className="mt-24 max-w-xl text-base leading-relaxed text-gray-400">
-              At Kodex Studio, we architect the future of digital security. Our innovative solutions blend cutting-edge
-              technology with uncompromising protection, creating systems that don't just meet today's needs—they
-              anticipate tomorrow's challenges.
-            </p>
+            </motion.div>
+          </motion.div>
+          <div className="mt-16">
+            <BinaryDivider />
           </div>
-        </main>
+        </motion.main>
 
         {/* Who We Are Section */}
-        <section id="who-we-are" className="relative py-48 section-padding">
-          <div className="relative max-w-6xl mx-auto">
-            <div className="grid md:grid-cols-2 gap-16 items-center">
-              <div>
-                <h2 className="mobile-heading font-light mb-8 text-white">WHO WE ARE</h2>
-                <div className="h-px w-24 bg-gradient-to-r from-mist-400 to-mint-400 mb-8"></div>
+        <motion.section 
+          ref={sectionRefs.whoWeAre}
+          id="who-we-are" 
+          className="relative py-48 section-padding text-center"
+          initial="hidden"
+          animate={useSectionVisibility(sectionRefs.whoWeAre) ? "visible" : "hidden"}
+          variants={sectionVariants}
+        >
+          <SectionHeader 
+            title="WHO WE ARE"
+            subtitle="Kodex Studio is where security meets innovation. We're a collective of visionary engineers, security architects, and creative technologists who believe that the most powerful solutions are born from the intersection of protection and possibility."
+            scrollYProgress={whoWeAreScrollYProgress}
+          />
+          <motion.div 
+            className="relative max-w-6xl mx-auto"
+            style={{ opacity: whoWeAreContentOpacity, y: whoWeAreContentY }}
+          >
+            <div className="grid md:grid-cols-2 gap-16 items-center text-left">
+              <motion.div
+                style={{ x: useTransform(whoWeAreScrollYProgress, [0, 0.15, 0.85, 1], [0, 0, 0, -50]) }}
+              >
                 <p className="mobile-text leading-relaxed text-gray-300 mb-6">
-                  Kodex Studio is where security meets innovation. We're a collective of visionary engineers, security
-                  architects, and creative technologists who believe that the most powerful solutions are born from the
-                  intersection of protection and possibility.
-                </p>
-                <p className="mobile-text text-gray-400 leading-relaxed">
                   Our mission is simple yet profound: to build digital ecosystems that are not only secure and scalable
                   but also beautifully crafted and future-ready. Every line of code we write, every system we design, is a
                   step toward a more secure digital tomorrow.
                 </p>
-              </div>
-              <div className="relative">
+              </motion.div>
+              <motion.div 
+                className="relative"
+                style={{ x: useTransform(whoWeAreScrollYProgress, [0, 0.15, 0.85, 1], [0, 0, 0, 50]) }}
+              >
                 <div className="aspect-square bg-gradient-to-br from-sage-600/30 to-mist-600/30 rounded-full blur-3xl"></div>
                 <div className="absolute inset-0 flex items-center justify-center">
                   <div className="text-center">
@@ -551,15 +758,32 @@ export default function Page() {
                     <div className="text-sm text-gray-400">SECURE SOLUTIONS DELIVERED</div>
                   </div>
                 </div>
-              </div>
+              </motion.div>
             </div>
+          </motion.div>
+          <div className="mt-16">
+            <BinaryDivider />
           </div>
-        </section>
+        </motion.section>
 
         {/* Offerings Section */}
-        <section id="offerings" className="py-48 section-padding relative">
-          <div className="max-w-6xl mx-auto relative z-10">
-            <h2 className="mobile-heading md:text-5xl font-light mb-16 text-center text-white">OUR EXPERTISE</h2>
+        <motion.section 
+          ref={sectionRefs.offerings}
+          id="offerings" 
+          className="py-48 section-padding relative text-center"
+          initial="hidden"
+          animate={useSectionVisibility(sectionRefs.offerings) ? "visible" : "hidden"}
+          variants={sectionVariants}
+        >
+          <SectionHeader 
+            title="OUR EXPERTISE"
+            subtitle="We blend cutting-edge technology with battle-tested security principles to deliver solutions that are engineered for the horizon."
+            scrollYProgress={offeringsScrollYProgress}
+          />
+          <motion.div 
+            className="max-w-6xl mx-auto relative z-10"
+            style={{ opacity: offeringsContentOpacity, y: offeringsContentY }}
+          >
             <div className="grid md:grid-cols-3 gap-8 relative">
               {/* Spotlight Overlay */}
               <SpotlightOverlay containerRef={expertiseSectionRef} hoveredExpertiseIndex={hoveredExpertiseIndex} />
@@ -578,71 +802,90 @@ export default function Page() {
                     onMouseEnter={() => setHoveredExpertiseIndex(index)}
                     onMouseLeave={() => setHoveredExpertiseIndex(null)}
                     tabIndex={0}
+                    style={{ x: useTransform(offeringsScrollYProgress, [0, 0.15, 0.85, 1], [0, 0, 0, (index % 2 === 0 ? -50 : 50)]) }}
                   >
-                     {/* Core Visual Element (Ethereal Icon/Symbol) & Title - Always Visible */}
+                    {/* Core Visual Element (Ethereal Icon/Symbol) & Title - Always Visible */}
                     <div className="flex flex-col items-center relative z-20 mb-6">
-                        <motion.div
-                            className="w-32 h-32 flex items-center justify-center mb-4 max-h-32"
-                            animate={{
-                              scale: hoveredExpertiseIndex === index ? 1.1 : 1,
-                              opacity: hoveredExpertiseIndex === index ? 1 : 0.9
-                            }}
-                            transition={{ duration: 0.3, ease: "easeOut" }}
-                        >
-                             {pillar.title === "FUTURE-PROOF SOFTWARE" && <EtherealSoftwareIcon isActive={hoveredExpertiseIndex === index} className="w-full h-full" />}
-                             {pillar.title === "SECURITY INTELLIGENCE" && <EtherealSecurityIcon isActive={hoveredExpertiseIndex === index} className="w-full h-full" />}
-                             {pillar.title === "DIGITAL TRANSFORMATION" && <EtherealTransformationIcon isActive={hoveredExpertiseIndex === index} className="w-full h-full" />}
-                        </motion.div>
-                        <h3 className="text-2xl md:text-3xl font-light text-transparent bg-clip-text bg-gradient-to-r from-mist-400 to-mint-400 group-hover:to-sage-400 transition-all duration-300">
-                          {pillar.title}
-                        </h3>
+                      <motion.div
+                        className="w-32 h-32 flex items-center justify-center mb-4 max-h-32"
+                        animate={{
+                          scale: hoveredExpertiseIndex === index ? 1.1 : 1,
+                          opacity: hoveredExpertiseIndex === index ? 1 : 0.9
+                        }}
+                        transition={{ duration: 0.3, ease: "easeOut" }}
+                      >
+                        {pillar.title === "FUTURE-PROOF SOFTWARE" && <EtherealSoftwareIcon isActive={hoveredExpertiseIndex === index} className="w-full h-full" />}
+                        {pillar.title === "SECURITY INTELLIGENCE" && <EtherealSecurityIcon isActive={hoveredExpertiseIndex === index} className="w-full h-full" />}
+                        {pillar.title === "DIGITAL TRANSFORMATION" && <EtherealTransformationIcon isActive={hoveredExpertiseIndex === index} className="w-full h-full" />}
+                      </motion.div>
+                      <h3 className="text-2xl md:text-3xl font-light text-transparent bg-clip-text bg-gradient-to-r from-mist-400 to-mint-400 group-hover:to-sage-400 transition-all duration-300">
+                        {pillar.title}
+                      </h3>
                     </div>
 
-                     {/* Microcopy and Description Container - Appears on Hover */}
-                     <motion.div
-                       className="px-4 text-center z-10 overflow-hidden"
-                       initial={{ opacity: 0, height: 0, y: 10 }}
-                       animate={hoveredExpertiseIndex === index ? { opacity: 1, height: 'auto', y: 0, padding: '0 1rem' } : { opacity: 0, height: 0, y: 10, padding: '0 1rem' }}
-                       transition={{ duration: 0.5, ease: "easeOut" }}
-                     >
-                        {/* Microcopy */}
-                       <motion.span
-                         className="inline-block mb-3 text-sm text-mint-400 leading-relaxed"
-                         initial={{ opacity: 0, y: 5 }}
-                         animate={hoveredExpertiseIndex === index ? { opacity: 1, y: 0 } : { opacity: 0, y: 5 }}
-                         transition={{ duration: 0.4, delay: hoveredExpertiseIndex === index ? 0.1 : 0, ease: "easeOut" }}
-                       >
-                         {pillar.microcopy}
-                       </motion.span>
-                        {/* Description */}
-                       <motion.p
-                         className="mobile-text text-base text-gray-300 leading-relaxed"
-                         initial={{ opacity: 0, y: 5 }}
-                         animate={hoveredExpertiseIndex === index ? { opacity: 1, y: 0 } : { opacity: 0, y: 5 }}
-                         transition={{ duration: 0.4, delay: hoveredExpertiseIndex === index ? 0.2 : 0, ease: "easeOut" }}
-                       >
-                         {pillar.description}
-                       </motion.p>
-                     </motion.div>
+                    {/* Microcopy and Description Container - Appears on Hover */}
+                    <motion.div
+                      className="px-4 text-center z-10 overflow-hidden"
+                      initial={{ opacity: 0, height: 0, y: 10 }}
+                      animate={hoveredExpertiseIndex === index ? { opacity: 1, height: 'auto', y: 0, padding: '0 1rem' } : { opacity: 0, height: 0, y: 10, padding: '0 1rem' }}
+                      transition={{ duration: 0.5, ease: "easeOut" }}
+                    >
+                      {/* Microcopy */}
+                      <motion.span
+                        className="inline-block mb-3 text-sm text-mint-400 leading-relaxed"
+                        initial={{ opacity: 0, y: 5 }}
+                        animate={hoveredExpertiseIndex === index ? { opacity: 1, y: 0 } : { opacity: 0, y: 5 }}
+                        transition={{ duration: 0.4, delay: hoveredExpertiseIndex === index ? 0.1 : 0, ease: "easeOut" }}
+                      >
+                        {pillar.microcopy}
+                      </motion.span>
+                      {/* Description */}
+                      <motion.p
+                        className="mobile-text text-base text-gray-300 leading-relaxed"
+                        initial={{ opacity: 0, y: 5 }}
+                        animate={hoveredExpertiseIndex === index ? { opacity: 1, y: 0 } : { opacity: 0, y: 5 }}
+                        transition={{ duration: 0.4, delay: hoveredExpertiseIndex === index ? 0.2 : 0, ease: "easeOut" }}
+                      >
+                        {pillar.description}
+                      </motion.p>
+                    </motion.div>
                   </motion.div>
                 ))}
               </div>
             </div>
+          </motion.div>
+          <div className="mt-16">
+            <BinaryDivider />
           </div>
-           {/* Interactive Background Particles/Lines will go here */}
-           {/* <AnimatedBackground /> */}
-        </section>
+        </motion.section>
 
         {/* Thinking Section */}
-        <section id="thinking" className="relative py-48 section-padding">
-          <div className="relative max-w-6xl mx-auto">
-            <h2 className="mobile-heading md:text-5xl font-light mb-16 text-white text-center">THINKING</h2>
+        <motion.section 
+          ref={sectionRefs.thinking}
+          id="thinking" 
+          className="relative py-48 section-padding text-center"
+          initial="hidden"
+          animate={useSectionVisibility(sectionRefs.thinking) ? "visible" : "hidden"}
+          variants={sectionVariants}
+        >
+          <SectionHeader 
+            title="THINKING"
+            subtitle="Insights and analyses from the forefront of digital security and innovation. Stay informed with our latest articles."
+            scrollYProgress={thinkingScrollYProgress}
+          />
+          <motion.div 
+            className="relative max-w-6xl mx-auto"
+            style={{ opacity: thinkingContentOpacity, y: thinkingContentY }}
+          >
             {loadingPosts && <p className="text-center text-gray-400">Loading posts...</p>}
             {postsError && <p className="text-center text-red-400">Error loading posts: {postsError}</p>}
             {!loadingPosts && !postsError && filteredPosts.length > 0 && (
               <>
                 {/* Search Bar */}
-                <div className="mb-8">
+                <motion.div 
+                  className="mb-8"
+                  style={{ opacity: thinkingContentOpacity, y: thinkingContentY }}
+                >
                   <div className="relative group">
                     <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400 group-hover:text-mint-400 transition-colors z-10" />
                     <Input
@@ -650,43 +893,51 @@ export default function Page() {
                       placeholder="Search posts..."
                       value={searchQuery}
                       onChange={(e) => handleSearch(e.target.value)}
-                      className="w-full pl-10 pr-4 py-4 bg-black/20 border border-white/5 rounded-lg backdrop-blur-md text-gray-200 placeholder-gray-400 focus:border-mint-400/30 focus:ring-1 focus:ring-mint-400/20 transition-all duration-300 hover:border-white/10 focus:bg-black/20 hover:bg-black/20"
+                      className="w-full pl-10 pr-4 py-4 bg-black/20 border border-white/5 rounded-lg backdrop-blur-md text-gray-200 placeholder:text-gray-400 focus:border-mint-400/30 focus:ring-1 focus:ring-mint-400/20 transition-all duration-300 hover:border-white/10 focus:bg-black/20 hover:bg-black/20"
                     />
                   </div>
-                </div>
+                </motion.div>
 
                 {/* Articles Grid */}
                 <div className="grid md:grid-cols-3 gap-8">
                   {getCurrentPosts().map((post: any) => (
-                    <Card key={post.id} className="mobile-card unified-card h-[420px] rounded-lg group backdrop-blur-md bg-black/10 border border-white/5 hover:border-white/10 transition-all duration-300">
-                      <CardContent className="p-8 flex flex-col h-full">
-                        <div className="flex-1 min-h-0">
-                          {post.tag_list && post.tag_list.length > 0 && (
-                            <span className="thinking-category">{post.tag_list[0]}</span>
-                          )}
-                          <h3 className="text-xl font-light mb-4 text-white group-hover:text-white/90 transition-all duration-300 line-clamp-2">{post.title}</h3>
-                          <p className="mobile-text text-base text-gray-300 mb-4 line-clamp-3">{post.description}</p>
-                        </div>
-                        <div className="mt-auto">
-                          <div className="flex justify-between text-base text-gray-400 mb-4">
-                            <span>{new Date(post.published_timestamp).toLocaleDateString()}</span>
-                            <span>{post.reading_time_minutes} min read</span>
+                    <motion.div
+                      key={post.id}
+                      style={{ opacity: thinkingContentOpacity, y: thinkingContentY }}
+                    >
+                      <Card className="mobile-card unified-card h-[420px] rounded-lg group backdrop-blur-md bg-black/10 border border-white/5 hover:border-white/10 transition-all duration-300">
+                        <CardContent className="p-8 flex flex-col h-full text-left">
+                          <div className="flex-1 min-h-0">
+                            {post.tag_list && post.tag_list.length > 0 && (
+                              <span className="thinking-category">{post.tag_list[0]}</span>
+                            )}
+                            <h3 className="text-xl font-light mb-4 text-white group-hover:text-white/90 transition-all duration-300 line-clamp-2">{post.title}</h3>
+                            <p className="mobile-text text-base text-gray-300 mb-4 line-clamp-3">{post.description}</p>
                           </div>
-                          <Link href={post.url} target="_blank" rel="noopener noreferrer" className="block w-full">
-                            <Button
-                              className="unified-button full-width rounded-lg backdrop-blur-sm bg-black/20 border border-white/5 hover:border-white/10 transition-all duration-300"
-                            >
-                              <span className="button-content">READ ARTICLE</span>
-                            </Button>
-                          </Link>
-                        </div>
-                      </CardContent>
-                    </Card>
+                          <div className="mt-auto">
+                            <div className="flex justify-between text-base text-gray-400 mb-4">
+                              <span>{new Date(post.published_timestamp).toLocaleDateString()}</span>
+                              <span>{post.reading_time_minutes} min read</span>
+                            </div>
+                            <Link href={post.url} target="_blank" rel="noopener noreferrer" className="block w-full">
+                              <Button
+                                className="unified-button full-width rounded-lg backdrop-blur-sm bg-black/20 border border-white/5 hover:border-white/10 transition-all duration-300"
+                              >
+                                <span className="button-content">READ ARTICLE</span>
+                              </Button>
+                            </Link>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    </motion.div>
                   ))}
                 </div>
 
                 {/* Pagination Controls */}
-                <div className="mt-12">
+                <motion.div 
+                  className="mt-12"
+                  style={{ opacity: thinkingContentOpacity, y: thinkingContentY }}
+                >
                   <BlogPagination
                     totalPosts={filteredPosts.length}
                     postsPerPage={POSTS_PER_PAGE}
@@ -695,29 +946,84 @@ export default function Page() {
                     onSearch={handleSearch}
                     hideSearch={true}
                   />
-                  </div>
+                </motion.div>
               </>
             )}
             {!loadingPosts && !postsError && filteredPosts.length === 0 && (
-              <p className="text-center text-gray-400">No blog posts found.</p>
+              <motion.p
+                className="text-center text-gray-400"
+                style={{ opacity: thinkingContentOpacity, y: thinkingContentY }}
+              >
+                No blog posts found.
+              </motion.p>
             )}
+          </motion.div>
+          <div className="mt-16">
+            <BinaryDivider />
           </div>
-        </section>
+        </motion.section>
 
         {/* Showcase Section */}
-        <section id="showcase" className="relative">
-          <div className="relative z-10">
+        <motion.section 
+          ref={sectionRefs.showcase}
+          id="showcase" 
+          className="relative py-48"
+          initial="hidden"
+          animate={useSectionVisibility(sectionRefs.showcase) ? "visible" : "hidden"}
+          variants={sectionVariants}
+        >
+          <SectionHeader 
+            title="PROJECT SHOWCASE"
+            subtitle="Explore Kodex Studio's signature projects. Each solution comes alive—see it in motion, understand its impact, and dive deeper with live demos or code."
+            scrollYProgress={showcaseScrollYProgress}
+          />
+          <motion.div 
+            className="relative z-10"
+            style={{ opacity: showcaseContentOpacity, y: showcaseContentY }}
+          >
             <ProjectPlayer projects={projects} />
+          </motion.div>
+          <div className="mt-16">
+            <BinaryDivider />
           </div>
-        </section>
+        </motion.section>
 
         {/* Connect Section */}
-        <DynamicConnectSection />
+        <motion.section 
+          ref={sectionRefs.connect}
+          id="connect"
+          className="relative py-48"
+          initial="hidden"
+          animate={useSectionVisibility(sectionRefs.connect) ? "visible" : "hidden"}
+          variants={sectionVariants}
+        >
+          <SectionHeader 
+            title="CONNECT"
+            subtitle="Ready to transform your digital landscape? Let's discuss how we can help secure and elevate your vision."
+            scrollYProgress={connectScrollYProgress}
+            marginBottomClass="mb-0"
+          />
+          <motion.div 
+            className="relative z-10"
+            style={{ opacity: connectContentOpacity, y: connectContentY }}
+          >
+            <DynamicConnectSection />
+          </motion.div>
+          <div className="mt-16">
+            <BinaryDivider />
+          </div>
+        </motion.section>
       </div>
 
       {/* Footer */}
-      <footer className="py-12 content-padding border-t border-white/10 mt-auto relative z-10">
-        <div className="flex flex-col md:flex-row justify-between items-center">
+      <footer 
+        ref={footerRef}
+        className="py-32 content-padding border-t border-white/10 mt-auto relative z-10"
+      >
+        <motion.div 
+          className="flex flex-col md:flex-row justify-between items-center"
+          style={{ opacity: footerContentOpacity, y: footerContentY }}
+        >
           <div className="flex items-center mb-8 md:mb-0">
             <div className="flex space-x-2 mr-4">
               <div className="h-2 w-2 rounded-full bg-white"></div>
@@ -727,8 +1033,8 @@ export default function Page() {
           <div>
             <p className="text-sm text-gray-400">© 2024 Kodex Studio. All rights reserved.</p>
           </div>
-        </div>
+        </motion.div>
       </footer>
     </div>
-  )
+  );
 }

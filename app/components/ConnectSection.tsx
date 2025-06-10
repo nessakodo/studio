@@ -87,13 +87,13 @@ export default function ConnectSection() {
   return (
     <section id="connect" className="py-48 section-padding">
       <div className="max-w-5xl mx-auto">
-        <div className="text-center mb-16">
+        {/* <div className="text-center mb-16">
           <h2 className="mobile-heading md:text-5xl font-light mb-8 text-white">LET'S CONNECT</h2>
           <div className="h-px w-24 bg-gradient-to-r from-mist-400 to-mint-400 mx-auto mb-8"></div>
           <p className="mobile-text text-base text-gray-400 text-base">
             Ready to build something secure and extraordinary? Tell us about your project.
           </p>
-        </div>
+        </div> */}
 
         <div className="flex justify-center space-x-8 mb-12">
           <a 
