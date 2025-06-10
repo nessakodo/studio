@@ -313,55 +313,6 @@ const projects: Project[] = [
 
 const DynamicConnectSection = dynamic(() => import('./components/ConnectSection'), { ssr: false });
 
-// Add this new component after the imports
-const BinaryDivider = () => {
-  const [binaryStream, setBinaryStream] = useState<string[]>([]);
-  
-  useEffect(() => {
-    const generateBinary = () => {
-      const length = 20;
-      const stream = Array.from({ length }, () => Math.random() > 0.5 ? '1' : '0');
-      setBinaryStream(stream);
-    };
-
-    generateBinary();
-    const interval = setInterval(generateBinary, 2000);
-    return () => clearInterval(interval);
-  }, []);
-
-  return (
-    <motion.div
-      className="relative h-px w-full overflow-hidden"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.5 }}
-    >
-      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-mint-400/30 to-transparent" />
-      <motion.div
-        className="absolute inset-0 flex items-center justify-center space-x-1 text-[8px] text-mint-400/50 font-mono"
-        initial={{ x: '-100%' }}
-        animate={{ x: '100%' }}
-        transition={{
-          duration: 3,
-          repeat: Infinity,
-          ease: "linear"
-        }}
-      >
-        {binaryStream.map((bit, index) => (
-          <motion.span
-            key={index}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.2, delay: index * 0.1 }}
-          >
-            {bit}
-          </motion.span>
-        ))}
-      </motion.div>
-    </motion.div>
-  );
-};
-
 export default function Page() {
   const [scrollY, setScrollY] = useState(0)
   const [showScrollTop, setShowScrollTop] = useState(false)
@@ -712,9 +663,6 @@ export default function Page() {
               </div>
             </motion.div>
           </motion.div>
-          <div className="mt-16">
-            <BinaryDivider />
-          </div>
         </motion.main>
 
         {/* Who We Are Section */}
@@ -761,9 +709,6 @@ export default function Page() {
               </motion.div>
             </div>
           </motion.div>
-          <div className="mt-16">
-            <BinaryDivider />
-          </div>
         </motion.section>
 
         {/* Offerings Section */}
@@ -854,9 +799,6 @@ export default function Page() {
               </div>
             </div>
           </motion.div>
-          <div className="mt-16">
-            <BinaryDivider />
-          </div>
         </motion.section>
 
         {/* Thinking Section */}
@@ -958,9 +900,6 @@ export default function Page() {
               </motion.p>
             )}
           </motion.div>
-          <div className="mt-16">
-            <BinaryDivider />
-          </div>
         </motion.section>
 
         {/* Showcase Section */}
@@ -983,9 +922,6 @@ export default function Page() {
           >
             <ProjectPlayer projects={projects} />
           </motion.div>
-          <div className="mt-16">
-            <BinaryDivider />
-          </div>
         </motion.section>
 
         {/* Connect Section */}
@@ -1009,9 +945,6 @@ export default function Page() {
           >
             <DynamicConnectSection />
           </motion.div>
-          <div className="mt-16">
-            <BinaryDivider />
-          </div>
         </motion.section>
       </div>
 
