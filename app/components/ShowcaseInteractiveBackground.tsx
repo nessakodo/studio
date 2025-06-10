@@ -1,5 +1,5 @@
-import { motion, useScroll, useTransform } from "framer-motion";
-import { useEffect, useState, useRef } from "react";
+import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
 
 interface ShowcaseInteractiveBackgroundProps {
   isAnyCardHovered: boolean;
@@ -9,32 +9,8 @@ interface ShowcaseInteractiveBackgroundProps {
 export default function ShowcaseInteractiveBackground({
   isAnyCardHovered,
 }: ShowcaseInteractiveBackgroundProps) {
-  const [isClient, setIsClient] = useState(false);
-  const [lineElements, setLineElements] = useState<Array<{id: number, initialX: number, initialY: number, initialRotate: number, duration: number, delay: number}>>([]);
-
-  const containerRef = useRef<HTMLDivElement>(null);
-  // Use window scroll for parallax relative to the viewport
-  const { scrollYProgress: pageScrollYProgress } = useScroll();
-
-  // Initialize positions and animation properties on mount
-  useEffect(() => {
-    setIsClient(true);
-    const elements = Array.from({ length: 80 }).map((_, i) => ({
-      id: i,
-      initialX: Math.random() * 100,
-      initialY: Math.random() * 100,
-      initialRotate: Math.random() * 360,
-      duration: 20 + Math.random() * 30, // Longer duration for slower, ethereal movement
-      delay: Math.random() * 20, // Longer delay for staggered start
-    }));
-    setLineElements(elements);
-  }, []);
-
-  // Parallax transform based on page scroll
-  const parallaxY = useTransform(pageScrollYProgress, [0, 1], ['0vh', '100vh']);
-
   return (
-    <div className="absolute inset-0 overflow-hidden pointer-events-none" ref={containerRef} style={{ y: parallaxY }}>
+    <div className="absolute inset-0 overflow-hidden pointer-events-none">
       {/* Subtle base texture/dots - Barely visible normally, subtle fade in on hover */}
        <motion.div
         className="absolute inset-0"
@@ -46,37 +22,38 @@ export default function ShowcaseInteractiveBackground({
 
       {/* Removed Primary interactive gradient (green orb) */}
 
-      {/* Abstract lines/connections with orbiting animation */}
-      {isClient && lineElements.map((el) => (
+      {/* Abstract lines/connections - More reactive and visible on hover, invisible otherwise */}
+      {Array.from({ length: 40 }).map((_, i) => (
         <motion.div
-          key={`line-${el.id}`}
+          key={`line-${i}`}
           className="absolute bg-mint-400 rounded-full"
           initial={{ 
-            x: `${el.initialX}vw`, 
-            y: `${el.initialY}vh`, 
-            width: '0.5px',
-            height: '1px',
-            opacity: 0,
-            rotate: el.initialRotate
+            x: `${Math.random() * 100}vw`, 
+            y: `${Math.random() * 100}vh`, 
+            width: isAnyCardHovered ? '3px' : '0.5px',
+            height: isAnyCardHovered ? '60px' : '1px',
+            opacity: isAnyCardHovered ? 0.6 : 0,
+            rotate: Math.random() * 360
           }}
-          animate={{
-            x: [el.initialX, Math.random() * 100, Math.random() * 100, Math.random() * 100, el.initialX].map(val => `${val}vw`),
-            y: [el.initialY, Math.random() * 100, Math.random() * 100, Math.random() * 100, el.initialY].map(val => `${val}vh`),
-            opacity: isAnyCardHovered ? [0.7, 1, 0.7, 0.7, 0.7] : [0, 0.15, 0.1, 0.15, 0],
-            rotate: el.initialRotate + 720,
-            width: isAnyCardHovered ? '4px' : '0.8px',
-            height: isAnyCardHovered ? '80px' : '2px',
+           animate={{
+            x: isAnyCardHovered ? `${Math.random() * 100}vw` : `${Math.random() * 100}vw`,
+            y: isAnyCardHovered ? `${Math.random() * 100}vh` : `${Math.random() * 100}vh`,
+            opacity: isAnyCardHovered ? [0.6, 0.9, 0.6] : 0,
+            transition: { 
+              duration: isAnyCardHovered ? 1.5 + Math.random() * 1.5 : 0.4,
+              repeat: isAnyCardHovered ? Infinity : 0,
+              repeatType: "reverse",
+              ease: "easeInOut"
+            }
           }}
           transition={{
-            duration: el.duration,
-            repeat: Infinity,
-            repeatType: "loop",
-            ease: "linear",
-            delay: el.delay,
+             duration: 0.5,
+             delay: isAnyCardHovered ? i * 0.02 : i * 0.005,
           }}
-          style={{
-            transformOrigin: "50% 50% 0"
-          }}
+           style={{
+               originX: 0.5,
+               originY: 0.5,
+           }}
         />
       ))}
 

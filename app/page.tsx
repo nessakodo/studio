@@ -22,11 +22,12 @@ import { motion } from "framer-motion"
 import EtherealSoftwareIcon from "@/components/EtherealSoftwareIcon";
 import EtherealSecurityIcon from "@/components/EtherealSecurityIcon";
 import EtherealTransformationIcon from "@/components/EtherealTransformationIcon";
-import StarBeltShowcase from "./components/StarBeltShowcase";
-import AstralStreamBackground from "./components/AstralStreamBackground";
-import ProjectModal from "./components/ProjectModal";
+import FloatingMasonryGrid from "./components/FloatingMasonryGrid"
+import ShowcaseInteractiveBackground from "./components/ShowcaseInteractiveBackground";
+import AstralProjectBelt from "./components/AstralProjectBelt";
+import dynamic from 'next/dynamic';
 
-// Form validation schema
+// Form validation schema - This will be moved to ConnectSection.tsx
 const formSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
   email: z.string().email("Invalid email address"),
@@ -180,6 +181,57 @@ const expertiseData: ExpertisePillar[] = [
   },
 ];
 
+// Add this before the Page component
+const projects = [
+  {
+    title: "Cryptiq Messenger",
+    description: "Encrypted chat platform using NIST-approved post-quantum cryptography (Kyber, Dilithium). Designed for teams and communities who need true digital sovereignty—simple to use, auditable, and beautiful.",
+    demo: "#",
+    caseStudy: "#",
+    github: "#"
+  },
+  {
+    title: "PhishKiller Analyzer",
+    description: "CLI tool and dashboard for scanning, training, and defending against phishing attacks. Built to teach, protect, and adapt—integrates with email providers for real-time security.",
+    demo: "#",
+    caseStudy: "#",
+    github: "#"
+  },
+  {
+    title: "CareSense AI Triage",
+    description: "Natural language triage for digital health, built on ethical AI principles and privacy-preserving architecture. Placed 3rd in a healthcare hackathon; used in clinics and wellness apps.",
+    demo: "#",
+    caseStudy: "#",
+    github: "#"
+  },
+  {
+    title: "FinVault Wallet Suite",
+    description: "Modern wallet with advanced encryption, real-time analytics, and glassmorphic UI. Modular APIs and customizable dashboards for fintech teams and visionary founders.",
+    demo: "#",
+    caseStudy: "#"
+  },
+  {
+    title: "SmartCity Viz Dashboard",
+    description: "Real-time smart city platform—visualize, automate, and secure everything from sensors to infrastructure. Built with role-based access and responsive data visualization.",
+    demo: "#",
+    caseStudy: "#"
+  },
+  {
+    title: "ChainSight Supply Portal",
+    description: "Transparent asset movement, encrypted audit trails, and intuitive UI—empowering ethical supply chains and digital provenance.",
+    demo: "#",
+    caseStudy: "#"
+  },
+  {
+    title: "Kodex DevSecOps Toolkit",
+    description: "End-to-end pipelines, automated scanning, and intuitive dashboards—helping creative orgs and dev teams ship faster, safer, and smarter.",
+    demo: "#",
+    caseStudy: "#"
+  }
+];
+
+const DynamicConnectSection = dynamic(() => import('./components/ConnectSection'), { ssr: false });
+
 export default function Page() {
   const [scrollY, setScrollY] = useState(0)
   const [showScrollTop, setShowScrollTop] = useState(false)
@@ -194,8 +246,7 @@ export default function Page() {
   const [totalPages, setTotalPages] = useState(1);
   const [searchQuery, setSearchQuery] = useState("");
   const [hoveredExpertiseIndex, setHoveredExpertiseIndex] = useState<number | null>(null);
-  const [selectedProject, setSelectedProject] = useState<any | null>(null);
-  const [isProjectModalOpen, setIsProjectModalOpen] = useState(false);
+  const [isShowcaseHovered, setIsShowcaseHovered] = useState(false);
 
   const expertiseSectionRef = useRef<HTMLDivElement>(null);
 
@@ -216,11 +267,6 @@ export default function Page() {
     window.addEventListener("scroll", handleScroll)
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
-
-  useEffect(() => {
-    // Initialize EmailJS with your public key
-    emailjs.init(EMAILJS_CONFIG.PUBLIC_KEY);
-  }, []);
 
   useEffect(() => {
     const fetchBlogPosts = async () => {
@@ -284,139 +330,6 @@ export default function Page() {
     setIsMobileMenuOpen(false)
   }
 
-  const projects = [
-    {
-      title: "PhishKiller – Real-Time Phishing Detection",
-      description: "AI-powered threat detection platform trusted by cybersecurity teams for identifying and neutralizing phishing attacks across email and web.",
-      image: "/placeholder.svg?height=300&width=400",
-      demo: "#",
-      caseStudy: "#",
-      github: undefined,
-      features: [
-        "Post-quantum encryption",
-        "Audited codebase",
-        "End-to-end encryption",
-        "Decentralized architecture",
-        "Secure key exchange",
-        "Metadata protection"
-      ],
-      buttonCopy: { demo: "Live Demo", caseStudy: "Read Case Study" }
-    },
-    {
-      title: "Cryptiq Messenger – Quantum-Safe Secure Messaging",
-      description: "Post-quantum encrypted chat built on NIST-approved algorithms—future-proofing privacy for the next era of communications.",
-      image: "/placeholder.svg?height=300&width=400",
-      demo: "#",
-      caseStudy: "#",
-      github: undefined,
-      features: [
-        "Ethical AI integration",
-        "Cross-platform compatibility",
-        "Personalized insights",
-        "Secure data storage",
-        "Habit tracking",
-        "Mindfulness prompts"
-      ],
-      buttonCopy: { demo: "Try Live", caseStudy: "See Whitepaper" }
-    },
-    {
-      title: "KODEX World – Cyber Zen Learning Platform",
-      description: "Interactive, XP-gamified cybersecurity and AI learning portal with labs, creative projects, and a thriving tech community.",
-      image: "/placeholder.svg?height=300&width=400",
-      demo: "#",
-      caseStudy: "#",
-      github: undefined,
-      features: [
-        "Intuitive UX",
-        "Real-time analytics",
-        "High-level security",
-        "Open-source audit logs",
-        "Modular APIs",
-        "Multi-asset support"
-      ],
-      buttonCopy: { demo: "Explore Platform", caseStudy: "Community Details" }
-    },
-    {
-      title: "Command Canvas – Interactive Shell Trainer",
-      description: "Simulated command-line environment for safe hands-on learning of Unix, Git, and workflow automation—perfect for upskilling teams.",
-      image: "/placeholder.svg?height=300&width=400",
-      demo: "#",
-      caseStudy: "#",
-      github: undefined,
-      features: [
-        "IoT device management",
-        "Real-time monitoring",
-        "Role-based access control",
-        "Threat detection",
-        "Dynamic visualization",
-        "Data analytics"
-      ],
-      buttonCopy: { demo: "Try Now", caseStudy: "How It Works" }
-    },
-    {
-      title: "SonifyAI – Data-Driven Audio Storytelling",
-      description: "Transforms live data streams into immersive, generative soundscapes—merging analytics, art, and technology in real time.",
-      image: "/placeholder.svg?height=300&width=400",
-      demo: "#",
-      caseStudy: "#",
-      github: undefined,
-      features: [
-        "Blockchain integration",
-        "Tamper-proof tracking",
-        "Encrypted audit trails",
-        "Supplier management",
-        "Real-time updates",
-        "User-friendly dashboard"
-      ],
-      buttonCopy: { demo: "Experience Demo", caseStudy: "View Project" }
-    },
-    {
-      title: "Sanctuary Cloud – Zero-Knowledge Personal Storage",
-      description: "Private, encrypted file storage where you control the keys—digital sovereignty, secured by next-gen cryptography.",
-      image: "/placeholder.svg?height=300&width=400",
-      demo: "#",
-      caseStudy: "#",
-      github: undefined,
-      features: [
-        "Workflow automation",
-        "Secure user data",
-        "Granular access control",
-        "Generative AI integration",
-        "Collaborative features",
-        "Documentation generation"
-      ],
-      buttonCopy: { demo: "Live Demo", caseStudy: "Security Overview" }
-    },
-    {
-      title: "BioPulse Tracker – Somatic Tech for Wellbeing",
-      description: "Wearable-ready dashboard providing real-time biofeedback and personalized insights for holistic digital wellness.",
-      image: "/placeholder.svg?height=300&width=400",
-      demo: "#",
-      caseStudy: "#",
-      github: undefined,
-      features: [
-        "Feature 1",
-        "Feature 2",
-        "Feature 3"
-      ],
-      buttonCopy: { demo: "See Prototype", caseStudy: "Request Beta" }
-    },
-    {
-      title: "TouchDesigner AV Works – Generative Artistry",
-      description: "Custom interactive visuals and audio-reactive installations built with TouchDesigner for events, brands, and digital experiences.",
-      image: "/placeholder.svg?height=300&width=400",
-      demo: "#",
-      caseStudy: "#",
-      github: undefined,
-      features: [
-        "Feature 1",
-        "Feature 2",
-        "Feature 3"
-      ],
-      buttonCopy: { demo: "View Gallery", caseStudy: "Live Showcase" }
-    }
-  ]
-
   const navLinks = [
     { id: 'who-we-are', label: 'WHO WE ARE' },
     { id: 'offerings', label: 'OFFERINGS' },
@@ -424,60 +337,6 @@ export default function Page() {
     { id: 'showcase', label: 'SHOWCASE' },
     { id: 'connect', label: 'CONNECT' }
   ];
-
-  const { register, handleSubmit, setValue, formState: { errors, isSubmitting }, reset } = useForm<FormData>({
-    resolver: zodResolver(formSchema)
-  });
-  const [isSuccess, setIsSuccess] = useState(false);
-
-  const onSubmit = async (data: FormData) => {
-    try {
-      setError(null);
-      
-      if (!WEB3FORMS_ACCESS_KEY) {
-        console.error('Access key:', WEB3FORMS_ACCESS_KEY); // Debug log
-        throw new Error('Email service is not configured');
-      }
-
-      const response = await fetch('https://api.web3forms.com/submit', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-        },
-        body: JSON.stringify({
-          access_key: WEB3FORMS_ACCESS_KEY,
-          name: data.name,
-          email: data.email,
-          service: data.service,
-          message: data.message,
-          subject: 'New Contact Form Submission',
-          redirect: false
-        })
-      });
-
-      const result = await response.json();
-
-      if (result.success) {
-        setIsSuccess(true);
-        // Reset form after 3 seconds
-        setTimeout(() => {
-          setIsSuccess(false);
-          reset();
-        }, 3000);
-      } else {
-        throw new Error(result.message || 'Failed to send message');
-      }
-    } catch (error) {
-      console.error("Error sending email:", error);
-      setError(error instanceof Error ? error.message : 'Failed to send message. Please try again later.');
-    }
-  };
-
-  const handleProjectClick = (project: any) => {
-    setSelectedProject(project);
-    setIsProjectModalOpen(true);
-  };
 
   return (
     <div className="min-h-screen bg-black text-white overflow-x-hidden">
@@ -669,7 +528,7 @@ export default function Page() {
                     <div className="flex flex-col items-center relative z-20 mb-6">
                         <motion.div
                             className="w-32 h-32 flex items-center justify-center mb-4 max-h-32"
-                            animate={{ 
+                            animate={{
                               scale: hoveredExpertiseIndex === index ? 1.1 : 1,
                               opacity: hoveredExpertiseIndex === index ? 1 : 0.9
                             }}
@@ -791,129 +650,15 @@ export default function Page() {
         </section>
 
         {/* Showcase Section */}
-        <section id="showcase" className="py-24 relative min-h-screen w-full overflow-hidden">
-          <AstralStreamBackground />
-
-          <div className="relative z-10 w-full h-full">
-            <h2 className="mobile-heading md:text-5xl font-light mb-24 text-center text-white">PROJECT SHOWCASE</h2>
-            <StarBeltShowcase projects={projects} onProjectClick={handleProjectClick} />
+        <section id="showcase" className="py-24 relative">
+          <div className="relative z-10">
+            <h2 className="mobile-heading md:text-5xl font-light mb-16 text-center text-white">PROJECT SHOWCASE</h2>
+            <AstralProjectBelt projects={projects} />
           </div>
         </section>
 
         {/* Connect Section */}
-        <section id="connect" className="py-48 section-padding">
-          <div className="max-w-5xl mx-auto">
-            <div className="text-center mb-16">
-              <h2 className="mobile-heading md:text-5xl font-light mb-8 text-white">LET'S CONNECT</h2>
-              <div className="h-px w-24 bg-gradient-to-r from-mist-400 to-mint-400 mx-auto mb-8"></div>
-              <p className="mobile-text text-base text-gray-400 text-base">
-                Ready to build something secure and extraordinary? Tell us about your project.
-              </p>
-            </div>
-
-            {/* Contact Options */}
-            <div className="flex justify-center space-x-8 mb-12">
-              <a 
-                href="mailto:kodexstudio@gmail.com"
-                className="flex items-center space-x-2 text-gray-400 hover:text-white transition-colors group"
-              >
-                <Mail className="w-5 h-5 group-hover:text-mint-400 transition-colors" />
-                <span>Email Us</span>
-              </a>
-              <a 
-                href="https://calendly.com/nessakodo/kodex-studio-information-call?month=2025-05"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center space-x-2 text-gray-400 hover:text-white transition-colors group"
-              >
-                <Calendar className="w-5 h-5 group-hover:text-mint-400 transition-colors" />
-                <span>Schedule a Call</span>
-              </a>
-            </div>
-
-            <div className="backdrop-blur-md bg-black/30 rounded-lg border border-white/10">
-              <div className="p-8 md:p-12">
-                <form 
-                  className="space-y-6 connect-form"
-                  onSubmit={handleSubmit(onSubmit)}
-                >
-                  <div className="space-y-4">
-                    <Input
-                      type="text"
-                      placeholder="Name"
-                      className="form-field-hover bg-black/50 border-white/10 text-white placeholder:text-gray-500 focus:border-mint-400/50 focus:ring-mint-400/20 transition-all duration-300"
-                      {...register("name")}
-                    />
-                    {errors.name && (
-                      <p className="text-red-400 text-sm">{errors.name.message}</p>
-                    )}
-                    
-                    <Input
-                      type="email"
-                      placeholder="Email"
-                      className="form-field-hover bg-black/50 border-white/10 text-white placeholder:text-gray-500 focus:border-mint-400/50 focus:ring-mint-400/20 transition-all duration-300"
-                      {...register("email")}
-                    />
-                    {errors.email && (
-                      <p className="text-red-400 text-sm">{errors.email.message}</p>
-                    )}
-                    
-                    <Select
-                      onValueChange={(value) => setValue("service", value)}
-                      {...register("service")}
-                    >
-                      <SelectTrigger className="form-field-hover bg-black/50 border-white/10 text-white placeholder:text-gray-500 focus:border-mint-400/50 focus:ring-mint-400/20 transition-all duration-300">
-                        <SelectValue placeholder="Select a service" />
-                      </SelectTrigger>
-                      <SelectContent className="bg-black/90 backdrop-blur-md border-white/10">
-                        <SelectItem value="web" className="text-white hover:bg-white/10 focus:bg-white/10 focus:text-white">Web Development</SelectItem>
-                        <SelectItem value="mobile" className="text-white hover:bg-white/10 focus:bg-white/10 focus:text-white">Mobile Development</SelectItem>
-                        <SelectItem value="design" className="text-white hover:bg-white/10 focus:bg-white/10 focus:text-white">UI/UX Design</SelectItem>
-                      </SelectContent>
-                    </Select>
-                    {errors.service && (
-                      <p className="text-red-400 text-sm">{errors.service.message}</p>
-                    )}
-                    
-                    <Textarea
-                      placeholder="Message"
-                      className="form-field-hover bg-black/50 border-white/10 text-white placeholder:text-gray-500 focus:border-mint-400/50 focus:ring-mint-400/20 transition-all duration-300 min-h-[150px]"
-                      {...register("message")}
-                    />
-                    {errors.message && (
-                      <p className="text-red-400 text-sm">{errors.message.message}</p>
-                    )}
-                  </div>
-                  {error && (
-                    <div className="mt-4 p-4 bg-red-500/10 border border-red-500/20 rounded-lg">
-                      <p className="text-red-400 text-sm">{error}</p>
-                    </div>
-                  )}
-                  <button
-                    type="submit"
-                    className="unified-button primary"
-                    disabled={isSubmitting}
-                    data-loading={isSubmitting}
-                    data-success={isSuccess}
-                  >
-                    <div className="button-content">
-                      {isSubmitting ? (
-                        <>
-                          <div className="loading-spinner" />
-                          <span>Sending...</span>
-                        </>
-                      ) : isSuccess ? (
-                        <span>Message Sent</span>
-                      ) : (
-                        <span>SEND MESSAGE</span>
-                      )}
-                    </div>
-                  </button>
-                </form>
-              </div>
-            </div>
-          </div>
-        </section>
+        <DynamicConnectSection />
       </div>
 
       {/* Footer */}
@@ -930,15 +675,6 @@ export default function Page() {
           </div>
         </div>
       </footer>
-
-      {/* Project Modal */}
-      {selectedProject && (
-        <ProjectModal
-          project={selectedProject}
-          isOpen={isProjectModalOpen}
-          onClose={() => setIsProjectModalOpen(false)}
-        />
-      )}
     </div>
   )
 }

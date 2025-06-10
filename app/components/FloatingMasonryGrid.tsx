@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import FloatingProjectCard from "./FloatingProjectCard";
 import ProjectModal from "./ProjectModal";
@@ -23,14 +23,50 @@ interface FloatingMasonryGridProps {
 export default function FloatingMasonryGrid({ projects, onCardHoverChange }: FloatingMasonryGridProps) {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   const [isAnyCardHovered, setIsAnyCardHovered] = useState(false);
-  const containerRef = useRef<HTMLDivElement>(null);
-  
-  // Removed scrollYProgress as the carousel animation is not scroll-based
 
-  // Removed isMobile check and getGridPosition as grid is no longer used
+  // Check if we're on mobile
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
 
-  // Handle project click
+  // Calculate grid positions for desktop
+  const getGridPosition = (index: number) => {
+    if (isMobile) return {};
+
+    // Create a refined organic layout for smaller elements
+    const positions = [
+      { row: 1, col: 1, height: "h-[180px]" }, // Further adjusted heights and positions
+      { row: 1, col: 2, height: "h-[160px]" },
+      { row: 1, col: 3, height: "h-[200px]" },
+      { row: 1, col: 4, height: "h-[170px]" },
+
+      { row: 2, col: 2, height: "h-[190px]" },
+      { row: 2, col: 3, height: "h-[160px]" },
+      { row: 2, col: 4, height: "h-[210px]" },
+
+      { row: 3, col: 1, height: "h-[200px]" },
+      { row: 3, col: 3, height: "h-[180px]" },
+      { row: 3, col: 4, height: "h-[220px]" },
+
+      { row: 4, col: 2, height: "h-[170px]" },
+      { row: 4, col: 4, height: "h-[190px]" },
+    ];
+
+    const position = positions[index % positions.length];
+    return {
+      gridRow: position.row,
+      gridColumn: position.col,
+      height: position.height,
+    };
+  };
+
   const handleProjectClick = (project: Project) => {
     setSelectedProject(project);
     setIsModalOpen(true);
@@ -38,58 +74,37 @@ export default function FloatingMasonryGrid({ projects, onCardHoverChange }: Flo
 
   // Handle individual card hover change
   const handleCardHoverChange = (isHovering: boolean) => {
+    // Simple approach: if any card is hovered, set state to true. Reset when no cards are hovered.
+    // More complex logic could track individual card hover states if needed.
     setIsAnyCardHovered(isHovering);
-    onCardHoverChange(isHovering);
-  };
-
-  // Duplicate projects to create a seamless loop
-  const duplicatedProjects = [...projects, ...projects, ...projects]; // Duplicate more for smoother loop
-
-  // Define animation for the carousel container (horizontal movement)
-  const carouselVariants = {
-    animate: {
-      x: ['0%', '-100%'], // Animate from 0% to -100% of the original projects width
-      transition: {
-        x: {
-          repeat: Infinity,
-          repeatType: "loop",
-          duration: 90, // Increased duration for slower speed
-          ease: "linear",
-        },
-      },
-    },
   };
 
   return (
-    <div className="relative overflow-hidden" ref={containerRef}> {/* Added overflow-hidden */}
-      {/* Interactive Background Effects */}
+    <div className="relative">
+      {/* Interactive Background Effects - Passed hover state */}
       <ShowcaseInteractiveBackground isAnyCardHovered={isAnyCardHovered} />
 
-      {/* Carousel Container */}
-      <motion.div
-        className="relative flex z-10 space-x-16" // Increased space between cards further
-        variants={carouselVariants}
-        animate="animate"
-        style={{ width: `${projects.length * (300 + 64)}px` }} // Calculate width based on original projects + increased space (using 64 for space-x-16)
-      >
-        {duplicatedProjects.map((project, index) => (
+      {/* Grid Container */}
+      <div className={cn(
+        "relative grid gap-4 md:gap-6 z-10",
+        isMobile ? "grid-cols-1" : "grid-cols-4",
+        !isMobile && "grid-rows-masonry",
+        !isMobile && "grid-auto-rows-[minmax(160px,_1fr)]" // Adjusted min row height again
+      )}>
+        {projects.map((project, index) => (
           <motion.div
-            key={index} 
+            key={index}
             className={cn(
-              "relative z-20 flex-none",
-              "w-[300px] h-[300px] flex items-center justify-center", // Square size for orb shape
+              "relative z-20 flex items-center justify-center",
+              isMobile ? "w-full" : getGridPosition(index).height
             )}
-            // Add vertical animation to individual cards
-            animate={{
-              y: [0, (index % 2 === 0 ? 40 : -40), 0], // Increased subtle up and down movement
-            }}
-            transition={{
-              duration: 10 + (index % 4) * 3, // Varied duration for movement
-              repeat: Infinity,
-              repeatType: "mirror",
-              ease: "easeInOut",
-              delay: index * 0.1,
-            }}
+            style={!isMobile ? {
+              gridRow: getGridPosition(index).gridRow,
+              gridColumn: getGridPosition(index).gridColumn,
+            } : {}}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: index * 0.06 }} // Slightly faster stagger
           >
             <FloatingProjectCard
               project={project}
@@ -99,7 +114,7 @@ export default function FloatingMasonryGrid({ projects, onCardHoverChange }: Flo
             />
           </motion.div>
         ))}
-      </motion.div>
+      </div>
 
       {/* Project Modal */}
       <ProjectModal

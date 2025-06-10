@@ -1,1 +1,1 @@
-self.__REACT_LOADABLE_MANIFEST="{}"
+self.__REACT_LOADABLE_MANIFEST="{\"app/page.tsx -> ./components/ConnectSection\":{\"id\":\"app/page.tsx -> ./components/ConnectSection\",\"files\":[\"static/chunks/_app-pages-browser_app_components_ConnectSection_tsx.js\"]}}"

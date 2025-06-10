@@ -2026,3 +2026,219 @@ html {
     font-size: 0.9rem;
   }
 }
+
+/* Astral Project Belt Styles */
+.astral-belt-container {
+  position: relative;
+  width: 100%;
+  height: 400px;
+  overflow: hidden;
+  /* Removed radial gradient for overall background, will use edge gradients */
+}
+
+.astral-belt-container::before,
+.astral-belt-container::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  z-index: 0; /* Changed from 30 to allow orbs to be interactive */
+  pointer-events: none;
+}
+
+.astral-belt-container::before {
+  left: 0;
+  width: 15%; /* Adjust as needed */
+  background: linear-gradient(to right, rgba(0,0,0,1), rgba(0,0,0,0));
+}
+
+.astral-belt-container::after {
+  right: 0;
+  width: 15%; /* Adjust as needed */
+  background: linear-gradient(to left, rgba(0,0,0,1), rgba(0,0,0,0));
+}
+
+.astral-orb {
+  position: relative;
+  transition: all 0.3s ease-out;
+}
+
+.astral-orb::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  background: linear-gradient(135deg, rgba(108, 200, 170, 0.3), rgba(120, 180, 200, 0.3));
+  border-radius: inherit;
+  opacity: 0;
+  transition: opacity 0.3s ease-out;
+}
+
+.astral-orb:hover::before {
+  opacity: 1;
+}
+
+.astral-orb::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at center, rgba(108, 200, 170, 0.2), transparent 70%);
+  border-radius: inherit;
+  opacity: 0;
+  transition: opacity 0.3s ease-out;
+}
+
+.astral-orb:hover::after {
+  opacity: 1;
+}
+
+.binary-stream {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.binary-digit {
+  position: absolute;
+  font-family: 'Courier New', monospace;
+  color: rgba(108, 200, 170, 0.2);
+  font-size: 8px;
+  user-select: none;
+}
+
+/* Project Modal Styles */
+.project-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  background: rgba(0, 0, 0, 0.7); /* Darker background */
+  backdrop-filter: blur(15px) saturate(180%); /* More intense blur and saturation */
+}
+
+.modal-content {
+  position: relative;
+  background: rgba(15, 20, 15, 0.08); /* Subtle green tint and more transparent */
+  border: 1px solid rgba(108, 200, 170, 0.2); /* Mint border */
+  border-radius: 1.5rem; /* More rounded corners */
+  padding: 2rem; /* Adjusted padding */
+  max-width: 32rem; /* Slightly wider modal */
+  width: 100%;
+  box-shadow:
+    0 0 30px rgba(108, 200, 170, 0.1),
+    0 0 60px rgba(120, 180, 200, 0.08); /* Subtle glow */
+  backdrop-filter: blur(20px) saturate(200%); /* Glassmorphic effect */
+}
+
+.modal-close {
+  position: absolute;
+  top: 1.5rem; /* Adjusted position */
+  right: 1.5rem; /* Adjusted position */
+  color: rgba(180, 255, 255, 0.6); /* Lighter color */
+  transition: color 0.3s ease;
+  background: none; /* Ensure no background */
+  border: none; /* Ensure no border */
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  transition: all 0.3s ease;
+}
+
+.modal-close:hover {
+  color: rgba(180, 255, 255, 1); /* White on hover */
+  background: rgba(108, 200, 170, 0.1); /* Subtle mint background on hover */
+  box-shadow: 0 0 10px rgba(108, 200, 170, 0.4); /* Mint glow on hover */
+}
+
+.modal-title {
+  font-size: 1.75rem; /* Slightly larger title */
+  font-weight: 300;
+  color: rgba(180, 255, 255, 0.95); /* Near white */
+  margin-bottom: 1.25rem; /* Adjusted spacing */
+  text-shadow: 0 0 8px rgba(108, 200, 170, 0.3); /* Mint text shadow */
+}
+
+.modal-description {
+  color: rgba(180, 255, 255, 0.7); /* Lighter gray */
+  margin-bottom: 2rem; /* Increased spacing */
+  line-height: 1.7; /* Increased line height */
+  font-size: 1rem;
+}
+
+.modal-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem; /* Increased gap */
+  justify-content: flex-start; /* Align buttons to the start */
+}
+
+.modal-button {
+  padding: 0.6rem 1.2rem; /* Adjusted padding */
+  border-radius: 0.75rem; /* More rounded */
+  background: rgba(108, 200, 170, 0.15); /* More prominent mint background */
+  border: 1px solid rgba(108, 200, 170, 0.3); /* Stronger mint border */
+  color: rgb(108, 200, 170); /* Mint text color */
+  transition: all 0.3s ease;
+  font-size: 0.9rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  backdrop-filter: blur(5px);
+}
+
+.modal-button:hover {
+  background: rgba(108, 200, 170, 0.25); /* Darker mint background on hover */
+  border-color: rgba(108, 200, 170, 0.5); /* Stronger border on hover */
+  box-shadow: 0 0 15px rgba(108, 200, 170, 0.5); /* More intense mint glow on hover */
+  color: rgba(180, 255, 255, 0.95); /* Near white text on hover */
+}
+
+/* Mobile Optimizations for Modal */
+@media (max-width: 768px) {
+  .modal-content {
+    margin: 0.75rem; /* Adjusted margin */
+    padding: 1.5rem; /* Adjusted padding */
+    border-radius: 1rem; /* Adjusted border radius */
+  }
+
+  .modal-title {
+    font-size: 1.5rem; /* Adjusted title size */
+    margin-bottom: 1rem;
+  }
+
+  .modal-description {
+    font-size: 0.9rem; /* Adjusted description size */
+    margin-bottom: 1.5rem;
+  }
+
+  .modal-actions {
+    flex-direction: column; /* Stack buttons vertically */
+    gap: 0.75rem; /* Adjusted gap */
+  }
+
+  .modal-button {
+    width: 100%; /* Full width buttons */
+    text-align: center;
+    padding: 0.75rem 1.2rem;
+    font-size: 0.85rem;
+  }
+
+  .modal-close {
+    top: 1rem; /* Adjusted position */
+    right: 1rem; /* Adjusted position */
+    padding: 0.3rem;
+  }
+}
