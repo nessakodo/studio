@@ -1,46 +1,48 @@
 "use client"
 
 import Link from "next/link"
+import { useState, useEffect, useRef } from "react"
+import { motion } from "framer-motion"
+import { useForm } from "react-hook-form"
+import { zodResolver } from "@hookform/resolvers/zod"
+import dynamic from 'next/dynamic'
+import { ExternalLink, ArrowRight, ChevronUp, Mail, Calendar, Search } from "lucide-react"
+import { cn } from "@/lib/utils"
+
+// UI Components
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Card, CardContent } from "@/components/ui/card"
-import { useState, useEffect, useRef } from "react"
-import { ExternalLink, ArrowRight, ChevronUp, Mail, Calendar, Search } from "lucide-react"
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
-import emailjs from '@emailjs/browser';
-import { EMAILJS_CONFIG } from './config/emailjs';
+
+// Custom Components
 import ThinkingUniverse from "./components/ThinkingUniverse"
 import BlogPagination from "./components/BlogPagination"
-import ExpertiseCard from "@/components/ExpertiseCard";
+import ExpertiseCard from "@/components/ExpertiseCard"
 import SpotlightOverlay from "../components/SpotlightOverlay"
-import { cn } from "@/lib/utils"
-import { motion } from "framer-motion"
-import EtherealSoftwareIcon from "@/components/EtherealSoftwareIcon";
-import EtherealSecurityIcon from "@/components/EtherealSecurityIcon";
-import EtherealTransformationIcon from "@/components/EtherealTransformationIcon";
+import EtherealSoftwareIcon from "@/components/EtherealSoftwareIcon"
+import EtherealSecurityIcon from "@/components/EtherealSecurityIcon"
+import EtherealTransformationIcon from "@/components/EtherealTransformationIcon"
 import FloatingMasonryGrid from "./components/FloatingMasonryGrid"
-import ShowcaseInteractiveBackground from "./components/ShowcaseInteractiveBackground";
-import AstralProjectBelt from "./components/AstralProjectBelt";
-import dynamic from 'next/dynamic';
+import ShowcaseInteractiveBackground from "./components/ShowcaseInteractiveBackground"
+import AstralProjectBelt from "./components/AstralProjectBelt"
+import BinarySineWaveCarousel from "./components/BinarySineWaveCarousel"
+import ProjectArcade from "./components/ProjectArcade"
+import ProjectPlayer from "./components/ProjectPlayer"
 
-// Form validation schema - This will be moved to ConnectSection.tsx
-const formSchema = z.object({
-  name: z.string().min(2, "Name must be at least 2 characters"),
-  email: z.string().email("Invalid email address"),
-  service: z.string().min(1, "Please select a service"),
-  message: z.string().min(10, "Message must be at least 10 characters"),
-});
+// Types
+import { FormData, formSchema, ExpertisePillar, Project } from "./types"
 
-type FormData = z.infer<typeof formSchema>;
+// Styles
+import "./styles/binary-sine-wave.css"
 
-// Add this constant at the top of the file, after imports
+// Config
+import { EMAILJS_CONFIG } from './config/emailjs'
+import emailjs from '@emailjs/browser'
+
+// Constants
 const WEB3FORMS_ACCESS_KEY = process.env.NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY || process.env.WEB3FORMS_ACCESS_KEY;
-
-// Define posts per page for the thinking section
 const POSTS_PER_PAGE = 3;
 
 // Sample SVG Animation Component (Shield) - Enhanced
@@ -155,13 +157,6 @@ const NodesAnimation = () => (
   </div>
 );
 
-// Define type for Expertise Pillar data
-interface ExpertisePillar {
-  title: string;
-  description: string;
-  microcopy: string;
-}
-
 // Define data for Expertise section
 const expertiseData: ExpertisePillar[] = [
   {
@@ -182,51 +177,111 @@ const expertiseData: ExpertisePillar[] = [
 ];
 
 // Add this before the Page component
-const projects = [
+const projects: Project[] = [
   {
+    id: "cryptiq",
     title: "Cryptiq Messenger",
-    description: "Encrypted chat platform using NIST-approved post-quantum cryptography (Kyber, Dilithium). Designed for teams and communities who need true digital sovereignty—simple to use, auditable, and beautiful.",
-    demo: "#",
-    caseStudy: "#",
-    github: "#"
+    summary: "Encrypted chat platform using NIST-approved post-quantum cryptography",
+    description: "A secure messaging platform that implements post-quantum cryptography algorithms to ensure future-proof encryption. Features include end-to-end encryption, secure file sharing, and real-time message delivery.",
+    preview: "/assets/projects/cryptiq.png",
+    category: "security" as const,
+    techStack: ["Next.js", "TypeScript", "Kyber", "Dilithium", "WebRTC"],
+    liveUrl: "#",
+    caseStudyUrl: "#",
+    repoUrl: "#"
   },
   {
+    id: "phishkiller",
     title: "PhishKiller Analyzer",
-    description: "CLI tool and dashboard for scanning, training, and defending against phishing attacks. Built to teach, protect, and adapt—integrates with email providers for real-time security.",
-    demo: "#",
-    caseStudy: "#",
-    github: "#"
+    summary: "CLI tool and dashboard for scanning and defending against phishing attacks",
+    description: "An advanced phishing detection system that combines machine learning with traditional security analysis to identify and neutralize phishing attempts in real-time.",
+    preview: "/assets/projects/phishkiller.png",
+    category: "security" as const,
+    techStack: ["Python", "React", "TensorFlow", "Docker"],
+    liveUrl: "#",
+    caseStudyUrl: "#",
+    repoUrl: "#"
   },
   {
+    id: "caresense",
     title: "CareSense AI Triage",
-    description: "Natural language triage for digital health, built on ethical AI principles and privacy-preserving architecture. Placed 3rd in a healthcare hackathon; used in clinics and wellness apps.",
-    demo: "#",
-    caseStudy: "#",
-    github: "#"
+    summary: "Natural language triage for digital health, built on ethical AI principles",
+    description: "An AI-powered healthcare triage system that uses natural language processing to assess patient symptoms and provide initial medical guidance while maintaining strict privacy standards.",
+    preview: "/assets/projects/caresense.png",
+    category: "ai" as const,
+    techStack: ["Python", "FastAPI", "React", "TensorFlow"],
+    liveUrl: "#",
+    caseStudyUrl: "#",
+    repoUrl: "#"
   },
   {
+    id: "finvault",
     title: "FinVault Wallet Suite",
-    description: "Modern wallet with advanced encryption, real-time analytics, and glassmorphic UI. Modular APIs and customizable dashboards for fintech teams and visionary founders.",
-    demo: "#",
-    caseStudy: "#"
+    summary: "Modern wallet with advanced encryption and real-time analytics",
+    description: "A comprehensive financial management suite that combines secure cryptocurrency storage with traditional banking features, all protected by military-grade encryption.",
+    preview: "/assets/projects/finvault.png",
+    category: "security" as const,
+    techStack: ["React", "TypeScript", "Web3.js", "Solidity"],
+    liveUrl: "#",
+    caseStudyUrl: "#"
   },
   {
+    id: "smartcity",
     title: "SmartCity Viz Dashboard",
-    description: "Real-time smart city platform—visualize, automate, and secure everything from sensors to infrastructure. Built with role-based access and responsive data visualization.",
-    demo: "#",
-    caseStudy: "#"
+    summary: "Real-time smart city platform with role-based access and data visualization",
+    description: "An interactive dashboard for monitoring and managing smart city infrastructure, featuring real-time data visualization and role-based access control.",
+    preview: "/assets/projects/smartcity.png",
+    category: "data" as const,
+    techStack: ["React", "D3.js", "Node.js", "MongoDB"],
+    liveUrl: "#",
+    caseStudyUrl: "#"
   },
   {
-    title: "ChainSight Supply Portal",
-    description: "Transparent asset movement, encrypted audit trails, and intuitive UI—empowering ethical supply chains and digital provenance.",
-    demo: "#",
-    caseStudy: "#"
+    id: "neuralart",
+    title: "NeuralArt Studio",
+    summary: "AI-powered creative suite for digital artists and designers",
+    description: "A creative platform that leverages AI to assist artists in generating, editing, and enhancing digital artwork while maintaining artistic integrity.",
+    preview: "/assets/projects/neuralart.png",
+    category: "creative" as const,
+    techStack: ["Python", "TensorFlow", "React", "WebGL"],
+    liveUrl: "#",
+    caseStudyUrl: "#",
+    repoUrl: "#"
   },
   {
-    title: "Kodex DevSecOps Toolkit",
-    description: "End-to-end pipelines, automated scanning, and intuitive dashboards—helping creative orgs and dev teams ship faster, safer, and smarter.",
-    demo: "#",
-    caseStudy: "#"
+    id: "pixelperfect",
+    title: "PixelPerfect Design Studio",
+    summary: "AI-driven platform for generating and refining digital art assets",
+    description: "A creative suite that empowers designers with AI tools for rapid prototyping, style transfer, and intelligent asset generation, ensuring every pixel is perfect.",
+    preview: "/assets/projects/pixelperfect.png",
+    category: "creative" as const,
+    techStack: ["Next.js", "Tailwind CSS", "DALL-E API", "Figma API"],
+    liveUrl: "#",
+    caseStudyUrl: "#",
+    repoUrl: "#"
+  },
+  {
+    id: "datasphere",
+    title: "DataSphere Analytics",
+    summary: "Enterprise-grade data analysis and visualization platform",
+    description: "A powerful data analytics platform that helps businesses make sense of complex datasets through intuitive visualizations and advanced analysis tools.",
+    preview: "/assets/projects/datasphere.png",
+    category: "data" as const,
+    techStack: ["Python", "React", "D3.js", "PostgreSQL"],
+    liveUrl: "#",
+    caseStudyUrl: "#"
+  },
+  {
+    id: "aisecurity",
+    title: "AI Security Sentinel",
+    summary: "AI-powered threat detection and response system",
+    description: "An intelligent security system that uses machine learning to detect and respond to potential threats in real-time, providing comprehensive protection for digital assets.",
+    preview: "/assets/projects/aisecurity.png",
+    category: "ai" as const,
+    techStack: ["Python", "TensorFlow", "React", "Docker"],
+    liveUrl: "#",
+    caseStudyUrl: "#",
+    repoUrl: "#"
   }
 ];
 
@@ -650,10 +705,9 @@ export default function Page() {
         </section>
 
         {/* Showcase Section */}
-        <section id="showcase" className="py-24 relative">
+        <section id="showcase" className="relative">
           <div className="relative z-10">
-            <h2 className="mobile-heading md:text-5xl font-light mb-16 text-center text-white">PROJECT SHOWCASE</h2>
-            <AstralProjectBelt projects={projects} />
+            <ProjectPlayer projects={projects} />
           </div>
         </section>
 

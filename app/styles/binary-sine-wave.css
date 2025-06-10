@@ -1,0 +1,193 @@
+/* Binary Sine Wave Carousel Styles */
+.binary-sine-wave {
+  position: relative;
+  width: 100%;
+  height: 600px;
+  overflow: hidden;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.8), rgba(0,0,0,0.95));
+}
+
+/* Binary Stream Animation */
+.binary-stream {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  opacity: 0.3;
+}
+
+.binary-digit {
+  position: absolute;
+  font-family: 'Courier New', monospace;
+  color: rgba(108, 200, 170, 0.2);
+  font-size: 8px;
+  user-select: none;
+  text-shadow: 0 0 5px rgba(108, 200, 170, 0.3);
+}
+
+/* Project Node Styles */
+.project-node {
+  position: absolute;
+  cursor: pointer;
+  transition: all 0.3s ease-out;
+}
+
+.project-node::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  background: linear-gradient(135deg, rgba(108, 200, 170, 0.3), rgba(120, 180, 200, 0.3));
+  border-radius: inherit;
+  opacity: 0;
+  transition: opacity 0.3s ease-out;
+}
+
+.project-node:hover::before {
+  opacity: 1;
+}
+
+.project-node::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at center, rgba(108, 200, 170, 0.2), transparent 70%);
+  border-radius: inherit;
+  opacity: 0;
+  transition: opacity 0.3s ease-out;
+}
+
+.project-node:hover::after {
+  opacity: 1;
+}
+
+/* Navigation Arrows */
+.nav-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(108, 200, 170, 0.2);
+  color: rgba(108, 200, 170, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease-out;
+  backdrop-filter: blur(4px);
+}
+
+.nav-arrow:hover {
+  background: rgba(108, 200, 170, 0.1);
+  border-color: rgba(108, 200, 170, 0.4);
+  color: rgba(108, 200, 170, 1);
+  box-shadow: 0 0 15px rgba(108, 200, 170, 0.3);
+}
+
+.nav-arrow.left {
+  left: 20px;
+}
+
+.nav-arrow.right {
+  right: 20px;
+}
+
+/* Project Modal Styles */
+.project-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(10px);
+}
+
+.modal-content {
+  position: relative;
+  background: rgba(15, 20, 15, 0.95);
+  border: 1px solid rgba(108, 200, 170, 0.2);
+  border-radius: 1.5rem;
+  padding: 2rem;
+  max-width: 32rem;
+  width: 100%;
+  box-shadow:
+    0 0 30px rgba(108, 200, 170, 0.1),
+    0 0 60px rgba(120, 180, 200, 0.08);
+  backdrop-filter: blur(20px) saturate(200%);
+}
+
+/* Tech Stack Tags */
+.tech-tag {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  background: rgba(108, 200, 170, 0.1);
+  color: rgba(108, 200, 170, 0.8);
+  font-size: 0.75rem;
+  border: 1px solid rgba(108, 200, 170, 0.2);
+  transition: all 0.3s ease-out;
+}
+
+.tech-tag:hover {
+  background: rgba(108, 200, 170, 0.2);
+  border-color: rgba(108, 200, 170, 0.4);
+  color: rgba(108, 200, 170, 1);
+}
+
+/* Mobile Optimizations */
+@media (max-width: 768px) {
+  .binary-sine-wave {
+    height: 500px;
+  }
+
+  .nav-arrow {
+    width: 32px;
+    height: 32px;
+  }
+
+  .nav-arrow.left {
+    left: 10px;
+  }
+
+  .nav-arrow.right {
+    right: 10px;
+  }
+
+  .modal-content {
+    padding: 1.5rem;
+    margin: 1rem;
+  }
+}
+
+/* Animation Keyframes */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes glow {
+  0%, 100% {
+    box-shadow: 0 0 10px rgba(108, 200, 170, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(108, 200, 170, 0.6);
+  }
+} 
