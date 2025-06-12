@@ -15,27 +15,27 @@ const categories: Category[] = [
   {
     id: "all",
     label: "ALL PROJECTS",
-    icon: <Star className="w-4 h-4" />,
+    icon: null,
   },
   {
     id: "security",
     label: "SECURITY",
-    icon: <Key className="w-4 h-4" />,
+    icon: null,
   },
   {
     id: "creative",
     label: "CREATIVE",
-    icon: <Sparkles className="w-4 h-4" />,
+    icon: null,
   },
   {
     id: "data",
     label: "DATA",
-    icon: <Server className="w-4 h-4" />,
+    icon: null,
   },
   {
     id: "ai",
     label: "AI",
-    icon: <Brain className="w-4 h-4" />,
+    icon: null,
   }
 ];
 
@@ -103,30 +103,17 @@ export default function ProjectPlayer({ projects }: ProjectPlayerProps) {
               onHoverStart={() => setIsHovered(category.id)}
               onHoverEnd={() => setIsHovered(null)}
               className={cn(
-                "relative w-full h-10 md:h-12 flex items-center justify-center",
-                "px-3 py-2 rounded-full border transition-all duration-300 overflow-hidden",
+                "relative w-full h-9 md:h-10 flex items-center justify-center",
+                "px-4 py-1.5 rounded-full transition-all duration-300 overflow-hidden",
+                "backdrop-blur-md",
                 activeCategory === category.id
-                  ? "border-mint-400/30 bg-gradient-to-br from-mist-500/10 to-mint-500/10"
-                  : "border-white/5 hover:border-white/10 hover:bg-gradient-to-br hover:from-mist-500/5 hover:to-mint-500/5"
+                  ? "bg-gradient-to-br from-mist-500/20 to-mint-500/20 border border-mint-400/30 text-mint-200"
+                  : "bg-black/20 border border-white/5 hover:border-white/10 hover:bg-gradient-to-br hover:from-mist-500/10 hover:to-mint-500/10 text-white/80"
               )}
-              whileHover={{ scale: 1.02 }}
+              whileHover={{ scale: 1.02, boxShadow: "0 0 15px rgba(108,200,170,0.2)" }}
               whileTap={{ scale: 0.98 }}
             >
-              <div className="relative z-10 flex items-center gap-2 md:gap-3">
-                <motion.div
-                  className={cn(
-                    "w-4 h-4 md:w-5 md:h-5 flex items-center justify-center rounded-full",
-                    "transition-all duration-300",
-                    activeCategory === category.id || isHovered === category.id ? "text-mint-400" : "text-gray-400"
-                  )}
-                  initial={{ scale: 1 }}
-                  animate={{ scale: activeCategory === category.id || isHovered === category.id ? 1.2 : 1 }}
-                  transition={{ duration: 0.3 }}
-                >
-                  {category.icon}
-                </motion.div>
-                <span className="text-sm md:text-base font-medium text-white">{category.label}</span>
-              </div>
+              <span className="text-xs md:text-sm font-medium uppercase">{category.label}</span>
             </motion.button>
           ))}
         </div>
@@ -161,18 +148,10 @@ export default function ProjectPlayer({ projects }: ProjectPlayerProps) {
                   <div className={cn(
                     "absolute top-4 left-4 px-3 py-1.5 rounded-full",
                     "bg-gradient-to-r from-mist-500/20 to-mint-500/20 backdrop-blur-sm border border-white/10",
-                    "flex items-center gap-2"
+                    "flex items-center justify-center"
                   )}>
-                    <motion.div
-                      className={cn("w-4 h-4 rounded-full flex items-center justify-center text-mint-400")}
-                      initial={{ scale: 1 }}
-                      animate={{ scale: 1.1 }}
-                      transition={{ duration: 0.3 }}
-                    >
-                      {categories.find(c => c.id === activeProject.category)?.icon}
-                    </motion.div>
                     <span className="text-sm font-medium text-white">
-                      {categories.find(c => c.id === activeProject.category)?.label}
+                      {categories.find(c => c.id === activeProject.category)?.label.charAt(0).toUpperCase() + categories.find(c => c.id === activeProject.category)?.label.slice(1).toLowerCase()}
                     </span>
                   </div>
                 </motion.div>
@@ -262,10 +241,10 @@ export default function ProjectPlayer({ projects }: ProjectPlayerProps) {
             )}
           </AnimatePresence>
           {/* Navigation Arrows */}
-          <div className="flex items-center justify-between mt-8 pt-6 border-t border-white/10">
+          <div className="flex items-center justify-center mt-8 pt-6 border-t border-white/10">
             <div className="flex items-center gap-4">
               <motion.button
-                className="p-2 rounded-full bg-black/30 backdrop-blur-sm border border-white/10 hover:border-white/20 transition-all"
+                className="p-2 rounded-full bg-black/20 backdrop-blur-sm border border-white/10 hover:border-white/20 transition-all"
                 onClick={() => navigateProject("prev")}
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
@@ -273,11 +252,14 @@ export default function ProjectPlayer({ projects }: ProjectPlayerProps) {
               >
                 <ArrowRight className="w-6 h-6 rotate-180 text-white" />
               </motion.button>
-              <span className="text-sm md:text-base text-gray-400">
-                {activeProjectIndex + 1} / {filteredProjects.length}
+              <span className="text-sm md:text-base text-gray-400 font-mono text-center">
+                {activeProjectIndex + 1} / {filteredProjects.length}{' '}
+                {activeCategory === "all"
+                  ? "Total Projects"
+                  : `${activeCategory.charAt(0).toUpperCase() + activeCategory.slice(1).toLowerCase()} Projects`}
               </span>
               <motion.button
-                className="p-2 rounded-full bg-black/30 backdrop-blur-sm border border-white/10 hover:border-white/20 transition-all"
+                className="p-2 rounded-full bg-black/20 backdrop-blur-sm border border-white/10 hover:border-white/20 transition-all"
                 onClick={() => navigateProject("next")}
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
@@ -285,12 +267,6 @@ export default function ProjectPlayer({ projects }: ProjectPlayerProps) {
               >
                 <ArrowRight className="w-6 h-6 text-white" />
               </motion.button>
-            </div>
-            <div className="flex items-center gap-2">
-              <Star className="w-4 h-4 text-mint-400" />
-              <span className="text-sm md:text-base text-gray-400">
-                {filteredProjects.length} {activeCategory === "all" ? "Total Projects" : `${activeCategory.toUpperCase()} Projects`}
-              </span>
             </div>
           </div>
         </div>
