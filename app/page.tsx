@@ -6,7 +6,7 @@ import { motion, useTransform, useScroll } from "framer-motion"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import dynamic from 'next/dynamic'
-import { ExternalLink, ArrowRight, ChevronUp, Mail, Calendar, Search, Github, Linkedin, Twitter, Youtube, Instagram } from "lucide-react"
+import { ExternalLink, ArrowRight, ChevronUp, Mail, Calendar, Search, Github, Linkedin, Twitter, Youtube, Instagram, BookText } from "lucide-react"
 import { cn } from "@/lib/utils"
 
 // UI Components
@@ -205,109 +205,64 @@ const expertiseData: ExpertisePillar[] = [
 // Add this before the Page component
 const projects: Project[] = [
   {
-    id: "cryptiq",
-    title: "Cryptiq Messenger",
-    summary: "Encrypted chat platform using NIST-approved post-quantum cryptography",
-    description: "A secure messaging platform that implements post-quantum cryptography algorithms to ensure future-proof encryption. Features include end-to-end encryption, secure file sharing, and real-time message delivery.",
-    preview: "/assets/projects/cryptiq.png",
-    category: "security" as const,
-    techStack: ["Next.js", "TypeScript", "Kyber", "Dilithium", "WebRTC"],
-    liveUrl: "#",
-    caseStudyUrl: "#",
-    repoUrl: "#"
+    id: "guardian-drone",
+    title: "GUARDIAN AI SECURITY DRONE",
+    summary: "Autonomous security drone with TinyML person detection, AES-256 encrypted LoRa telemetry, and GPS waypoint navigation. Built with ESP32-CAM and Arduino for real-time threat detection.",
+    description: "An advanced security drone system that combines TinyML for real-time person detection with secure AES-256 encrypted LoRa communication. Features GPS waypoint navigation and autonomous operation for enhanced security monitoring.",
+    preview: "/images/guardian-thumb.gif",
+    category: "security",
+    techStack: ["ESP32-CAM", "Arduino", "TinyML", "LoRa", "AES-256", "GPS"],
+    liveUrl: "https://youtube.com/demo",
+    repoUrl: "https://github.com/nessakodo/guardian-drone",
+    caseStudyUrl: "/guardian-drone-case"
   },
   {
     id: "phishkiller",
-    title: "PhishKiller Analyzer",
-    summary: "CLI tool and dashboard for scanning and defending against phishing attacks",
-    description: "An advanced phishing detection system that combines machine learning with traditional security analysis to identify and neutralize phishing attempts in real-time.",
-    preview: "/assets/projects/phishkiller.png",
-    category: "security" as const,
-    techStack: ["Python", "React", "TensorFlow", "Docker"],
-    liveUrl: "#",
-    caseStudyUrl: "#",
-    repoUrl: "#"
+    title: "PHISHKILLER",
+    summary: "Advanced phishing detection tool using machine learning and NLP to identify and neutralize sophisticated phishing attempts in real-time.",
+    description: "A comprehensive phishing detection system that leverages machine learning and natural language processing to analyze email content, URLs, and behavioral patterns. Features include real-time threat assessment and detailed forensic analysis.",
+    preview: "/images/phishkiller-thumb.png",
+    category: "security",
+    techStack: ["Python", "Scikit-learn", "Regex", "TF-IDF", "NLP"],
+    liveUrl: "/phishkiller-demo",
+    repoUrl: "https://github.com/nessakodo/phishkiller",
+    caseStudyUrl: "/phishkiller-case"
+  },
+  {
+    id: "anomaly-detection",
+    title: "ANOMALY DETECTION LAB",
+    summary: "Research-grade machine learning system combining XGBoost and Autoencoder architectures for advanced threat detection and pattern recognition.",
+    description: "A sophisticated anomaly detection system that combines XGBoost and Autoencoder architectures to identify unusual patterns and potential security threats. Features comprehensive model evaluation and real-time monitoring capabilities.",
+    preview: "/images/anomaly-thumb.png",
+    category: "ai",
+    techStack: ["XGBoost", "Autoencoder", "Keras", "pandas", "TensorFlow"],
+    liveUrl: "/anomaly-demo",
+    repoUrl: "https://github.com/nessakodo/anomaly-detection",
+    caseStudyUrl: "/anomaly-case"
+  },
+  {
+    id: "digital-sanctuary",
+    title: "DIGITAL SANCTUARY",
+    summary: "Secure web-based password manager with journaling elements, built with modern encryption and ethical design principles.",
+    description: "A privacy-focused password manager that combines secure encryption with intuitive UX design. Features include secure password generation, encrypted storage, and integrated journaling capabilities.",
+    preview: "/images/sanctuary-thumb.png",
+    category: "security",
+    techStack: ["React", "Node.js", "bcrypt", "TailwindCSS", "MongoDB"],
+    liveUrl: "/sanctuary-demo",
+    repoUrl: "https://github.com/nessakodo/digital-sanctuary",
+    caseStudyUrl: "/sanctuary-case"
   },
   {
     id: "caresense",
-    title: "CareSense AI Triage",
-    summary: "Natural language triage for digital health, built on ethical AI principles",
-    description: "An AI-powered healthcare triage system that uses natural language processing to assess patient symptoms and provide initial medical guidance while maintaining strict privacy standards.",
-    preview: "/assets/projects/caresense.png",
-    category: "ai" as const,
-    techStack: ["Python", "FastAPI", "React", "TensorFlow"],
-    liveUrl: "#",
-    caseStudyUrl: "#",
-    repoUrl: "#"
-  },
-  {
-    id: "finvault",
-    title: "FinVault Wallet Suite",
-    summary: "Modern wallet with advanced encryption and real-time analytics",
-    description: "A comprehensive financial management suite that combines secure cryptocurrency storage with traditional banking features, all protected by military-grade encryption.",
-    preview: "/assets/projects/finvault.png",
-    category: "security" as const,
-    techStack: ["React", "TypeScript", "Web3.js", "Solidity"],
-    liveUrl: "#",
-    caseStudyUrl: "#"
-  },
-  {
-    id: "smartcity",
-    title: "SmartCity Viz Dashboard",
-    summary: "Real-time smart city platform with role-based access and data visualization",
-    description: "An interactive dashboard for monitoring and managing smart city infrastructure, featuring real-time data visualization and role-based access control.",
-    preview: "/assets/projects/smartcity.png",
-    category: "data" as const,
-    techStack: ["React", "D3.js", "Node.js", "MongoDB"],
-    liveUrl: "#",
-    caseStudyUrl: "#"
-  },
-  {
-    id: "neuralart",
-    title: "NeuralArt Studio",
-    summary: "AI-powered creative suite for digital artists and designers",
-    description: "A creative platform that leverages AI to assist artists in generating, editing, and enhancing digital artwork while maintaining artistic integrity.",
-    preview: "/assets/projects/neuralart.png",
-    category: "creative" as const,
-    techStack: ["Python", "TensorFlow", "React", "WebGL"],
-    liveUrl: "#",
-    caseStudyUrl: "#",
-    repoUrl: "#"
-  },
-  {
-    id: "pixelperfect",
-    title: "PixelPerfect Design Studio",
-    summary: "AI-driven platform for generating and refining digital art assets",
-    description: "A creative suite that empowers designers with AI tools for rapid prototyping, style transfer, and intelligent asset generation, ensuring every pixel is perfect.",
-    preview: "/assets/projects/pixelperfect.png",
-    category: "creative" as const,
-    techStack: ["Next.js", "Tailwind CSS", "DALL-E API", "Figma API"],
-    liveUrl: "#",
-    caseStudyUrl: "#",
-    repoUrl: "#"
-  },
-  {
-    id: "datasphere",
-    title: "DataSphere Analytics",
-    summary: "Enterprise-grade data analysis and visualization platform",
-    description: "A powerful data analytics platform that helps businesses make sense of complex datasets through intuitive visualizations and advanced analysis tools.",
-    preview: "/assets/projects/datasphere.png",
-    category: "data" as const,
-    techStack: ["Python", "React", "D3.js", "PostgreSQL"],
-    liveUrl: "#",
-    caseStudyUrl: "#"
-  },
-  {
-    id: "aisecurity",
-    title: "AI Security Sentinel",
-    summary: "AI-powered threat detection and response system",
-    description: "An intelligent security system that uses machine learning to detect and respond to potential threats in real-time, providing comprehensive protection for digital assets.",
-    preview: "/assets/projects/aisecurity.png",
-    category: "ai" as const,
-    techStack: ["Python", "TensorFlow", "React", "Docker"],
-    liveUrl: "#",
-    caseStudyUrl: "#",
-    repoUrl: "#"
+    title: "CARESENSE",
+    summary: "AI-powered healthcare triage system using natural language processing for intelligent patient assessment and care routing.",
+    description: "An innovative healthcare triage system that uses AI and natural language processing to assess patient symptoms and provide initial medical guidance while maintaining strict privacy standards.",
+    preview: "/images/caresense-thumb.png",
+    category: "ai",
+    techStack: ["Python", "Scikit-learn", "Flask", "Twilio", "NLP"],
+    liveUrl: "/caresense-demo",
+    repoUrl: "https://github.com/nessakodo/caresense",
+    caseStudyUrl: "/caresense-case"
   }
 ];
 
@@ -524,9 +479,9 @@ export default function Page() {
     <div className="min-h-screen bg-black text-white overflow-x-hidden">
       {/* Header */}
       <header className={`fixed top-0 z-50 w-full navbar ${scrollY > 50 ? 'scrolled' : ''}`}>
-        <div className="flex items-center justify-between content-padding py-6">
+        <div className="flex items-center justify-between content-padding py-4 md:py-6">
           <Link href="/" className="text-xl font-light">
-            <img src='assets/logo.png' alt="Kodex Studio" className="h-8" />
+            <img src='assets/logo.png' alt="Kodex Studio" className="h-7 md:h-8" />
           </Link>
           <nav className="hidden md:flex space-x-6">
             {navLinks.map((link) => (
@@ -553,9 +508,9 @@ export default function Page() {
       </header>
 
       {/* Mobile Menu */}
-      <div className={`mobile-menu ${isMobileMenuOpen ? '' : 'hidden'}`}>
-        <div className="mobile-menu-content">
-          <button onClick={() => setIsMobileMenuOpen(false)} className="absolute top-4 right-4 close-menu-btn text-white text-3xl">&times;</button>
+      <div className={`mobile-menu ${isMobileMenuOpen ? 'open' : 'hidden'} fixed inset-0 z-40 bg-black/90 backdrop-blur-xl md:hidden flex flex-col items-center justify-center space-y-8 transition-opacity duration-300`}>
+        <div className="mobile-menu-content relative w-full h-full flex flex-col items-center justify-center p-8">
+          <button onClick={() => setIsMobileMenuOpen(false)} className="absolute top-6 right-6 close-menu-btn text-white text-4xl leading-none">&times;</button>
           {navLinks.map((link) => (
             <button
               key={link.id}
@@ -607,7 +562,7 @@ export default function Page() {
         {/* Hero Section */}
         <motion.main 
           ref={sectionRefs.hero}
-          className="relative py-48 section-padding"
+          className="relative py-32 md:py-48 section-padding"
           initial="hidden"
           animate={useSectionVisibility(sectionRefs.hero) ? "visible" : "hidden"}
           variants={sectionVariants}
@@ -617,7 +572,7 @@ export default function Page() {
             style={{ opacity: heroContentOpacity, y: heroContentY }}
           >
             <motion.h1 
-              className="max-w-3xl text-5xl md:text-8xl font-light leading-tight tracking-tight mb-8"
+              className="max-w-3xl text-4xl md:text-7xl font-light leading-tight tracking-tight mb-6 md:mb-8"
             >
               KODEX STUDIO
               <br />
@@ -628,16 +583,16 @@ export default function Page() {
               INNOVATION.
             </motion.h1>
             <motion.div 
-              className="h-px w-24 bg-gradient-to-r from-mist-400 to-mint-400 mb-8"
+              className="h-px w-20 md:w-24 bg-gradient-to-r from-mist-400 to-mint-400 mb-6 md:mb-8"
               style={{ x: useTransform(heroScrollYProgress, [0, 0.15, 0.85, 1], [0, 0, 0, 50]), width: useTransform(heroScrollYProgress, [0, 0.15], [0, 96]) }}
             />
             <motion.p 
-              className="text-lg md:text-xl text-gray-400 leading-relaxed max-w-2xl mb-8"
+              className="text-base md:text-xl text-gray-400 leading-relaxed max-w-2xl mb-6 md:mb-8"
             >
               PIONEERING SECURE SOLUTIONS FOR THE DIGITAL FUTURE.
             </motion.p>
             <motion.p 
-              className="text-base md:text-lg leading-relaxed text-gray-400 max-w-xl"
+              className="text-sm md:text-lg leading-relaxed text-gray-400 max-w-xl mb-8 md:mb-12"
             >
               At Kodex Studio, we architect the future of digital security. Our innovative solutions blend cutting-edge
               technology with uncompromising protection, creating systems that don't just meet today's needs—they
@@ -645,9 +600,9 @@ export default function Page() {
             </motion.p>
 
             <motion.div 
-              className="mt-16 md:mt-24 flex flex-col md:flex-row justify-between items-start md:items-end space-y-8 md:space-y-0"
+              className="mt-12 md:mt-24 flex flex-col md:flex-row justify-between items-start md:items-end space-y-6 md:space-y-0"
             >
-              <div className="max-w-md">
+              <div className="max-w-md w-full md:w-auto">
                 <Button
                   className="unified-button primary full-width rounded-lg backdrop-blur-md bg-black/30 border border-white/10 hover:border-white/20 transition-all duration-300 hover:bg-black/40"
                   onClick={() => scrollToSection('connect')}
@@ -657,9 +612,9 @@ export default function Page() {
               </div>
 
               {/* Scroll indicator */}
-              <div className="scroll-indicator">
-                <span className="text-sm md:text-base">SCROLL TO EXPLORE</span>
-                <span className="h-px bg-white w-12"></span>
+              <div className="scroll-indicator text-center md:text-left">
+                <span className="text-xs md:text-sm">SCROLL TO EXPLORE</span>
+                <span className="h-px bg-white w-10 md:w-12 block mx-auto md:mx-0 mt-2"></span>
               </div>
             </motion.div>
           </motion.div>
@@ -669,7 +624,7 @@ export default function Page() {
         <motion.section 
           ref={sectionRefs.whoWeAre}
           id="who-we-are" 
-          className="relative py-48 section-padding text-center"
+          className="relative py-32 md:py-48 section-padding text-center"
           initial="hidden"
           animate={useSectionVisibility(sectionRefs.whoWeAre) ? "visible" : "hidden"}
           variants={sectionVariants}
@@ -683,27 +638,27 @@ export default function Page() {
             className="relative max-w-6xl mx-auto"
             style={{ opacity: whoWeAreContentOpacity, y: whoWeAreContentY }}
           >
-            <div className="grid md:grid-cols-2 gap-16 items-center text-left">
+            <div className="grid md:grid-cols-2 gap-12 md:gap-16 items-center text-left">
               <motion.div
                 style={{ x: useTransform(whoWeAreScrollYProgress, [0, 0.15, 0.85, 1], [0, 0, 0, -50]) }}
               >
-                <p className="mobile-text leading-relaxed text-gray-300 mb-6">
+                <p className="text-base md:text-lg leading-relaxed text-gray-300 mb-6 md:mb-8">
                   Our mission is simple yet profound: to build digital ecosystems that are not only secure and scalable
                   but also beautifully crafted and future-ready. Every line of code we write, every system we design, is a
                   step toward a more secure digital tomorrow.
                 </p>
               </motion.div>
               <motion.div 
-                className="relative"
+                className="relative aspect-square flex items-center justify-center p-8"
                 style={{ x: useTransform(whoWeAreScrollYProgress, [0, 0.15, 0.85, 1], [0, 0, 0, 50]) }}
               >
-                <div className="aspect-square bg-gradient-to-br from-sage-600/30 to-mist-600/30 rounded-full blur-3xl"></div>
+                <div className="aspect-square w-48 h-48 sm:w-64 sm:h-64 md:w-full md:h-full bg-gradient-to-br from-sage-600/30 to-mist-600/30 rounded-full blur-3xl"></div>
                 <div className="absolute inset-0 flex items-center justify-center">
                   <div className="text-center">
-                    <div className="text-4xl font-light mb-2 text-transparent bg-clip-text bg-gradient-to-r from-mist-400 to-mint-400">
+                    <div className="text-3xl md:text-4xl font-light mb-1 md:mb-2 text-transparent bg-clip-text bg-gradient-to-r from-mist-400 to-mint-400">
                       100+
                     </div>
-                    <div className="text-sm text-gray-400">SECURE SOLUTIONS DELIVERED</div>
+                    <div className="text-xs md:text-sm text-gray-400">SECURE SOLUTIONS DELIVERED</div>
                   </div>
                 </div>
               </motion.div>
@@ -734,12 +689,12 @@ export default function Page() {
               <SpotlightOverlay containerRef={expertiseSectionRef} hoveredExpertiseIndex={hoveredExpertiseIndex} />
 
               {/* Ethereal Pillars Display Container */}
-              <div ref={expertiseSectionRef} className="col-span-3 grid md:grid-cols-3 gap-8 relative z-10 h-[650px] items-start px-4 pt-16 text-mint-400">
+              <div ref={expertiseSectionRef} className="col-span-3 grid md:grid-cols-3 gap-6 md:gap-8 relative z-10 h-auto md:h-[650px] items-start px-4 pt-12 md:pt-16 text-mint-400">
                 {expertiseData.map((pillar, index) => (
                   <motion.div
                     key={index}
                     className={cn(
-                      "relative h-full flex flex-col items-center p-4 text-center cursor-pointer transition-all duration-300 ease-out",
+                      "relative h-full flex flex-col items-center p-6 md:p-8 text-center cursor-pointer transition-all duration-300 ease-out",
                       hoveredExpertiseIndex === index ? "opacity-100" : "opacity-70",
                       "group expertise-card-item focus:outline-none",
                       "hover:scale-[1.01]",
@@ -750,9 +705,9 @@ export default function Page() {
                     style={{ x: useTransform(offeringsScrollYProgress, [0, 0.15, 0.85, 1], [0, 0, 0, (index % 2 === 0 ? -50 : 50)]) }}
                   >
                     {/* Core Visual Element (Ethereal Icon/Symbol) & Title - Always Visible */}
-                    <div className="flex flex-col items-center relative z-20 mb-6">
+                    <div className="flex flex-col items-center relative z-20 mb-4 md:mb-6">
                       <motion.div
-                        className="w-32 h-32 flex items-center justify-center mb-4 max-h-32"
+                        className="w-28 h-28 md:w-32 md:h-32 flex items-center justify-center mb-2 md:mb-4 max-h-32"
                         animate={{
                           scale: hoveredExpertiseIndex === index ? 1.1 : 1,
                           opacity: hoveredExpertiseIndex === index ? 1 : 0.9
@@ -763,21 +718,21 @@ export default function Page() {
                         {pillar.title === "SECURITY INTELLIGENCE" && <EtherealSecurityIcon isActive={hoveredExpertiseIndex === index} className="w-full h-full" />}
                         {pillar.title === "DIGITAL TRANSFORMATION" && <EtherealTransformationIcon isActive={hoveredExpertiseIndex === index} className="w-full h-full" />}
                       </motion.div>
-                      <h3 className="text-2xl md:text-3xl font-light text-transparent bg-clip-text bg-gradient-to-r from-mist-400 to-mint-400 group-hover:to-sage-400 transition-all duration-300">
+                      <h3 className="text-xl md:text-3xl font-light text-transparent bg-clip-text bg-gradient-to-r from-mist-400 to-mint-400 group-hover:to-sage-400 transition-all duration-300">
                         {pillar.title}
                       </h3>
                     </div>
 
                     {/* Microcopy and Description Container - Appears on Hover */}
                     <motion.div
-                      className="px-4 text-center z-10 overflow-hidden"
+                      className="px-2 md:px-4 text-center z-10 overflow-hidden"
                       initial={{ opacity: 0, height: 0, y: 10 }}
-                      animate={hoveredExpertiseIndex === index ? { opacity: 1, height: 'auto', y: 0, padding: '0 1rem' } : { opacity: 0, height: 0, y: 10, padding: '0 1rem' }}
+                      animate={hoveredExpertiseIndex === index ? { opacity: 1, height: 'auto', y: 0, padding: '0 0.5rem' } : { opacity: 0, height: 0, y: 10, padding: '0 0.5rem' }}
                       transition={{ duration: 0.5, ease: "easeOut" }}
                     >
                       {/* Microcopy */}
                       <motion.span
-                        className="inline-block mb-3 text-sm text-mint-400 leading-relaxed"
+                        className="inline-block mb-2 md:mb-3 text-sm md:text-base text-mint-400 leading-relaxed"
                         initial={{ opacity: 0, y: 5 }}
                         animate={hoveredExpertiseIndex === index ? { opacity: 1, y: 0 } : { opacity: 0, y: 5 }}
                         transition={{ duration: 0.4, delay: hoveredExpertiseIndex === index ? 0.1 : 0, ease: "easeOut" }}
@@ -786,7 +741,7 @@ export default function Page() {
                       </motion.span>
                       {/* Description */}
                       <motion.p
-                        className="mobile-text text-base text-gray-300 leading-relaxed"
+                        className="text-sm md:text-base text-gray-300 leading-relaxed"
                         initial={{ opacity: 0, y: 5 }}
                         animate={hoveredExpertiseIndex === index ? { opacity: 1, y: 0 } : { opacity: 0, y: 5 }}
                         transition={{ duration: 0.4, delay: hoveredExpertiseIndex === index ? 0.2 : 0, ease: "easeOut" }}
@@ -805,7 +760,7 @@ export default function Page() {
         <motion.section 
           ref={sectionRefs.thinking}
           id="thinking" 
-          className="relative py-32 section-padding text-center"
+          className="relative py-32 md:py-48 section-padding text-center"
           initial="hidden"
           animate={useSectionVisibility(sectionRefs.thinking) ? "visible" : "hidden"}
           variants={sectionVariants}
@@ -825,7 +780,7 @@ export default function Page() {
               <>
                 {/* Search Bar */}
                 <motion.div 
-                  className="mb-8"
+                  className="mb-8 px-4"
                   style={{ opacity: thinkingContentOpacity, y: thinkingContentY }}
                 >
                   <div className="relative group">
@@ -835,29 +790,29 @@ export default function Page() {
                       placeholder="Search posts..."
                       value={searchQuery}
                       onChange={(e) => handleSearch(e.target.value)}
-                      className="w-full pl-10 pr-4 py-4 bg-black/20 border border-white/5 rounded-lg backdrop-blur-md text-gray-200 placeholder:text-gray-400 focus:border-mint-400/30 focus:ring-1 focus:ring-mint-400/20 transition-all duration-300 hover:border-white/10 focus:bg-black/20 hover:bg-black/20"
+                      className="w-full pl-10 pr-4 py-3 md:py-4 bg-black/20 border border-white/5 rounded-lg backdrop-blur-md text-gray-200 placeholder:text-gray-400 focus:border-mint-400/30 focus:ring-1 focus:ring-mint-400/20 transition-all duration-300 hover:border-white/10 focus:bg-black/20 hover:bg-black/20"
                     />
                   </div>
                 </motion.div>
 
                 {/* Articles Grid */}
-                <div className="grid md:grid-cols-3 gap-8">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 px-4">
                   {getCurrentPosts().map((post: any) => (
                     <motion.div
                       key={post.id}
                       style={{ opacity: thinkingContentOpacity, y: thinkingContentY }}
                     >
-                      <Card className="mobile-card unified-card h-[420px] rounded-lg group backdrop-blur-md bg-black/10 border border-white/5 hover:border-white/10 transition-all duration-300">
-                        <CardContent className="p-8 flex flex-col h-full text-left">
+                      <Card className="mobile-card unified-card h-auto md:h-[420px] rounded-lg group backdrop-blur-md bg-black/10 border border-white/5 hover:border-white/10 transition-all duration-300">
+                        <CardContent className="p-6 md:p-8 flex flex-col h-full text-left">
                           <div className="flex-1 min-h-0">
                             {post.tag_list && post.tag_list.length > 0 && (
-                              <span className="thinking-category">{post.tag_list[0]}</span>
+                              <span className="thinking-category text-xs md:text-sm">{post.tag_list[0]}</span>
                             )}
-                            <h3 className="text-xl font-light mb-4 text-white group-hover:text-white/90 transition-all duration-300 line-clamp-2">{post.title}</h3>
-                            <p className="mobile-text text-base text-gray-300 mb-4 line-clamp-3">{post.description}</p>
+                            <h3 className="text-lg md:text-xl font-light mb-3 text-white group-hover:text-white/90 transition-all duration-300 line-clamp-2">{post.title}</h3>
+                            <p className="text-sm md:text-base text-gray-300 mb-3 line-clamp-3">{post.description}</p>
                           </div>
                           <div className="mt-auto">
-                            <div className="flex justify-between text-base text-gray-400 mb-4">
+                            <div className="flex justify-between text-xs md:text-base text-gray-400 mb-3">
                               <span>{new Date(post.published_timestamp).toLocaleDateString()}</span>
                               <span>{post.reading_time_minutes} min read</span>
                             </div>
@@ -865,7 +820,7 @@ export default function Page() {
                               <Button
                                 className="unified-button full-width rounded-lg backdrop-blur-sm bg-black/20 border border-white/5 hover:border-white/10 transition-all duration-300"
                               >
-                                <span className="button-content">READ ARTICLE</span>
+                                <span className="button-content text-sm">READ ARTICLE</span>
                               </Button>
                             </Link>
                           </div>
@@ -877,7 +832,7 @@ export default function Page() {
 
                 {/* Pagination Controls */}
                 <motion.div 
-                  className="mt-12"
+                  className="mt-10 md:mt-12 px-4"
                   style={{ opacity: thinkingContentOpacity, y: thinkingContentY }}
                 >
                   <BlogPagination
@@ -893,7 +848,7 @@ export default function Page() {
             )}
             {!loadingPosts && !postsError && filteredPosts.length === 0 && (
               <motion.p
-                className="text-center text-gray-400"
+                className="text-center text-gray-400 text-base md:text-lg"
                 style={{ opacity: thinkingContentOpacity, y: thinkingContentY }}
               >
                 No blog posts found.
@@ -928,7 +883,7 @@ export default function Page() {
         <motion.section 
           ref={sectionRefs.connect}
           id="connect"
-          className="relative py-32"
+          className="relative py-32 md:py-48 section-padding"
           initial="hidden"
           animate={useSectionVisibility(sectionRefs.connect) ? "visible" : "hidden"}
           variants={sectionVariants}
@@ -937,10 +892,10 @@ export default function Page() {
             title="CONNECT"
             subtitle="Ready to transform your digital landscape? Let's discuss how we can help secure and elevate your vision."
             scrollYProgress={connectScrollYProgress}
-            marginBottomClass="mb-8"
+            marginBottomClass="mb-8 md:mb-16"
           />
           <motion.div 
-            className="relative z-10"
+            className="relative z-10 px-4"
             style={{ opacity: connectContentOpacity, y: connectContentY }}
           >
             <DynamicConnectSection />
@@ -951,13 +906,13 @@ export default function Page() {
       {/* Footer */}
       <footer 
         ref={footerRef}
-        className="py-32 content-padding border-t border-white/10 mt-auto relative z-10"
+        className="py-16 md:py-32 content-padding border-t border-white/10 mt-auto relative z-10"
       >
         <motion.div 
-          className="flex flex-col md:flex-row justify-between items-center"
+          className="flex flex-col md:flex-row justify-between items-center text-center md:text-left space-y-8 md:space-y-0"
           style={{ opacity: footerContentOpacity, y: footerContentY }}
         >
-          <div className="flex items-center space-x-4 mb-8 md:mb-0">
+          <div className="flex flex-wrap justify-center md:justify-start gap-4 mb-8 md:mb-0">
             <a
               href="https://github.com/nessakodo"
               target="_blank"
@@ -968,7 +923,7 @@ export default function Page() {
               <Github className="w-5 h-5 text-white" />
             </a>
             <a
-              href="https://linkedin.com/in/nessakodo"
+              href="https://www.linkedin.com/in/nessamadison"
               target="_blank"
               rel="noopener noreferrer"
               className="p-2 rounded-full bg-black/20 backdrop-blur-sm border border-white/10 hover:border-white/20 transition-all hover:scale-110"
@@ -977,35 +932,17 @@ export default function Page() {
               <Linkedin className="w-5 h-5 text-white" />
             </a>
             <a
-              href="https://twitter.com/nessakodo"
+              href="https://dev.to/nessakodo"
               target="_blank"
               rel="noopener noreferrer"
               className="p-2 rounded-full bg-black/20 backdrop-blur-sm border border-white/10 hover:border-white/20 transition-all hover:scale-110"
-              aria-label="Twitter"
+              aria-label="Dev.to"
             >
-              <Twitter className="w-5 h-5 text-white" />
-            </a>
-            <a
-              href="https://youtube.com/@nessakodo"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="p-2 rounded-full bg-black/20 backdrop-blur-sm border border-white/10 hover:border-white/20 transition-all hover:scale-110"
-              aria-label="YouTube"
-            >
-              <Youtube className="w-5 h-5 text-white" />
-            </a>
-            <a
-              href="https://instagram.com/nessakodo"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="p-2 rounded-full bg-black/20 backdrop-blur-sm border border-white/10 hover:border-white/20 transition-all hover:scale-110"
-              aria-label="Instagram"
-            >
-              <Instagram className="w-5 h-5 text-white" />
+              <BookText className="w-5 h-5 text-white" />
             </a>
           </div>
-          <div>
-            <p className="text-sm text-gray-400">© 2024 Kodex Studio. All rights reserved.</p>
+          <div className="w-full md:w-auto text-center md:text-right">
+            <p className="text-sm text-gray-400">© 2025 Kodex Studio. All rights reserved.</p>
           </div>
         </motion.div>
       </footer>
